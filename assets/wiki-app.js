@@ -7,6 +7,9 @@ const state = {
   currentPath: fallbackPath,
   filter: "",
   mode: localStorage.getItem("azuriter-doc-mode") || "wiki",
+  readerView: localStorage.getItem("azuriter-doc-reader-view") || "section",
+  currentDocument: null,
+  activeSectionId: null,
 };
 
 const sidebar = document.getElementById("sidebar");
@@ -14,15 +17,18 @@ const sidebarToggle = document.getElementById("sidebarToggle");
 const modeSwitch = document.getElementById("modeSwitch");
 const searchInput = document.getElementById("searchInput");
 const navTree = document.getElementById("navTree");
-const heroStats = document.getElementById("heroStats");
 const preview = document.getElementById("preview");
 const docTitle = document.getElementById("docTitle");
 const docCategory = document.getElementById("docCategory");
+const docLead = document.getElementById("docLead");
 const docMeta = document.getElementById("docMeta");
 const rawLink = document.getElementById("rawLink");
+const readerTools = document.getElementById("readerTools");
+const readerMode = document.getElementById("readerMode");
+const readerHint = document.getElementById("readerHint");
+const sectionTabs = document.getElementById("sectionTabs");
 const navSectionTemplate = document.getElementById("navSectionTemplate");
 const navItemTemplate = document.getElementById("navItemTemplate");
-const statCardTemplate = document.getElementById("statCardTemplate");
 
 sidebarToggle?.addEventListener("click", () => {
   const open = !sidebar.classList.contains("is-open");
@@ -42,7 +48,34 @@ modeSwitch?.addEventListener("click", (event) => {
   localStorage.setItem("azuriter-doc-mode", state.mode);
   syncModeButtons();
   renderNav();
-  renderMeta(resolveMeta(state.currentPath));
+  renderMeta(resolveMeta(state.currentPath), state.currentDocument);
+});
+
+readerMode?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-view]");
+  if (!button || !state.currentDocument) return;
+  state.readerView = button.dataset.view;
+  localStorage.setItem("azuriter-doc-reader-view", state.readerView);
+  syncReaderViewButtons();
+  renderSectionTabs();
+  renderDocumentView();
+});
+
+sectionTabs?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-section-id]");
+  if (!button || !state.currentDocument) return;
+  const sectionId = button.dataset.sectionId;
+  if (!sectionId) return;
+  state.activeSectionId = sectionId;
+  renderSectionTabs();
+  if (state.readerView === "section") {
+    renderDocumentView();
+    return;
+  }
+  const target = document.getElementById(`section-card-${sectionId}`);
+  if (target) {
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 });
 
 window.addEventListener("hashchange", () => loadRoute().catch(showError));
@@ -57,6 +90,7 @@ preview.addEventListener("click", (event) => {
     }
     return;
   }
+
   const anchor = event.target.closest("a");
   if (!anchor) return;
   const href = anchor.getAttribute("href");
@@ -72,7 +106,7 @@ init().catch(showError);
 async function init() {
   state.manifest = await fetchJson(manifestUrl);
   syncModeButtons();
-  renderHeroStats();
+  syncReaderViewButtons();
   renderNav();
   await loadRoute();
 }
@@ -80,48 +114,23 @@ async function init() {
 async function loadRoute() {
   state.currentPath = normalizePath(decodeURIComponent(location.hash.replace(/^#/, "")) || fallbackPath);
   const meta = resolveMeta(state.currentPath);
-  renderMeta(meta);
   highlightActive();
 
   const markdown = await fetchText(buildDocUrl(state.currentPath));
   rawLink.href = buildDocUrl(state.currentPath).href;
-  preview.innerHTML = "";
+  state.currentDocument = buildDocumentModel(markdown, state.currentPath);
 
-  const doc = document.createElement("div");
-  doc.className = "doc-card";
-  doc.innerHTML = renderMarkdown(markdown, state.currentPath);
+  if (!state.currentDocument.sections.some((section) => section.id === state.activeSectionId)) {
+    state.activeSectionId = state.currentDocument.sections[0]?.id || null;
+  }
 
-  const footer = document.createElement("div");
-  footer.className = "doc-footer";
-  footer.innerHTML = `表示中: <code>${escapeHtml(state.currentPath)}</code>`;
-  doc.appendChild(footer);
-  preview.appendChild(doc);
-  preview.scrollTop = 0;
-
+  renderMeta(meta, state.currentDocument);
+  renderReaderTools(state.currentDocument);
+  renderDocumentView();
   renderNav();
+
   sidebar.classList.remove("is-open");
   sidebarToggle?.setAttribute("aria-expanded", "false");
-}
-
-function renderHeroStats() {
-  heroStats.innerHTML = "";
-  const elements = state.manifest.docs.filter((item) => item.kind === "element");
-  const pageCount = state.manifest.docs.reduce((count, item) => {
-    return count + (item.kind === "element" ? item.pages.length : 1);
-  }, 0);
-  const stats = [
-    { label: "要素", value: elements.length },
-    { label: "ページ", value: pageCount },
-    { label: "Wiki", value: elements.flatMap((item) => item.pages).filter((page) => pageKind(page) === "wiki").length },
-    { label: "ガイド", value: state.manifest.docs.filter((item) => item.kind === "guide").length },
-  ];
-
-  stats.forEach((entry) => {
-    const card = statCardTemplate.content.firstElementChild.cloneNode(true);
-    card.querySelector(".stat-label").textContent = entry.label;
-    card.querySelector(".stat-value").textContent = String(entry.value);
-    heroStats.appendChild(card);
-  });
 }
 
 function renderNav() {
@@ -143,11 +152,7 @@ function renderNav() {
     const card = document.createElement("div");
     card.className = "nav-card";
     const links = document.createElement("div");
-    links.className = "nav-page-links";
-    links.style.paddingTop = "16px";
-    links.style.paddingBottom = "16px";
-    links.style.paddingLeft = "16px";
-    links.style.paddingRight = "16px";
+    links.className = "nav-page-links nav-page-links-compact";
     visibleItems.forEach((item) => {
       links.appendChild(createPill(item.title, item.path, item.kind));
     });
@@ -204,23 +209,170 @@ function createPill(label, path, kind) {
   return link;
 }
 
-function renderMeta(meta) {
+function renderMeta(meta, documentModel) {
   docCategory.textContent = meta.category;
   docTitle.textContent = meta.title;
+  docLead.textContent = documentModel?.leadText || meta.description || "";
+  docLead.hidden = !docLead.textContent;
 
   const chips = [
     { label: meta.pageLabel, kind: meta.pageKind },
-    { label: meta.slug ? `slug: ${meta.slug}` : meta.category, kind: "overview" },
-  ];
+    meta.slug ? { label: `slug: ${meta.slug}`, kind: "overview" } : null,
+  ].filter(Boolean);
 
   docMeta.innerHTML = "";
-  chips.filter((chip) => chip.label).forEach((chip) => {
+  chips.forEach((chip) => {
     const span = document.createElement("span");
     span.className = "meta-chip";
     span.dataset.kind = chip.kind;
     span.textContent = chip.label;
     docMeta.appendChild(span);
   });
+}
+
+function renderReaderTools(documentModel) {
+  const hasSections = documentModel.sections.length >= 2;
+  sectionTabs.innerHTML = "";
+  readerHint.textContent = "";
+  readerTools.hidden = !hasSections;
+  if (!hasSections) return;
+
+  readerHint.textContent = `${documentModel.sections.length} 章を切り替えながら読めます。`;
+  syncReaderViewButtons();
+  renderSectionTabs();
+}
+
+function renderSectionTabs() {
+  sectionTabs.innerHTML = "";
+  if (!state.currentDocument || state.currentDocument.sections.length < 2) return;
+
+  state.currentDocument.sections.forEach((section, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "section-tab";
+    button.dataset.sectionId = section.id;
+    if (section.id === state.activeSectionId) {
+      button.classList.add("is-active");
+    }
+    button.innerHTML = `<span class="section-tab-index">${String(index + 1).padStart(2, "0")}</span><span class="section-tab-label">${escapeHtml(section.title)}</span>`;
+    sectionTabs.appendChild(button);
+  });
+}
+
+function renderDocumentView() {
+  preview.innerHTML = "";
+  if (!state.currentDocument) return;
+
+  const stack = document.createElement("div");
+  stack.className = "doc-stack";
+
+  if (state.currentDocument.introHtml) {
+    const introCard = createDocCard(state.currentDocument.introHtml, "doc-card doc-intro-card");
+    introCard.id = "doc-intro-card";
+    stack.appendChild(introCard);
+  }
+
+  if (state.currentDocument.sections.length === 0) {
+    stack.appendChild(createDocCard(state.currentDocument.fullHtml, "doc-card doc-section-card"));
+  } else {
+    const sectionsToShow = state.readerView === "section"
+      ? state.currentDocument.sections.filter((section) => section.id === state.activeSectionId)
+      : state.currentDocument.sections;
+
+    sectionsToShow.forEach((section) => {
+      const card = createDocCard(section.html, "doc-card doc-section-card");
+      card.id = `section-card-${section.id}`;
+      card.dataset.sectionId = section.id;
+      stack.appendChild(card);
+    });
+  }
+
+  const footer = document.createElement("div");
+  footer.className = "doc-footer";
+  footer.innerHTML = `表示中: <code>${escapeHtml(state.currentPath)}</code>`;
+  stack.appendChild(footer);
+  preview.appendChild(stack);
+  preview.scrollTop = 0;
+}
+
+function createDocCard(html, className) {
+  const card = document.createElement("section");
+  card.className = className;
+  card.innerHTML = html;
+  return card;
+}
+
+function buildDocumentModel(markdown, docPath) {
+  const html = renderMarkdown(markdown, docPath);
+  const template = document.createElement("template");
+  template.innerHTML = html;
+  const nodes = Array.from(template.content.childNodes).filter((node) => {
+    return !(node.nodeType === Node.TEXT_NODE && !node.textContent?.trim());
+  });
+
+  const introNodes = [];
+  const sections = [];
+  let currentSection = null;
+
+  nodes.forEach((node) => {
+    if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "H2") {
+      currentSection = {
+        id: node.id || `section-${sections.length + 1}`,
+        title: node.textContent.trim(),
+        nodes: [node.cloneNode(true)],
+      };
+      sections.push(currentSection);
+      return;
+    }
+
+    if (currentSection) {
+      currentSection.nodes.push(node.cloneNode(true));
+      return;
+    }
+
+    introNodes.push(node.cloneNode(true));
+  });
+
+  const leadText = extractLeadText(introNodes, sections);
+
+  return {
+    leadText,
+    introHtml: nodesToHtml(introNodes),
+    fullHtml: nodesToHtml(nodes),
+    sections: sections.map((section) => ({
+      id: section.id,
+      title: section.title,
+      html: nodesToHtml(section.nodes),
+    })),
+  };
+}
+
+function extractLeadText(introNodes, sections) {
+  const textFromNodes = (nodes) => {
+    for (const node of nodes) {
+      if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "P") {
+        const text = node.textContent.trim();
+        if (text) return text;
+      }
+    }
+    return "";
+  };
+
+  const introText = textFromNodes(introNodes);
+  if (introText) return introText;
+
+  for (const section of sections) {
+    const sectionText = textFromNodes(section.nodes);
+    if (sectionText) return sectionText;
+  }
+
+  return "";
+}
+
+function nodesToHtml(nodes) {
+  const wrapper = document.createElement("div");
+  nodes.forEach((node) => wrapper.appendChild(node.cloneNode(true)));
+  return wrapper.innerHTML;
 }
 
 function resolveMeta(path) {
@@ -233,6 +385,7 @@ function resolveMeta(path) {
       pageLabel: kindLabel(generalDoc.kind),
       pageKind: generalDoc.kind,
       slug: null,
+      description: generalDoc.shortDescription || "",
     };
   }
 
@@ -245,6 +398,7 @@ function resolveMeta(path) {
           pageLabel: page.label,
           pageKind: pageKind(page),
           slug: element.slug,
+          description: element.shortDescription || "",
         };
       }
     }
@@ -256,12 +410,19 @@ function resolveMeta(path) {
     pageLabel: "Markdown",
     pageKind: "overview",
     slug: null,
+    description: "",
   };
 }
 
 function syncModeButtons() {
   document.querySelectorAll(".mode-pill").forEach((button) => {
     button.classList.toggle("is-active", button.dataset.mode === state.mode);
+  });
+}
+
+function syncReaderViewButtons() {
+  document.querySelectorAll(".reader-mode-pill").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.view === state.readerView);
   });
 }
 
@@ -296,7 +457,6 @@ function highlightActive() {
 function renderMarkdown(markdown, docPath) {
   const lines = markdown.replace(/\r\n/g, "\n").split("\n");
   const html = [];
-  const headings = [];
   const headingCounts = new Map();
   let index = 0;
 
@@ -344,7 +504,6 @@ function renderMarkdown(markdown, docPath) {
       const level = heading[1].length;
       const plainText = stripMarkdown(heading[2]);
       const headingId = makeHeadingId(plainText, headingCounts);
-      headings.push({ level, text: plainText, id: headingId });
       html.push(`<h${level} id="${escapeHtml(headingId)}">${renderInline(heading[2], docPath)}</h${level}>`);
       index += 1;
       continue;
@@ -398,8 +557,7 @@ function renderMarkdown(markdown, docPath) {
     html.push(`<p>${renderInline(paragraph.join(" "), docPath)}</p>`);
   }
 
-  const toc = renderToc(headings);
-  return `${toc}${html.join("\n")}`;
+  return html.join("\n");
 }
 
 function renderInline(text, docPath) {
@@ -439,15 +597,6 @@ function resolveRelative(fromPath, targetPath) {
   }
   const base = normalizePath(fromPath).split("/").slice(0, -1).join("/");
   return new URL(targetPath, `https://local/${base}/`).pathname.replace(/^\/+/, "");
-}
-
-function renderToc(headings) {
-  const visibleHeadings = headings.filter((entry) => entry.level >= 2 && entry.level <= 3);
-  if (visibleHeadings.length < 3) return "";
-  const links = visibleHeadings.map((entry) => {
-    return `<button class="toc-link toc-link-level-${entry.level}" type="button" data-scroll-id="${escapeHtml(entry.id)}">${escapeHtml(entry.text)}</button>`;
-  }).join("");
-  return `<section class="wiki-toc"><p class="wiki-toc-title">このページの目次</p><div class="wiki-toc-links">${links}</div></section>`;
 }
 
 function renderTable(headers, rows, docPath) {
@@ -535,7 +684,9 @@ function showError(error) {
   console.error(error);
   docCategory.textContent = "Error";
   docTitle.textContent = "表示に失敗しました";
+  docLead.textContent = "";
   docMeta.innerHTML = "";
+  readerTools.hidden = true;
   preview.innerHTML = `<div class="empty-state"><h2>読み込みエラー</h2><p>${escapeHtml(error?.message || "不明なエラー")}</p></div>`;
 }
 

@@ -10,14 +10,13 @@
 <body>
   <div class="ambient ambient-a"></div>
   <div class="ambient ambient-b"></div>
-  <div class="ambient ambient-c"></div>
 
   <div class="page-shell">
     <aside class="sidebar" id="sidebar">
       <div class="brand-card">
         <p class="eyebrow">Azuriter Docs</p>
-        <h1>Wiki Atlas</h1>
-        <p class="brand-copy">実装ベースの仕様を、読む・共有する・公開するための Web 入口です。</p>
+        <h1>Wiki Reader</h1>
+        <p class="brand-copy">長い仕様を、章ごとに迷わず読める reader です。</p>
       </div>
 
       <label class="search-box">
@@ -42,30 +41,34 @@
     </aside>
 
     <main class="main-panel">
-      <header class="hero-panel">
-        <div class="hero-top">
-          <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
-          <div class="hero-copy">
-            <p class="eyebrow">Current Spec Wiki</p>
-            <h2>ポップで軽やか、でも運用に強い docs UI。</h2>
-            <p>Wiki を中心に、概要と編集例もすぐ行き来できる構成です。ローカルでも GitHub Pages でも同じ見た目で扱えます。</p>
-          </div>
-          <div class="hero-actions">
-            <a class="action-link action-primary" href="#current-spec/overview.md">Overview</a>
-            <a class="action-link action-secondary" href="#current-spec/wiki-editing-guide.md">Wiki Guide</a>
-            <a id="rawLink" class="action-link action-secondary" href="./current-spec/overview.md" target="_blank" rel="noreferrer">Raw Markdown</a>
-          </div>
+      <header class="topbar">
+        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+        <div class="topbar-copy">
+          <p class="eyebrow">Azuriter Wiki</p>
+          <h2>見やすく、章ごとに読める docs。</h2>
+          <p>長いページは自動でセクション分割し、全表示と章ごと表示を切り替えられます。</p>
         </div>
-
-        <div id="heroStats" class="hero-stats" aria-label="ドキュメント統計"></div>
+        <a id="rawLink" class="raw-link" href="./current-spec/overview.md" target="_blank" rel="noreferrer">Raw</a>
       </header>
 
-      <section class="doc-banner">
-        <div class="doc-banner-main">
+      <section class="doc-header">
+        <div class="doc-heading">
           <p id="docCategory" class="doc-category">Loading</p>
           <h3 id="docTitle">読込中</h3>
+          <p id="docLead" class="doc-lead"></p>
         </div>
         <div id="docMeta" class="doc-meta"></div>
+      </section>
+
+      <section id="readerTools" class="reader-tools" hidden>
+        <div class="reader-tools-top">
+          <div id="readerMode" class="reader-mode" aria-label="本文表示モード">
+            <button type="button" class="reader-mode-pill is-active" data-view="section">章ごと</button>
+            <button type="button" class="reader-mode-pill" data-view="all">全文</button>
+          </div>
+          <p id="readerHint" class="reader-hint"></p>
+        </div>
+        <div id="sectionTabs" class="section-tabs"></div>
       </section>
 
       <article id="preview" class="preview" aria-live="polite"></article>
@@ -87,13 +90,6 @@
       </summary>
       <div class="nav-page-links"></div>
     </details>
-  </template>
-
-  <template id="statCardTemplate">
-    <div class="stat-card">
-      <p class="stat-label"></p>
-      <strong class="stat-value"></strong>
-    </div>
   </template>
 
   <script src="./assets/wiki-app.js" type="module"></script>
