@@ -35,8 +35,6 @@
 | `quality-ranks.*-max` | 品質ランクの上限値。 | RUINED から MASTERWORK までの境界。 |
 | `quality-effects.[quality-rank].beneficial-scale` | 良性ステータスの倍率。 | 高品質でどれだけ盛るか。 |
 | `quality-effects.[quality-rank].detrimental-scale` | 悪性ステータスの倍率。 | 低品質ペナルティの強さ。 |
-| `quality-effects.[quality-rank].gear-score-bonus` | Gear Score 補正。 | 装備評価へ直結する。 |
-| `quality-effects.[quality-rank].item-level-bonus` | Item Level 補正。 | 見た目の強さ表示に効く。 |
 | `quality-effects.[quality-rank].durability-multiplier` | 耐久倍率。 | 低品質の消耗しやすさを決める。 |
 
 ## `forge.yml` の工程・施設設定
@@ -99,7 +97,6 @@
 | `equipment-types.[equipment-type-id].target-progress` | 必要 progress 目標値。 | 工程の長さ。 |
 | `equipment-types.[equipment-type-id].base-durability` | 基礎耐久。 | 品質補正の母数。 |
 | `equipment-types.[equipment-type-id].item-durability-base` | 表示用耐久基準。 | lore 表示との整合を見る。 |
-| `equipment-types.[equipment-type-id].base-item-level` | 基礎 Item Level。 | quality bonus 前の土台。 |
 | `equipment-types.[equipment-type-id].required-craft-power/control/stability/focus` | 必要ステータス。 | 終盤装備ほど値が高い。 |
 | `equipment-types.[equipment-type-id].quality-channels[]` | その装備で使う品質軸。 | 武器と防具で見せ方を変えられる。 |
 | `equipment-types.[equipment-type-id].quality-threshold-profile` | 使う閾値 profile。 | rank 判定を装備別に分ける入口。 |

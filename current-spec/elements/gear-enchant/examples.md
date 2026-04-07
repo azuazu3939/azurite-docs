@@ -1,15 +1,9 @@
-# 装備評価・仮想ロア・カスタムエンチャント の編集例
+# 仮想ロア・売値表示・カスタムエンチャント の編集例
 
-表示系とエンチャント定義を 1 つずつ見るのが理解しやすいです。
+表示変更は lore service、効果変更は enchant YAML を触るのが基本です。
 
 ## サンプル
 ```yml
-lore:
-  strip-prefixes:
-    - "Gear Score:"
-    - "Item Level:"
-    - "アイテムLv:"
-
 id: archers_strike
 display-name: "<yellow>射手の一撃"
 max-level: 4
@@ -21,7 +15,7 @@ supported-materials:
 ```
 
 ## 押さえる点
-- 表示と効果は別物として扱う。
+- 旧 Item Level / Gear Score 行は自動除去されるが、新しい仮想ロア見出しを足した時は strip 対象も確認する。
 - 仮想ロアは実アイテムを書き換えない。
 - 新エンチャントは既存 YAML 複製が安全。
 

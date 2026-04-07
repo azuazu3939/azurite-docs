@@ -31,8 +31,8 @@
       "kind": "element",
       "category": "進行と装備",
       "slug": "gear-enchant",
-      "title": "装備評価・仮想ロア・カスタムエンチャント",
-      "shortDescription": "Item Level 表示、Gear Score、売値表示、独自エンチャントを扱う。",
+      "title": "仮想ロア・売値表示・カスタムエンチャント",
+      "shortDescription": "採集・鍛造・売値の仮想ロア表示と独自エンチャントを扱う。",
       "pages": [
         { "label": "概要", "path": "current-spec/elements/gear-enchant/summary.md" },
         { "label": "設定項目", "path": "current-spec/elements/gear-enchant/reference.md" },

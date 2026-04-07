@@ -1,9 +1,9 @@
-# 装備評価・仮想ロア・カスタムエンチャント の設定項目
+# 仮想ロア・売値表示・カスタムエンチャント の設定項目
 
-装備の見た目と評価値を触るときの YAML リファレンスです。`config.yml` のエンチャント GUI、`itemscore.yml` の換算式、`enchants/*.yml` の個別挙動をまとめています。
+仮想ロアと独自エンチャントを触るときの参照先をまとめます。現行実装では Item Level / Gear Score 用の独立 YAML はなく、表示の合成は `ItemLoreOverlayService` 側で行います。
 
 > [!TIP]
-> まず `itemscore.yml` で評価軸を決め、その後で `enchants/*.yml` の発動強度を足すと、見た目だけ高い装備になりにくいです。
+> 見た目を変えたい時は仮想ロア service、効果を変えたい時は `enchants/*.yml` を見ると迷いにくいです。
 
 ## `config.yml` のエンチャント共通設定
 
@@ -16,25 +16,14 @@
 | `disabled-vanilla-enchantments[]` | 完全無効にするバニラ enchant。 | 独自環境で役割が被るものを切る。 |
 | `gated-vanilla-enchantments[]` | 使えるが制限対象にするバニラ enchant。 | 段階解放や別導線に回したい時向き。 |
 
-## `itemscore.yml` の装備評価設定
+## 仮想ロア表示の現行実装メモ
 
-| キー | 役割 | 変更時の見方 |
+| 項目 | 役割 | 変更時の見方 |
 | --- | --- | --- |
-| `enabled` | Item Level / Gear Score 表示全体の ON/OFF。 | 切るとロア再構築も止まる。 |
-| `lore.separator` | 評価ロア前後に区切りを入れるか。 | 見やすさ用。 |
-| `lore.strip-prefixes[]` | 既存ロアから消す接頭辞。 | 旧表示と二重化させないための掃除リスト。 |
-| `lore.lines[]` | 再生成するロア行。 | `{item_level}` などのプレースホルダを使う。 |
-| `scoring.durability-penalty-multiplier` | 耐久減少時の減点係数。 | 耐久消耗を強く評価に入れたい時に上げる。 |
-| `scoring.enchantments.normal-base-weight` | 通常 enchant の基本重み。 | enchant 価値の土台。 |
-| `scoring.enchantments.treasure-base-weight` | treasure enchant の基本重み。 | レア付与を高く見せたい時に上げる。 |
-| `scoring.enchantments.cursed-base-weight` | curse enchant の基本重み。 | マイナス値にすると呪いを減点化できる。 |
-| `scoring.enchantments.max-level-divisor` | 最大レベルで割る補正。 | 高レベル enchant の伸び方を丸める。 |
-| `scoring.enchantments.minimum-level-weight` | 最低保証の重み。 | 低レベル enchant が無価値になりすぎるのを防ぐ。 |
-| `scoring.attributes.default-weight` | 未個別指定 Attribute の重み。 | 新しい属性を追加した時の安全網。 |
-| `scoring.attributes.weights.<attribute>` | 属性ごとの個別重み。 | `minecraft:attack_damage` のような namespace 付き key。 |
-| `scoring.attributes.operation-scales.ADD_NUMBER` | 固定加算属性の換算倍率。 | 武器・防具の定数強化に効きやすい。 |
-| `scoring.attributes.operation-scales.ADD_SCALAR` | 割合加算の換算倍率。 | パーセント系補正の強さを決める。 |
-| `scoring.attributes.operation-scales.MULTIPLY_SCALAR_1` | 乗算系の換算倍率。 | 大きくしすぎると上振れしやすい。 |
+| `ItemLoreOverlayService` | 採集 / 鍛造 / 売値の 3 系統を 1 つの仮想ロアへ合成する。 | 表示順や結合条件を変える時の入口。 |
+| `LEGACY_ITEM_EVALUATION_PREFIXES` | 旧 Item Level / Gear Score 行を除去する。 | 既存アイテムの二重表示防止用。 |
+| `VirtualLoreSections.join / replaceTail` | 各 section を空行区切りで結合し、既存末尾を差し替える。 | section の順序を変える時は見た目全体を確認する。 |
+| `buildSellValueLines` | 売却価値やロック中表示を構築する。 | economy 側の条件と食い違わないかを見る。 |
 
 ## `enchants/*.yml` の共通スキーマ
 

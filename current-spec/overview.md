@@ -13,7 +13,7 @@
 ## 進行と装備
 - [成長・クラス・専門職](./elements/progression-professions/summary.md) : グローバルレベル、クラス、マナ、スキルツリー、専門職の解放と補正を扱う。
 - [設定項目](./elements/progression-professions/reference.md) / [編集例](./elements/progression-professions/examples.md) / [Wiki](./elements/progression-professions/wiki.md)
-- [装備評価・仮想ロア・カスタムエンチャント](./elements/gear-enchant/summary.md) : Item Level 表示、Gear Score、売値表示、独自エンチャントを扱う。
+- [仮想ロア・売値表示・カスタムエンチャント](./elements/gear-enchant/summary.md) : 採集・鍛造・売値の仮想ロア表示と独自エンチャントを扱う。
 - [設定項目](./elements/gear-enchant/reference.md) / [編集例](./elements/gear-enchant/examples.md) / [Wiki](./elements/gear-enchant/wiki.md)
 
 ## 制作と収集
