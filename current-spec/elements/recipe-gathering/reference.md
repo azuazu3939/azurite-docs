@@ -46,7 +46,7 @@
 | `collections.[collection-id].icon.*` | コレクションアイコン。 | Material か MMID。 |
 | `collections.[collection-id].match.type` | 判定方式。 | `material` か `mmid`。 |
 | `collections.[collection-id].match.material/mmid` | 実際に数える対象。 | 入手結果と一致させる。 |
-| `collections.[collection-id].count-sources[]` | カウントする取得元。 | `direct_break` や chest loot を使い分ける。 |
+| `collections.[collection-id].count-sources[]` | カウントする取得元。 | `direct_break` や chest loot を使い分ける。quest / boss quest の報酬アイテム一致分は別途 collection 進行へ加算される。 |
 | `collections.[collection-id].profession-exp-per-item` | 1個あたりの Profession EXP。 | 実際の `ItemStack` の material / MMID マッチで判定される。 |
 | `collections.[collection-id].levels.[level].required` | その段に必要な累計数。 | 周回量の段差。 |
 | `collections.[collection-id].levels.[level].point` | 段達成で得る point。 | unlock 経済の基本通貨。 |
