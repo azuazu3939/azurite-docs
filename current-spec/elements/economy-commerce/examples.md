@@ -4,16 +4,16 @@
 
 ## サンプル
 ```yml
-shop-id: "credit_shop"
+shop-id: "starter_supply"
 entry:
-  display-name: "配送クレジット x30"
+  display-name: "スタート補給箱"
   price:
     currency-type: "VAULT"
-    amount: 300.0
+    amount: 3000.0
 ```
 
 ```text
-/commerce shop bind-npc credit_shop
+/commerce shop bind-npc starter_supply
   視線先が村人/行商人ならその個体へ固定
   視線先が Mythic NPC なら、その NPC 自身ではなく元の Spawner 名へバインド
 ```
