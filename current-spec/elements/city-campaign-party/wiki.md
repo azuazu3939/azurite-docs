@@ -20,19 +20,21 @@ city runtime が常設の基盤を作り、campaign と community project が長
 ## プレイヤー体験
 
 1. city の状態が日常運用の基盤になる
-2. 週替わり campaign や project tier が長期目標を提示する
-3. party 招待で複数人行動に入り、questboard から受注へつながる
-4. boss や frontier への参加導線へ合流する
+2. 公開 city なら `/city visit` で非メンバーも見学に入れる
+3. spawn 周辺は絶対安全地帯として案内や集合地点に使える
+4. 週替わり campaign や project tier が長期目標を提示する
+5. party 招待で複数人行動に入り、questboard から受注へつながる
+6. boss や frontier への参加導線へ合流する
 
 ## 構成の見取り図
 
 | レイヤー | 主な場所 | メモ |
 | --- | --- | --- |
-| city runtime | `core/src/main/resources/portable-city.yml` | node heartbeat、rebalance、transfer、runtime |
+| city runtime | `core/src/main/resources/portable-city.yml` | node heartbeat、rebalance、transfer、runtime、visit/fly/奈落復帰 |
 | campaign rotation | `core/src/main/resources/progression-campaigns.yml` | 週替わり倍率や報酬導線 |
 | community project | `core/src/main/resources/community-projects.yml` | 恒久 tier と長期目標 |
 | party | `PartyService` | 最大 8 人、招待 120 秒 |
-| questboard | `QuestBoardService` | 45 秒確認待ち、10 分再出現 |
+| questboard | `QuestBoardService` | 45 秒確認待ち、10 分再出現、職種カテゴリ専用看板 |
 
 ## 編集フロー
 
@@ -46,6 +48,8 @@ city runtime が常設の基盤を作り、campaign と community project が長
 
 - `portable-city.yml` を主入口にする
 - heartbeat、rebalance、transfer の意味を分けて見る
+- 公開 city にするなら `visitor-access` と `visitor-flight` を分けて考える
+- 事故導線を減らしたいなら spawn safe radius と void rescue を一緒に見る
 
 ### 週替わり目標を調整したい
 
@@ -56,6 +60,12 @@ city runtime が常設の基盤を作り、campaign と community project が長
 
 - 招待時間、確認待ち、再出現時間を確認する
 - ただし体験は boss / frontier 参加導線まで含めて見る
+
+### questboard のカテゴリ導線を変えたい
+
+- `/questboard <category> [player]` で配るカテゴリを確認する
+- 設置済み看板は `frontier-quest-boards.yml` の `category` を見て、どの職種専用かを判断する
+- 同カテゴリに active contract がない週は空看板になるので、campaign 側の有効契約も合わせて見る
 
 ## 連動する要素
 
@@ -71,6 +81,14 @@ city runtime が常設の基盤を作り、campaign と community project が長
 ### city と campaign は別ページに分けるべきか
 
 詳細化が進んだら分ける価値がありますが、現状は「長期進行の基盤」として同じ wiki で追うほうが導線を見失いにくいです。
+
+### 公開 city で訪問者に建築させたい
+
+現行仕様ではさせません。公開 city は見学専用で、設置・破壊・drop・pickup・容器操作・ボタン/レバー・エンティティ操作を止めます。
+
+### 奈落に落ちたときはどうなるか
+
+city 内では `Y < -64` に入った時点で死亡せず、その city の spawn に戻します。`/cityadmin setspawn` を使っていれば、その更新後の spawn が復帰先になります。
 
 ### party の人数変更は軽い調整か
 

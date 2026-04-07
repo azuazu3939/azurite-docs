@@ -29,14 +29,43 @@
 | `transfer.servers.[server-id].proxy-server` | 表示・識別用のサーバー名。 | Velocity/Bungee 側の名前と揃える。 |
 | `transfer.servers.[server-id].host` / `port` | 接続先。 | ノード増設時に必要。 |
 | `runtime.*` | world runtime gamerule。 | autosave、固定時刻、天候固定、keep inventory などをまとめて持つ。 |
+| `runtime.spawn-safe-radius` | spawn 安全地帯の半径。 | この範囲は全員に対して絶対保護。 |
+| `runtime.void-rescue-y-threshold` | 奈落復帰を発火する Y。 | これ未満に落ちると city spawn へ戻す。 |
 | `defaults.member-limit` | 既定メンバー数上限。 | 都市の収容人数。 |
 | `defaults.environment` | world environment。 | `normal` など。 |
 | `defaults.difficulty` | 難易度。 | city world の危険度。 |
 | `defaults.allow-monsters/animals` | Mob 許可。 | hub 化するなら monster を切る。 |
 | `defaults.pvp` | PvP 許可。 | 都市内の安全性。 |
+| `defaults.visitor-access` | 新規 city の一般訪問既定値。 | `visit` コマンドで入れるか。 |
+| `defaults.member-flight` | 新規 city のメンバーfly既定値。 | city 内移動の快適さに直結。 |
+| `defaults.visitor-flight` | 新規 city の訪問者fly既定値。 | 観光をどこまで自由にするか。 |
 | `defaults.default-biome` | 既定バイオーム。 | 何もない city world の見た目。 |
 | `defaults.save-poi/save-block-ticks/save-fluid-ticks` | 保存対象。 | パフォーマンスと忠実性のトレードオフ。 |
 | `defaults.sea-level` | 海面高さ。 | world 生成見た目に効く。 |
+
+## city ごとの runtime policy
+
+| 項目 | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `visitor_access_enabled` | その city が一般訪問を受け付けるか。 | `/city visit <cityId>` の可否。 |
+| `member_flight_enabled` | その city 内でメンバー fly を許すか。 | 住民の移動導線。 |
+| `visitor_flight_enabled` | その city 内で訪問者 fly を許すか。 | 観光向け導線。 |
+
+## プレイヤー向け city コマンドの追加ルール
+
+| コマンド | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `/city home <cityId>` | 所属シティへ戻る。 | メンバー専用。 |
+| `/city visit <cityId>` | 公開 city へ見学訪問する。 | 非メンバーは `visit=on` が必要。 |
+| `/city setting <cityId> <visit\|memberfly\|visitorfly> <on\|off>` | city の公開設定を変える。 | OWNER / ADMIN が使う。 |
+
+## city 内の保護ルール
+
+| 項目 | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| spawn 安全地帯 | spawn 半径 5 ブロック。 | メンバーでも設置・破壊・干渉できない。 |
+| 訪問者制限 | city 全域の見学専用ルール。 | 設置、破壊、drop、pickup、容器操作、ボタン/レバー、エンティティ操作を止める。 |
+| 奈落復帰 | `Y < -64` で city spawn へ戻す。 | 落下死を city 内の事故導線にしない。 |
 
 ## `progression-campaigns.yml` の全体統治設定
 
@@ -83,6 +112,15 @@
 | `projects.[project-id].tiers.[tier].required-contributions` | その tier に必要な累計貢献。 | 長期到達ペースの主調整点。 |
 | `projects.[project-id].tiers.[tier].permanent-unlocks.unlock-ids[]` | 恒久解放 ID。 | route 解放や機能フラグ向け。 |
 | `projects.[project-id].tiers.[tier].permanent-unlocks.forge-offer-ids[]` | 恒久で追加する forge offer。 | 鍛造と強く接続する。 |
+
+## questboard のコード側ルール
+
+| 項目 | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `/questboard <category> [player]` | 通常看板の配布コマンド。 | `category` は `fishing` `harvesting` `mining` `logging` の安定 ID を使う。 |
+| `frontier-quest-boards.yml` | 設置済み看板の保存先。 | `category` と `quest-id` を保持し、カテゴリ専用看板として復元する。 |
+| `QuestBoardService` | 受注待ち 45 秒、再出現 10 分。 | 抽選は同カテゴリの active contract だけを母集団にする。 |
+| 旧式看板 | category 未保存の過去データ。 | `quest-id` からカテゴリ推定し、無理なら現在の active contract から1回だけカテゴリを決める。 |
 
 ## 関連
 
