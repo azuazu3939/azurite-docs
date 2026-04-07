@@ -6,6 +6,7 @@ Vault、共有倉庫、ドロップ倉庫、直売、マーケット、Trade Sho
 - `EconomyRepository` の初期化に失敗すると runtime 自体を立てません。
 - 共有倉庫とドロップ倉庫は別コンテナですが、受取処理と ledger は共通です。
 - Trade Shop、Market Board、Direct Sell、Storage GUI は同一 runtime 内で連携します。
+- Trade Shop の Mythic NPC バインドは `mmid` ではなく MythicMobs の `Spawner` 単位で判定します。
 
 ## 主なファイル
 - `core/src/main/kotlin/com/github/azuazu3939/azuriter/core/economy/EconomyRuntime.kt`

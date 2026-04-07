@@ -52,6 +52,12 @@
 - shared storage と drop storage を分けて考える
 - ただし受取処理や ledger は共通の流れとして見る
 
+### Trade Shop の NPC 窓口を差し替えたい
+
+- 通常 NPC は個体 UUID で結びます。
+- Mythic NPC は `mmid` ではなく `Spawner` 名で結びます。
+- 同じ shop を複数配置したい場合は mob を複製するより `Spawner` を分けて運用する方が扱いやすいです。
+
 ### 経済 runtime の失敗条件を追いたい
 
 - `EconomyRepository` 初期化まわりを確認する

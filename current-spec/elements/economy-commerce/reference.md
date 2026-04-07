@@ -42,6 +42,23 @@
 | `permissions.azurite.command.*.children` | まとめ権限にぶら下がる個別権限。 | 一括配布したいときの親ノード。 |
 | `permissions.azurite.*.children` | 全体管理権限の子ノード。 | 管理権限ロールを組む時の最上位。 |
 
+## Trade Shop の窓口バインド
+
+Trade Shop の窓口は保存済み shop 定義へバインドして使います。
+通常 NPC は UUID 固定、Mythic NPC は `mmid` ではなく MythicMobs の `Spawner` 名で束ねます。
+
+| 対象 | 判定キー | 変更時の見方 |
+| --- | --- | --- |
+| 村人 / 行商人 | `entityUuid` + `entityType` | 単体 NPC を固定窓口にする時に使う。 |
+| Mythic NPC | `spawnerNames[]` | 同じ `Spawner` から出る NPC 群をまとめて同一 shop にしたい時に使う。 |
+| 掲示板 / 施設入口 | `world` + `x/y/z` + `blockType` | ブロック窓口を固定したい時に使う。 |
+
+| コマンド | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `/commerce shop bind-npc <shopId>` | 視線先の NPC を shop に紐付ける。 | Mythic NPC は `Spawner` 管理されている個体だけが対象。 |
+| `/commerce shop bind-board <shopId>` | 視線先のブロックを board shop に紐付ける。 | 座標固定なので置き換え時は再バインドが必要。 |
+| `/commerce shop unbind <shopId>` | 視線先の NPC / ブロックのバインドを外す。 | Mythic 側は `Spawner` 名一致で解除される。 |
+
 ## `config.yml` の倉庫制限と共有インフラ
 
 | キー | 役割 | 変更時の見方 |
