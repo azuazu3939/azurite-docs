@@ -68,6 +68,45 @@ Trade Shop の窓口は保存済み shop 定義へバインドして使います
 | 右クリック | 10 回まとめ買い。 | 少量素材や通貨交換向け。 |
 | `Shift+クリック` | 64 回までまとめ買い。 | 買える資源量まで自動調整して処理される。 |
 
+## Trade Shop GUI の導線補助
+
+| UI | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `支払元切替` | `手持ちのみ` と `手持ち+倉庫` を切り替える。 | 既定値は `手持ちのみ`。倉庫を支払元に含めるのは明示時だけ。 |
+| `目標設定モード` | 商品クリックを購入ではなく目標設定に切り替える。 | ロック中でも表示されていれば目標化できる。 |
+| BossBar | 現在の目標と進捗を常時表示する。 | Quest 中 / WorldBoss 受注中は隠す。 |
+| Sidebar | 目標候補の短い手順を表示する。 | 既存 Sidebar を使っている他要素があれば出さない。 |
+| 黄色ガラス | 目標の移動先導線。 | BlockBinding、通常 NPC、Mythic NPC の順で waypoint を解決する。 |
+
+## `/commerce goal` の導線
+
+| コマンド | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `/commerce goal` | 現在目標の概要と候補ルートを表示する。 | 目標未設定時は空状態を返す。 |
+| `/commerce goal clear` | 現在目標を解除する。 | 永続保存も同時に消える。 |
+| `/commerce goal next` | 候補ルートを次へ切り替える。 | Shop 逆探索で複数候補がある時だけ意味を持つ。 |
+| `/commerce goal prev` | 候補ルートを前へ切り替える。 | `next` の逆順。 |
+| `/commerce goal refresh` | 目標進捗を再計算する。 | 非同期で再評価される。 |
+| `/commerce goal set shop <shopId> <entryId> [quantity]` | Shop 商品を目標にする。 | 必要素材は複数 Shop をまたいで逆探索する。 |
+| `/commerce goal set help <topicId>` | `/help` 項目を目標にする。 | 項目確認で達成扱い。 |
+| `/commerce goal set unlock <unlockId>` | 解放状態を目標にする。 | Profession unlock と同じ ID 正規化を使う。 |
+
+## `/help` の目標化
+
+| 操作 | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| 左クリック | 従来どおりコマンド案内を出す。 | 現在の Help 目標と一致していれば達成に進む。 |
+| 右クリック | その Help 項目を目標に設定する。 | 解放条件付き項目は unlock 後に達成可能。 |
+
+## MythicMobs Drop 逆引き
+
+| 対象 | 読み方 | 変更時の見方 |
+| --- | --- | --- |
+| `mobs/**/*.yml` の `Drops:` | 直接 Drop 候補として逆引きする。 | pack 単位 `.git` 差分で部分再読込する。 |
+| `mobs/**/*.yml` の `~onDeath` 内 `mlg/mlgo` | death skill 経由 Drop として扱う。 | skill 参照連鎖をたどる。 |
+| `skills/**/*.yml` の `mlg/mlgo` | skill 由来 Drop として逆引きする。 | `skill{s=...}` 連鎖を cycle guard 付きで解決する。 |
+| `.git` が読めない pack | mtime / size fallback で変更検出する。 | その pack だけ部分再解析する。 |
+
 ## `config.yml` の倉庫制限と共有インフラ
 
 | キー | 役割 | 変更時の見方 |
