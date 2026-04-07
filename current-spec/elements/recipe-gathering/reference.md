@@ -5,6 +5,8 @@
 > [!TIP]
 > 採集体験は `gathering.yml` だけでは決まりません。制限は `config.yml`、周回テンポは `gathering-stamina.yml`、地形側の供給量は `surface-acquisition.yml` まで見て調整します。
 
+このページでは、可変のキー名を `[collection-id]` や `[plot-id]` のように表記します。
+
 ## `config.yml` のレシピ制御・ストレージ制約
 
 | キー | 役割 | 変更時の見方 |
@@ -35,20 +37,20 @@
 | --- | --- | --- |
 | `enabled` | 採集コレクション全体の ON/OFF。 | 切ると収集進行と解放報酬が止まる。 |
 | `notify.mode` | 進捗通知の出し方。 | 現在は `actionbar`。 |
-| `categories.<id>.name` | カテゴリ表示名。 | GUI の大分類名。 |
-| `categories.<id>.lore[]` | カテゴリ説明。 | 何を集めるカテゴリかを示す。 |
-| `categories.<id>.icon.material/mmid` | カテゴリアイコン。 | Mythic item にもできる。 |
-| `collections.<id>.profession` | 紐づく専門職。 | bonus 計算や表示の分類軸。 |
-| `collections.<id>.display-name` | コレクション名。 | アイテム表示名ベースで良い。 |
-| `collections.<id>.lore[]` | 収集対象説明。 | プレイヤー向けヒント。 |
-| `collections.<id>.icon.*` | コレクションアイコン。 | Material か MMID。 |
-| `collections.<id>.match.type` | 判定方式。 | `material` か `mmid`。 |
-| `collections.<id>.match.material/mmid` | 実際に数える対象。 | 入手結果と一致させる。 |
-| `collections.<id>.count-sources[]` | カウントする取得元。 | `direct_break` や chest loot を使い分ける。 |
-| `collections.<id>.levels.<n>.required` | その段に必要な累計数。 | 周回量の段差。 |
-| `collections.<id>.levels.<n>.point` | 段達成で得る point。 | unlock 経済の基本通貨。 |
-| `collections.<id>.levels.<n>.recipe-unlocks[]` | 解放 recipe ID。 | Forge 素材や utility を解放できる。 |
-| `collections.<id>.levels.<n>.campaign-rewards[]` | campaign 連動報酬。 | 長期進行へ接続したい時に使う。 |
+| `categories.[category-id].name` | カテゴリ表示名。 | GUI の大分類名。 |
+| `categories.[category-id].lore[]` | カテゴリ説明。 | 何を集めるカテゴリかを示す。 |
+| `categories.[category-id].icon.material/mmid` | カテゴリアイコン。 | Mythic item にもできる。 |
+| `collections.[collection-id].profession` | 紐づく専門職。 | bonus 計算や表示の分類軸。 |
+| `collections.[collection-id].display-name` | コレクション名。 | アイテム表示名ベースで良い。 |
+| `collections.[collection-id].lore[]` | 収集対象説明。 | プレイヤー向けヒント。 |
+| `collections.[collection-id].icon.*` | コレクションアイコン。 | Material か MMID。 |
+| `collections.[collection-id].match.type` | 判定方式。 | `material` か `mmid`。 |
+| `collections.[collection-id].match.material/mmid` | 実際に数える対象。 | 入手結果と一致させる。 |
+| `collections.[collection-id].count-sources[]` | カウントする取得元。 | `direct_break` や chest loot を使い分ける。 |
+| `collections.[collection-id].levels.[level].required` | その段に必要な累計数。 | 周回量の段差。 |
+| `collections.[collection-id].levels.[level].point` | 段達成で得る point。 | unlock 経済の基本通貨。 |
+| `collections.[collection-id].levels.[level].recipe-unlocks[]` | 解放 recipe ID。 | Forge 素材や utility を解放できる。 |
+| `collections.[collection-id].levels.[level].campaign-rewards[]` | campaign 連動報酬。 | 長期進行へ接続したい時に使う。 |
 
 ```yml
 collections:
@@ -74,23 +76,23 @@ collections:
 | キー | 役割 | 変更時の見方 |
 | --- | --- | --- |
 | `schema-version` | 配置定義の版番号。 | 旧 schema と混ぜない目印。 |
-| `root-plots.<id>.biomes[]` | 作物プロットを置くバイオーム。 | route の見た目と収穫量に直結する。 |
-| `root-plots.<id>.crop-material` | 植える作物。 | collection の対象と合わせる。 |
-| `root-plots.<id>.plot-width/depth` | 畑サイズ。 | 1 スポットの密度が変わる。 |
-| `root-plots.<id>.border-material` | 畑の縁材。 | 視認性用。 |
-| `root-plots.<id>.water-material` | 水路素材。 | 通常は `WATER`。 |
-| `root-plots.<id>.placement.*` | プロット配置ノイズ設定。 | `salt` `cell-size` `jitter-blocks` `density-threshold` などで分布を決める。 |
-| `reed-banks.<id>.material` | 葦帯の生成素材。 | `SUGAR_CANE` など。 |
-| `reed-banks.<id>.cluster-min/max-length` | 群生長さの範囲。 | 川辺の採集量に効く。 |
-| `reed-banks.<id>.placement.*` | 水辺条件や傾斜条件。 | `nearby-water-radius` `max-steepness` など。 |
-| `fishing-basins.<id>.archetype-id` | 釣り池 archetype への紐付け。 | `fishing-content.yml` と名前を揃える。 |
-| `fishing-basins.<id>.shape` | 池形状。 | `rounded-rect` や `blob`。 |
-| `fishing-basins.<id>.water-half-width/depth` | 池の大きさ。 | fish の逃げ回りやすさにも効く。 |
-| `fishing-basins.<id>.shore-width/shelf-depth/center-depth` | 岸と深さの形状。 | 釣り場の見た目と動線を決める。 |
-| `fishing-basins.<id>.placement.*` | 池の生成条件。 | `avoid-farm-overlap` なども含む。 |
-| `wildlife-herds.<id>.package-id/rule-id/condition-profile-id` | スポーン系 YAML との接続キー。 | spawn 側ファイルとずらさない。 |
-| `wildlife-herds.<id>.count-min/max` | 群れの数。 | route の賑やかさ調整。 |
-| `wildlife-herds.<id>.eligibility.*` | 時間・明るさ・距離などの条件。 | 野生動物を採集ループに混ぜる量を決める。 |
+| `root-plots.[plot-id].biomes[]` | 作物プロットを置くバイオーム。 | route の見た目と収穫量に直結する。 |
+| `root-plots.[plot-id].crop-material` | 植える作物。 | collection の対象と合わせる。 |
+| `root-plots.[plot-id].plot-width/depth` | 畑サイズ。 | 1 スポットの密度が変わる。 |
+| `root-plots.[plot-id].border-material` | 畑の縁材。 | 視認性用。 |
+| `root-plots.[plot-id].water-material` | 水路素材。 | 通常は `WATER`。 |
+| `root-plots.[plot-id].placement.*` | プロット配置ノイズ設定。 | `salt` `cell-size` `jitter-blocks` `density-threshold` などで分布を決める。 |
+| `reed-banks.[reed-bank-id].material` | 葦帯の生成素材。 | `SUGAR_CANE` など。 |
+| `reed-banks.[reed-bank-id].cluster-min/max-length` | 群生長さの範囲。 | 川辺の採集量に効く。 |
+| `reed-banks.[reed-bank-id].placement.*` | 水辺条件や傾斜条件。 | `nearby-water-radius` `max-steepness` など。 |
+| `fishing-basins.[basin-id].archetype-id` | 釣り池 archetype への紐付け。 | `fishing-content.yml` と名前を揃える。 |
+| `fishing-basins.[basin-id].shape` | 池形状。 | `rounded-rect` や `blob`。 |
+| `fishing-basins.[basin-id].water-half-width/depth` | 池の大きさ。 | fish の逃げ回りやすさにも効く。 |
+| `fishing-basins.[basin-id].shore-width/shelf-depth/center-depth` | 岸と深さの形状。 | 釣り場の見た目と動線を決める。 |
+| `fishing-basins.[basin-id].placement.*` | 池の生成条件。 | `avoid-farm-overlap` なども含む。 |
+| `wildlife-herds.[herd-id].package-id/rule-id/condition-profile-id` | スポーン系 YAML との接続キー。 | spawn 側ファイルとずらさない。 |
+| `wildlife-herds.[herd-id].count-min/max` | 群れの数。 | route の賑やかさ調整。 |
+| `wildlife-herds.[herd-id].eligibility.*` | 時間・明るさ・距離などの条件。 | 野生動物を採集ループに混ぜる量を決める。 |
 
 ## 関連
 

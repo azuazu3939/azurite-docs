@@ -5,6 +5,8 @@
 > [!TIP]
 > まず `config.yml` の共通式を決めてから、`class.yml` でクラス個性、`tree.yml` で報酬段差、`professions.yml` で生活導線を足すと破綻しにくいです。
 
+このページでは、可変のキー名を `[class-key]` や `[profession-id]` のように表記します。
+
 ## `config.yml` の進行共通設定
 
 | キー | 役割 | 変更時の見方 |
@@ -29,8 +31,8 @@
 | `mana.bossbar.title` | BossBar 表示文字列。 | `{current}` `{max}` `{percent}` を使う。 |
 | `mana.bossbar.color` | BossBar の色。 | Minecraft の BossBar enum 準拠。 |
 | `mana.bossbar.style` | BossBar の分割スタイル。 | `SEGMENTED_10` など。 |
-| `mana.bonuses.class:<key>.max` | そのクラス専用の最大マナ加算。 | クラス個性を作る基本値。 |
-| `mana.bonuses.class:<key>.regen-per-sec` | そのクラス専用の毎秒回復加算。 | 継戦能力の差を作る。 |
+| `mana.bonuses.class:[class-key].max` | そのクラス専用の最大マナ加算。 | クラス個性を作る基本値。 |
+| `mana.bonuses.class:[class-key].regen-per-sec` | そのクラス専用の毎秒回復加算。 | 継戦能力の差を作る。 |
 | `exp-actionbar.enabled` | 経験値 ActionBar 表示。 | レベルアップの手応えを UI で見せたいときに使う。 |
 | `exp-actionbar.window-millis` | まとめ表示の保持時間。 | 長いと読みやすいが重なりやすい。 |
 | `exp-actionbar.interval-ticks` | 再描画間隔。 | 短くしすぎると更新が細かくなる。 |
@@ -56,7 +58,7 @@ mana:
 | `name` | GUI やメッセージに出るクラス名。 | 色コード込みで保存される。 |
 | `formula` | そのクラス専用の必要経験値式。 | 未指定相当の設計にしたいときは共通式へ寄せる。 |
 | `max-level` | クラス上限。 | `tree.yml` の最高報酬段と揃える。 |
-| `attributes.<ATTRIBUTE>` | クラスに常時乗る加算補正。 | Bukkit の Attribute 名をそのまま使う。 |
+| `attributes.[ATTRIBUTE]` | クラスに常時乗る加算補正。 | Bukkit の Attribute 名をそのまま使う。 |
 | `effects.level-up.messages[]` | レベルアップ時メッセージ。 | `{player}` `{class}` `{level}` などが使える。 |
 | `effects.level-up.sounds[]` | レベルアップ時の効果音。 | `sound` `volume` `pitch` `delay` を持つ。 |
 | `effects.gui-click.*` | GUI でクラス選択した時の演出。 | 切替体験の軽さを調整する。 |
@@ -77,8 +79,8 @@ mana:
 | `layout[]` | パネル配置テンプレート。 | `P` の位置がレベルノード候補。 |
 | `panel-order[]` | 開放順インデックス。 | ルート順を変えたいときに触る。 |
 | `panel-states.unlocked/next/locked.material` | 背景パネル素材。 | 視認性調整用。 |
-| `levels.<n>.panel.lore[]` | そのレベルの報酬表示文。 | 実際の `rewards` と必ず揃える。 |
-| `levels.<n>.rewards[]` | レベル到達時の報酬配列。 | 複数報酬を並べられる。 |
+| `levels.[level].panel.lore[]` | そのレベルの報酬表示文。 | 実際の `rewards` と必ず揃える。 |
+| `levels.[level].rewards[]` | レベル到達時の報酬配列。 | 複数報酬を並べられる。 |
 | `rewards[].type` | 報酬種別。 | `mana_max` `mana_regen` `attribute` `permission` `command` `item` など。 |
 | `rewards[].amount` | 数値系報酬の加算量。 | `type` によって意味が変わる。 |
 | `rewards[].target` | 反映先。 | `global` か `class`。未指定は実装既定値を見る。 |
@@ -93,17 +95,17 @@ mana:
 | --- | --- | --- |
 | `config-version` | 専門職設定の版番号。 | migrate 時の分岐用。 |
 | `enabled` | 専門職システム全体の ON/OFF。 | 切ると採集・鍛造 unlock 導線も弱くなる。 |
-| `professions.<id>.display-name` | 表示名。 | GUI やメッセージで使う。 |
-| `professions.<id>.icon` | 専門職アイコン。 | Material 名。 |
-| `professions.<id>.formula` | 専門職経験値式。 | 収穫職だけ軽くするなど差別化できる。 |
-| `professions.<id>.max-level` | その職の上限。 | milestone 最終段と整合させる。 |
-| `professions.<id>.migration-weight` | 旧データから寄せる重み。 | 移行時のみ重要。新規追加では 1.0 前後が無難。 |
-| `professions.<id>.telemetry-tags[]` | 分析・分類タグ。 | route や resource 系タグで集計を揃える。 |
-| `professions.<id>.milestones.<level>.notes[]` | 画面や説明に見せる補足文。 | プレイヤー向け説明用。 |
-| `professions.<id>.milestones.<level>.access-tags[]` | 到達で付く access tag。 | Frontier や Forge の解放条件に直結する。 |
-| `professions.<id>.milestones.<level>.yield-bonus` | 収量補正。 | 採集や制作の期待値を上げる。 |
-| `professions.<id>.milestones.<level>.speed-bonus` | 速度補正。 | 周回テンポを変える。 |
-| `professions.<id>.milestones.<level>.grant-permissions[]` | 到達で付ける権限。 | `forge.access` のような入口解放に使う。 |
+| `professions.[profession-id].display-name` | 表示名。 | GUI やメッセージで使う。 |
+| `professions.[profession-id].icon` | 専門職アイコン。 | Material 名。 |
+| `professions.[profession-id].formula` | 専門職経験値式。 | 収穫職だけ軽くするなど差別化できる。 |
+| `professions.[profession-id].max-level` | その職の上限。 | milestone 最終段と整合させる。 |
+| `professions.[profession-id].migration-weight` | 旧データから寄せる重み。 | 移行時のみ重要。新規追加では 1.0 前後が無難。 |
+| `professions.[profession-id].telemetry-tags[]` | 分析・分類タグ。 | route や resource 系タグで集計を揃える。 |
+| `professions.[profession-id].milestones.[level].notes[]` | 画面や説明に見せる補足文。 | プレイヤー向け説明用。 |
+| `professions.[profession-id].milestones.[level].access-tags[]` | 到達で付く access tag。 | Frontier や Forge の解放条件に直結する。 |
+| `professions.[profession-id].milestones.[level].yield-bonus` | 収量補正。 | 採集や制作の期待値を上げる。 |
+| `professions.[profession-id].milestones.[level].speed-bonus` | 速度補正。 | 周回テンポを変える。 |
+| `professions.[profession-id].milestones.[level].grant-permissions[]` | 到達で付ける権限。 | `forge.access` のような入口解放に使う。 |
 
 ## 関連
 

@@ -5,6 +5,8 @@
 > [!TIP]
 > 週替わり体験を触るなら `campaigns` だけでなく、対応する `community-projects.yml` の tier 報酬も同時に確認すると、解放順が崩れません。
 
+このページでは、可変のキー名を `[campaign-id]` や `[project-id]` のように表記します。
+
 ## `portable-city.yml` の都市ノード運用
 
 | キー | 役割 | 変更時の見方 |
@@ -24,8 +26,8 @@
 | `mount.idle-unload-seconds` | 放置 world の unload 秒数。 | メモリ節約用。 |
 | `mount.afk-player-seconds` | AFK プレイヤー判定。 | idle 判定に影響する。 |
 | `transfer.default-port` | world transfer の既定ポート。 | プロキシ構成に合わせる。 |
-| `transfer.servers.<id>.proxy-server` | 表示・識別用のサーバー名。 | Velocity/Bungee 側の名前と揃える。 |
-| `transfer.servers.<id>.host` / `port` | 接続先。 | ノード増設時に必要。 |
+| `transfer.servers.[server-id].proxy-server` | 表示・識別用のサーバー名。 | Velocity/Bungee 側の名前と揃える。 |
+| `transfer.servers.[server-id].host` / `port` | 接続先。 | ノード増設時に必要。 |
 | `runtime.*` | world runtime gamerule。 | autosave、固定時刻、天候固定、keep inventory などをまとめて持つ。 |
 | `defaults.member-limit` | 既定メンバー数上限。 | 都市の収容人数。 |
 | `defaults.environment` | world environment。 | `normal` など。 |
@@ -49,7 +51,7 @@
 | `governance.focus-bonuses.contract-reward-multiplier` | 注力 campaign の契約報酬倍率。 | 今週推しをどれだけ強くするか。 |
 | `governance.focus-bonuses.utility-extra-amount` | utility 報酬の追加量。 | 供給線を太くする量。 |
 
-## `progression-campaigns.yml` の `campaigns.<id>`
+## `progression-campaigns.yml` の `campaigns.[campaign-id]`
 
 | キー | 役割 | 変更時の見方 |
 | --- | --- | --- |
@@ -65,22 +67,22 @@
 | `legacy-dependencies[]` | 旧要素との依存キー。 | 移行期の橋渡し。 |
 | `utility-recipe-ids[]` | 強化対象 utility recipe。 | 今週作ってほしい消耗品の束。 |
 | `focus-forge-offer-ids[]` | 注力 week の forge offer。 | trade を押し出す時に使う。 |
-| `focus-vendor-offers.<id>.label` | 注力 vendor 商品名。 | 週替わり店頭表示。 |
-| `focus-vendor-offers.<id>.icon` | 商品アイコン。 | 一覧視認用。 |
-| `focus-vendor-offers.<id>.price` | 価格。 | campaign 通貨や通常経済の重さを見る。 |
-| `focus-vendor-offers.<id>.rewards.*` | 商品中身。 | `material` / `mmid` / `amount` を持つ。 |
+| `focus-vendor-offers.[offer-id].label` | 注力 vendor 商品名。 | 週替わり店頭表示。 |
+| `focus-vendor-offers.[offer-id].icon` | 商品アイコン。 | 一覧視認用。 |
+| `focus-vendor-offers.[offer-id].price` | 価格。 | campaign 通貨や通常経済の重さを見る。 |
+| `focus-vendor-offers.[offer-id].rewards.*` | 商品中身。 | `material` / `mmid` / `amount` を持つ。 |
 
 ## `community-projects.yml` の恒久プロジェクト段階
 
 | キー | 役割 | 変更時の見方 |
 | --- | --- | --- |
-| `projects.<id>.campaign-id` | 紐づく campaign。 | 週替わりと恒久進行を接続する。 |
-| `projects.<id>.display-name` | プロジェクト名。 | 都市 UI 向け。 |
-| `projects.<id>.meter-label` | 進捗メーター名。 | 何を積み上げているかを示す。 |
-| `projects.<id>.icon` | アイコン Material。 | 一覧視認性。 |
-| `projects.<id>.tiers.<n>.required-contributions` | その tier に必要な累計貢献。 | 長期到達ペースの主調整点。 |
-| `projects.<id>.tiers.<n>.permanent-unlocks.unlock-ids[]` | 恒久解放 ID。 | route 解放や機能フラグ向け。 |
-| `projects.<id>.tiers.<n>.permanent-unlocks.forge-offer-ids[]` | 恒久で追加する forge offer。 | 鍛造と強く接続する。 |
+| `projects.[project-id].campaign-id` | 紐づく campaign。 | 週替わりと恒久進行を接続する。 |
+| `projects.[project-id].display-name` | プロジェクト名。 | 都市 UI 向け。 |
+| `projects.[project-id].meter-label` | 進捗メーター名。 | 何を積み上げているかを示す。 |
+| `projects.[project-id].icon` | アイコン Material。 | 一覧視認性。 |
+| `projects.[project-id].tiers.[tier].required-contributions` | その tier に必要な累計貢献。 | 長期到達ペースの主調整点。 |
+| `projects.[project-id].tiers.[tier].permanent-unlocks.unlock-ids[]` | 恒久解放 ID。 | route 解放や機能フラグ向け。 |
+| `projects.[project-id].tiers.[tier].permanent-unlocks.forge-offer-ids[]` | 恒久で追加する forge offer。 | 鍛造と強く接続する。 |
 
 ## 関連
 

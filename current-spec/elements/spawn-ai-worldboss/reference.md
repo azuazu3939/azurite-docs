@@ -5,6 +5,8 @@
 > [!TIP]
 > 「湧かない」の原因は 1 つとは限りません。`00-spawn-director.yml` の条件、`10-spawn-packages.yml` の territory、`20-world-bosses.yml` の world 制約、`mythic-ai.yml` の負荷制限を順に見ます。
 
+このページでは、可変のキー名を `[budget-id]` や `[package-id]` のように表記します。
+
 ## `mob-spawns/00-spawn-director.yml` の全体制御
 
 | キー | 役割 | 変更時の見方 |
@@ -21,12 +23,12 @@
 | `cell.max-cached-cells-per-world` | world ごとの cell cache 上限。 | メモリ保護。 |
 | `load-shedding.*` | 負荷時の重み減衰。 | high / critical で heavy package をどこまで絞るか。 |
 | `cache.*` | 候補点キャッシュ戦略。 | 距離、期限、失敗時 eviction 条件を持つ。 |
-| `budgets.<id>.alive-cap` | 生存 Mob 総量上限。 | budget 単位で制御。 |
-| `budgets.<id>.threat-cap` | threat 合計上限。 | 高 threat 群の湧きすぎ防止。 |
-| `budgets.<id>.respawn-delay-seconds` | 再湧き待ち。 | budget 単位の呼吸。 |
-| `budgets.<id>.category-caps.*` | ambient / elite 等のカテゴリ上限。 | world の雰囲気を決める。 |
-| `conditions.profiles.<id>.eligibility[]` | 候補にする前の条件。 | プレイヤー距離や cap 判定。 |
-| `conditions.profiles.<id>.placement[]` | 実配置条件。 | 地面・空間・液体・密度など。 |
+| `budgets.[budget-id].alive-cap` | 生存 Mob 総量上限。 | budget 単位で制御。 |
+| `budgets.[budget-id].threat-cap` | threat 合計上限。 | 高 threat 群の湧きすぎ防止。 |
+| `budgets.[budget-id].respawn-delay-seconds` | 再湧き待ち。 | budget 単位の呼吸。 |
+| `budgets.[budget-id].category-caps.*` | ambient / elite 等のカテゴリ上限。 | world の雰囲気を決める。 |
+| `conditions.profiles.[profile-id].eligibility[]` | 候補にする前の条件。 | プレイヤー距離や cap 判定。 |
+| `conditions.profiles.[profile-id].placement[]` | 実配置条件。 | 地面・空間・液体・密度など。 |
 | `rules[].id` | ルール ID。 | ログと cooldown の主キー。 |
 | `rules[].enabled` | 個別 rule の ON/OFF。 | 特定 Mob を止める最短手段。 |
 | `rules[].priority` | ルール優先度。 | 同時候補時の順序。 |
@@ -42,34 +44,34 @@
 
 | キー | 役割 | 変更時の見方 |
 | --- | --- | --- |
-| `packages.<id>.category` | spawn カテゴリ。 | `ambient` `elite` `territory` `event` など。 |
-| `packages.<id>.threat` | 脅威値。 | budget の `threat-cap` と噛む。 |
-| `packages.<id>.heavy` | heavy 扱いか。 | 高負荷時に絞られやすい。 |
-| `packages.<id>.class-exp-base` | 基礎 class exp。 | 戦闘報酬の土台。 |
-| `packages.<id>.territory.frontier-domains[]` | 主ドメイン。 | `surface` などの大分類。 |
-| `packages.<id>.territory.preferred-families[]` | 好む family。 | `forest` `plains` など。 |
-| `packages.<id>.territory.climate-tags-any[]` | 気候 tag 条件。 | 湿地・寒冷などを絞る。 |
-| `packages.<id>.territory.feature-sets-any[]` | 地物 tag 条件。 | `ore_nodes` など。 |
-| `packages.<id>.territory.route-tags-any[]` | route tag 条件。 | どのルートに出したいか。 |
-| `packages.<id>.territory.coverage-weight` | 面的な好み。 | 広く出したいかの補正。 |
-| `packages.<id>.territory.cluster-weight` | 群れやすさ補正。 | 局所的に固めたい時に上げる。 |
-| `packages.<id>.mob-entries[]` | 実際に出す Mob 群。 | `mob-id` と `count` を持つ。 |
-| `packages.<id>.spawn.formation` | 配置形。 | `spread` や `cluster`。 |
-| `packages.<id>.spawn.radius-min/max` | ばらける範囲。 | プレイヤーからの見え方が変わる。 |
-| `packages.<id>.spawn.line-of-sight-to-player` | 視線要求。 | 唐突湧きを減らしたい時に使う。 |
-| `packages.<id>.spawn.target-mode` | 初期ターゲット方針。 | `nearest-player` など。 |
+| `packages.[package-id].category` | spawn カテゴリ。 | `ambient` `elite` `territory` `event` など。 |
+| `packages.[package-id].threat` | 脅威値。 | budget の `threat-cap` と噛む。 |
+| `packages.[package-id].heavy` | heavy 扱いか。 | 高負荷時に絞られやすい。 |
+| `packages.[package-id].class-exp-base` | 基礎 class exp。 | 戦闘報酬の土台。 |
+| `packages.[package-id].territory.frontier-domains[]` | 主ドメイン。 | `surface` などの大分類。 |
+| `packages.[package-id].territory.preferred-families[]` | 好む family。 | `forest` `plains` など。 |
+| `packages.[package-id].territory.climate-tags-any[]` | 気候 tag 条件。 | 湿地・寒冷などを絞る。 |
+| `packages.[package-id].territory.feature-sets-any[]` | 地物 tag 条件。 | `ore_nodes` など。 |
+| `packages.[package-id].territory.route-tags-any[]` | route tag 条件。 | どのルートに出したいか。 |
+| `packages.[package-id].territory.coverage-weight` | 面的な好み。 | 広く出したいかの補正。 |
+| `packages.[package-id].territory.cluster-weight` | 群れやすさ補正。 | 局所的に固めたい時に上げる。 |
+| `packages.[package-id].mob-entries[]` | 実際に出す Mob 群。 | `mob-id` と `count` を持つ。 |
+| `packages.[package-id].spawn.formation` | 配置形。 | `spread` や `cluster`。 |
+| `packages.[package-id].spawn.radius-min/max` | ばらける範囲。 | プレイヤーからの見え方が変わる。 |
+| `packages.[package-id].spawn.line-of-sight-to-player` | 視線要求。 | 唐突湧きを減らしたい時に使う。 |
+| `packages.[package-id].spawn.target-mode` | 初期ターゲット方針。 | `nearest-player` など。 |
 
 ## `mob-spawns/20-world-bosses.yml` のボス定義
 
 | キー | 役割 | 変更時の見方 |
 | --- | --- | --- |
-| `bosses.<id>.mythic-mob-id` | 実際に出す MythicMob ID。 | boss 本体の参照先。 |
-| `bosses.<id>.worlds[]` | 出現候補 world。 | frontier pool と一致させる。 |
-| `bosses.<id>.territory.*` | 出現地形の好み。 | package と似た形で family / climate / feature / route を持つ。 |
-| `bosses.<id>.class-exp-base` | 討伐時 class exp 基礎値。 | ボス報酬の核。 |
-| `bosses.<id>.respawn-min-minutes` | 最短再出現。 | 周回可能性の下限。 |
-| `bosses.<id>.respawn-max-minutes` | 最長再出現。 | ばらつき幅。 |
-| `bosses.<id>.quest-id` | 討伐契約 ID。 | questboard や achievement と繋ぐ。 |
+| `bosses.[boss-id].mythic-mob-id` | 実際に出す MythicMob ID。 | boss 本体の参照先。 |
+| `bosses.[boss-id].worlds[]` | 出現候補 world。 | frontier pool と一致させる。 |
+| `bosses.[boss-id].territory.*` | 出現地形の好み。 | package と似た形で family / climate / feature / route を持つ。 |
+| `bosses.[boss-id].class-exp-base` | 討伐時 class exp 基礎値。 | ボス報酬の核。 |
+| `bosses.[boss-id].respawn-min-minutes` | 最短再出現。 | 周回可能性の下限。 |
+| `bosses.[boss-id].respawn-max-minutes` | 最長再出現。 | ばらつき幅。 |
+| `bosses.[boss-id].quest-id` | 討伐契約 ID。 | questboard や achievement と繋ぐ。 |
 
 ## `mythic-ai.yml`・`mythic-ai-candidates.yml`・`mythic-ai-drive.yml`
 
@@ -89,7 +91,7 @@
 | `director.heavy-reservation-ticks` | heavy skill の占有時間。 | 重い行動の競合防止。 |
 | `director.default-encounter-duration-seconds` | 想定交戦時間。 | AI 配分の母数。 |
 | `boss-bindings` | ボス個別 AI バインド。 | 現在は空。後から差し込む余地。 |
-| `mythic-ai-candidates.yml > groups.<id>` | 候補スキル群。 | 各候補は `id` `mythic-skill-name` `category` `weight` `heavy` を持つ。 |
+| `mythic-ai-candidates.yml > groups.[group-id]` | 候補スキル群。 | 各候補は `id` `mythic-skill-name` `category` `weight` `heavy` を持つ。 |
 | `estimated-projectile-cost` | 弾幕コスト見積り。 | director cap と噛む。 |
 | `estimated-summon-cost` | summon コスト見積り。 | 召喚過多を防ぐ。 |
 | `mythic-ai-drive.yml > enabled` | Drive 同期の ON/OFF。 | 公開同期を使う時だけ有効化。 |
