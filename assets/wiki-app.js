@@ -48,6 +48,15 @@ modeSwitch?.addEventListener("click", (event) => {
 window.addEventListener("hashchange", () => loadRoute().catch(showError));
 
 preview.addEventListener("click", (event) => {
+  const tocButton = event.target.closest("[data-scroll-id]");
+  if (tocButton) {
+    const targetId = tocButton.getAttribute("data-scroll-id");
+    const target = targetId ? document.getElementById(targetId) : null;
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    return;
+  }
   const anchor = event.target.closest("a");
   if (!anchor) return;
   const href = anchor.getAttribute("href");
@@ -97,12 +106,14 @@ async function loadRoute() {
 function renderHeroStats() {
   heroStats.innerHTML = "";
   const elements = state.manifest.docs.filter((item) => item.kind === "element");
-  const pages = elements.flatMap((item) => item.pages);
+  const pageCount = state.manifest.docs.reduce((count, item) => {
+    return count + (item.kind === "element" ? item.pages.length : 1);
+  }, 0);
   const stats = [
     { label: "要素", value: elements.length },
-    { label: "ページ", value: pages.length + 1 },
-    { label: "Wiki", value: pages.filter((page) => pageKind(page) === "wiki").length },
-    { label: "カテゴリ", value: new Set(elements.map((item) => item.category)).size },
+    { label: "ページ", value: pageCount },
+    { label: "Wiki", value: elements.flatMap((item) => item.pages).filter((page) => pageKind(page) === "wiki").length },
+    { label: "ガイド", value: state.manifest.docs.filter((item) => item.kind === "guide").length },
   ];
 
   stats.forEach((entry) => {
@@ -115,13 +126,35 @@ function renderHeroStats() {
 
 function renderNav() {
   navTree.innerHTML = "";
-  const overview = state.manifest.docs.find((item) => item.kind === "overview");
-  if (overview && matches([overview.title, "overview"], state.filter)) {
+  const referenceGroups = groupBy(
+    state.manifest.docs.filter((item) => item.kind !== "element"),
+    (item) => item.category || kindLabel(item.kind),
+  );
+
+  Object.entries(referenceGroups).forEach(([category, items]) => {
+    const visibleItems = items.filter((item) => {
+      return matches([item.title, item.shortDescription || "", kindLabel(item.kind)], state.filter);
+    });
+    if (!visibleItems.length) return;
+
     const section = navSectionTemplate.content.firstElementChild.cloneNode(true);
-    section.querySelector(".nav-section-title").textContent = "Overview";
-    section.querySelector(".nav-items").appendChild(createOverviewCard(overview));
+    section.querySelector(".nav-section-title").textContent = category;
+    const host = section.querySelector(".nav-items");
+    const card = document.createElement("div");
+    card.className = "nav-card";
+    const links = document.createElement("div");
+    links.className = "nav-page-links";
+    links.style.paddingTop = "16px";
+    links.style.paddingBottom = "16px";
+    links.style.paddingLeft = "16px";
+    links.style.paddingRight = "16px";
+    visibleItems.forEach((item) => {
+      links.appendChild(createPill(item.title, item.path, item.kind));
+    });
+    card.appendChild(links);
+    host.appendChild(card);
     navTree.appendChild(section);
-  }
+  });
 
   const groups = groupBy(
     state.manifest.docs.filter((item) => item.kind === "element"),
@@ -158,20 +191,6 @@ function renderNav() {
   });
 }
 
-function createOverviewCard(overview) {
-  const card = document.createElement("div");
-  card.className = "nav-card";
-  const inner = document.createElement("div");
-  inner.className = "nav-page-links";
-  inner.style.paddingTop = "16px";
-  inner.style.paddingBottom = "16px";
-  inner.style.paddingLeft = "16px";
-  inner.style.paddingRight = "16px";
-  inner.appendChild(createPill(overview.title, overview.path, "overview"));
-  card.appendChild(inner);
-  return card;
-}
-
 function createPill(label, path, kind) {
   const link = document.createElement("a");
   link.className = "nav-page-link";
@@ -206,13 +225,13 @@ function renderMeta(meta) {
 
 function resolveMeta(path) {
   const normalizedPath = normalizePath(path);
-  const overview = state.manifest.docs.find((item) => item.kind === "overview" && normalizePath(item.path) === normalizedPath);
-  if (overview) {
+  const generalDoc = state.manifest.docs.find((item) => item.kind !== "element" && normalizePath(item.path) === normalizedPath);
+  if (generalDoc) {
     return {
-      title: overview.title,
-      category: "Overview",
-      pageLabel: "Overview",
-      pageKind: "overview",
+      title: generalDoc.title,
+      category: generalDoc.category || kindLabel(generalDoc.kind),
+      pageLabel: kindLabel(generalDoc.kind),
+      pageKind: generalDoc.kind,
       slug: null,
     };
   }
@@ -277,6 +296,8 @@ function highlightActive() {
 function renderMarkdown(markdown, docPath) {
   const lines = markdown.replace(/\r\n/g, "\n").split("\n");
   const html = [];
+  const headings = [];
+  const headingCounts = new Map();
   let index = 0;
 
   while (index < lines.length) {
@@ -306,10 +327,25 @@ function renderMarkdown(markdown, docPath) {
       continue;
     }
 
+    if (line.includes("|") && index + 1 < lines.length && isTableSeparator(lines[index + 1])) {
+      const headers = parseTableRow(line);
+      const rows = [];
+      index += 2;
+      while (index < lines.length && lines[index].trim().includes("|") && !isTableSeparator(lines[index])) {
+        rows.push(parseTableRow(lines[index]));
+        index += 1;
+      }
+      html.push(renderTable(headers, rows, docPath));
+      continue;
+    }
+
     const heading = line.match(/^(#{1,6})\s+(.*)$/);
     if (heading) {
       const level = heading[1].length;
-      html.push(`<h${level}>${renderInline(heading[2], docPath)}</h${level}>`);
+      const plainText = stripMarkdown(heading[2]);
+      const headingId = makeHeadingId(plainText, headingCounts);
+      headings.push({ level, text: plainText, id: headingId });
+      html.push(`<h${level} id="${escapeHtml(headingId)}">${renderInline(heading[2], docPath)}</h${level}>`);
       index += 1;
       continue;
     }
@@ -320,7 +356,17 @@ function renderMarkdown(markdown, docPath) {
         quote.push(lines[index].replace(/^>\s?/, ""));
         index += 1;
       }
-      html.push(`<blockquote>${renderInline(quote.join(" "), docPath)}</blockquote>`);
+      const callout = quote[0]?.match(/^\[!(NOTE|TIP|WARNING|INFO)\]\s*(.*)$/i);
+      if (callout) {
+        const kind = callout[1].toLowerCase();
+        const label = callout[1].toUpperCase();
+        const body = [callout[2], ...quote.slice(1)].filter(Boolean).join(" ");
+        html.push(
+          `<div class="callout callout-${escapeHtml(kind)}"><p class="callout-label">${escapeHtml(label)}</p><p>${renderInline(body, docPath)}</p></div>`,
+        );
+      } else {
+        html.push(`<blockquote>${renderInline(quote.join(" "), docPath)}</blockquote>`);
+      }
       continue;
     }
 
@@ -352,7 +398,8 @@ function renderMarkdown(markdown, docPath) {
     html.push(`<p>${renderInline(paragraph.join(" "), docPath)}</p>`);
   }
 
-  return html.join("\n");
+  const toc = renderToc(headings);
+  return `${toc}${html.join("\n")}`;
 }
 
 function renderInline(text, docPath) {
@@ -394,11 +441,60 @@ function resolveRelative(fromPath, targetPath) {
   return new URL(targetPath, `https://local/${base}/`).pathname.replace(/^\/+/, "");
 }
 
+function renderToc(headings) {
+  const visibleHeadings = headings.filter((entry) => entry.level >= 2 && entry.level <= 3);
+  if (visibleHeadings.length < 3) return "";
+  const links = visibleHeadings.map((entry) => {
+    return `<button class="toc-link toc-link-level-${entry.level}" type="button" data-scroll-id="${escapeHtml(entry.id)}">${escapeHtml(entry.text)}</button>`;
+  }).join("");
+  return `<section class="wiki-toc"><p class="wiki-toc-title">このページの目次</p><div class="wiki-toc-links">${links}</div></section>`;
+}
+
+function renderTable(headers, rows, docPath) {
+  const headHtml = headers.map((cell) => `<th>${renderInline(cell, docPath)}</th>`).join("");
+  const bodyHtml = rows.map((row) => {
+    const cells = headers.map((_, index) => `<td>${renderInline(row[index] || "", docPath)}</td>`).join("");
+    return `<tr>${cells}</tr>`;
+  }).join("");
+  return `<div class="table-wrap"><table><thead><tr>${headHtml}</tr></thead><tbody>${bodyHtml}</tbody></table></div>`;
+}
+
+function isTableSeparator(line) {
+  return /^\s*\|?(?:\s*:?-{3,}:?\s*\|)+\s*:?-{3,}:?\s*\|?\s*$/.test(line);
+}
+
+function parseTableRow(line) {
+  return line.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((cell) => cell.trim());
+}
+
+function stripMarkdown(text) {
+  return String(text)
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+    .trim();
+}
+
+function makeHeadingId(text, counts) {
+  const base = Array.from(String(text).toLowerCase()).map((char) => {
+    return /[\p{Letter}\p{Number}]/u.test(char) ? char : "-";
+  }).join("").replace(/-+/g, "-").replace(/^-|-$/g, "") || "section";
+  const seen = counts.get(base) || 0;
+  counts.set(base, seen + 1);
+  return seen === 0 ? base : `${base}-${seen + 1}`;
+}
+
 function pageKind(page) {
   const label = page.label.toLowerCase();
   if (label.includes("wiki")) return "wiki";
   if (label.includes("編集")) return "examples";
   return "summary";
+}
+
+function kindLabel(kind) {
+  if (kind === "overview") return "Overview";
+  if (kind === "guide") return "Guide";
+  return "Reference";
 }
 
 function groupBy(items, keySelector) {

@@ -1,20 +1,86 @@
 # 成長・クラス・専門職 Wiki
 
-## 一言
-Azuriter の RPG 成長の土台。
+> [!NOTE]
+> プレイヤー成長の土台になるページです。グローバルレベル、クラス、マナ、スキルツリー、profession milestone のつながりをここで把握します。
 
-## プレイヤー視点
-- レベル、クラス、マナ、専門職で遊び方が広がる。
-- スキルツリーと milestone が次の導線を作る。
+## クイックデータ
 
-## 運営視点
-- クラスと profession を両方見ないと進行設計が崩れやすい。
-- DB 保存と tag / permission の整合が重要。
+| 項目 | 内容 |
+| --- | --- |
+| 主役 | グローバルレベル、クラスレベル、マナ、スキルツリー、profession |
+| 主設定 | `config.yml`, `classes/*/class.yml`, `classes/*/tree.yml`, `professions.yml` |
+| 影響先 | 戦闘バランス、Frontier 解放、Forge bonus、採集速度 |
+| 変更難度 | 中〜高 |
 
-## 変更前チェック
-- `tree-version` 方針を決めたか。
-- profession 解放順が他要素と一致しているか。
+## 概要
+
+この要素は「キャラクターの成長導線」をまとめています。  
+レベル式やマナ式のような共通基礎と、クラスごとの差分、profession milestone による解放条件や各種 bonus が一体で動きます。
+
+## プレイヤー体験
+
+1. まずグローバルレベルが伸びて、ゲーム全体の基礎進行になる
+2. 次にクラスレベルとスキルツリーで戦闘スタイルが分かれる
+3. その上に profession が乗り、access-tag や yield bonus で他要素の解放に接続する
+
+## 構成の見取り図
+
+| レイヤー | 主な場所 | メモ |
+| --- | --- | --- |
+| 共通基礎式 | `core/src/main/resources/config.yml` | `level` と `mana` が全体の基礎式 |
+| クラス定義 | `core/src/main/resources/classes/*/class.yml` | クラスの性格と基本設定 |
+| スキルツリー | `core/src/main/resources/classes/*/tree.yml` | 解放順、報酬、進行段階 |
+| profession milestone | `core/src/main/resources/professions.yml` | access-tag、yield bonus、speed bonus、permission |
+| 保存状態 | MariaDB 側の各種テーブル | プロフィール、マナ、クラスレベル、報酬台帳を保持 |
+
+## 編集フロー
+
+1. 何を変えたいかを先に切る  
+   レベル式調整なのか、クラス差分なのか、profession milestone なのかで触る場所が変わります。
+2. 連動先を洗う  
+   profession の access-tag は Frontier や Forge 側に波及しやすいです。
+3. 既存キャラへの影響を考える  
+   スキルツリーや報酬変更では `tree-version` をどう扱うかを先に決めます。
+
+## よく触る変更パターン
+
+### クラスの性格を変えたい
+
+- `class.yml` 側でクラス定義を調整する
+- 必要なら `tree.yml` の解放順や報酬も見直す
+- マナや基礎式まで触るなら `config.yml` 側も確認する
+
+### profession 解放条件を変えたい
+
+- `professions.yml` の milestone を更新する
+- access-tag の変更なら Frontier / Forge 側の利用条件も見る
+- reward 導線がズレないかを確認する
+
+## 連動する要素
+
+- [フロンティア・遠征・釣り戦闘](../frontier-fishing/wiki.md)  
+  access-tag と profession 解放が冒険導線に効きます。
+- [鍛造](../forge/wiki.md)  
+  speed bonus や yield bonus が制作体感に影響します。
+- [レシピ・ストレージ・採集コレクション](../recipe-gathering/wiki.md)  
+  採集 progress と reward unlock を profession が補強します。
+
+## FAQ
+
+### `tree-version` はいつ上げるべきか
+
+スキルツリーの解放順や報酬の意味が変わるときです。単なる文言修正ではなく、既存プレイヤーの進行再評価が必要になる更新で考えます。
+
+### profession bonus の変更はどこまで波及するか
+
+採集速度だけでなく、Frontier の解放条件や Forge の素材取得体感まで影響することがあります。
+
+### まず読むべきファイルはどれか
+
+全体像は `config.yml`、個別差分は `class.yml` / `tree.yml`、解放系は `professions.yml` の順が追いやすいです。
 
 ## 関連
+
 - [要素概要](./summary.md)
 - [編集例](./examples.md)
+- [Wiki執筆ガイド](../../wiki-editing-guide.md)

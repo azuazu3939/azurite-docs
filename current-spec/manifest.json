@@ -3,8 +3,16 @@
   "docs": [
     {
       "kind": "overview",
+      "category": "Reference",
       "title": "要素別概要",
       "path": "current-spec/overview.md"
+    },
+    {
+      "kind": "guide",
+      "category": "Reference",
+      "title": "Wiki執筆ガイド",
+      "path": "current-spec/wiki-editing-guide.md",
+      "shortDescription": "wiki に増やしたい項目、テンプレート、書き方の指針をまとめる。"
     },
     {
       "kind": "element",

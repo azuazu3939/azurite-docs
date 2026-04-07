@@ -7,6 +7,7 @@
 - 仕様の全体像は `summary.md`
 - 人が追記しやすいひな形は `examples.md`
 - チーム共有向けの短縮版は `wiki.md`
+- wiki の章立てを増やしたいときは [Wiki執筆ガイド](./wiki-editing-guide.md)
 
 ## 進行と装備
 - [成長・クラス・専門職](./elements/progression-professions/summary.md) : グローバルレベル、クラス、マナ、スキルツリー、専門職の解放と補正を扱う。
