@@ -59,7 +59,7 @@
 | `packages.[package-id].spawn.formation` | 配置形。 | `spread` や `cluster`。 |
 | `packages.[package-id].spawn.radius-min/max` | ばらける範囲。 | プレイヤーからの見え方が変わる。 |
 | `packages.[package-id].spawn.line-of-sight-to-player` | 視線要求。 | 唐突湧きを減らしたい時に使う。 |
-| `packages.[package-id].spawn.target-mode` | 初期ターゲット方針。 | `nearest-player` など。 |
+| `packages.[package-id].spawn.target-mode` | 互換用の初期ターゲット設定。現在は Azuriter 側で固定せず、MythicMobs 側で制御する。 | 推奨は `none`。 |
 
 ## `mob-spawns/20-world-bosses.yml` のボス定義
 
