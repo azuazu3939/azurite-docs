@@ -15,6 +15,13 @@ actions:
     stage: "HAMMER"
     progress-gain: 15.75
     quality-gain: 2.3
+
+alloys:
+  echo_calcite:
+    unlock:
+      required-profession: "smithing"
+      required-profession-level: 5
+      required-unlock-ids: [ "gathering.meta.forge.utility" ]
 ```
 
 ## 押さえる点

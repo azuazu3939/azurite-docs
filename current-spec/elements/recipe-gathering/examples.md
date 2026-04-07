@@ -4,6 +4,14 @@
 
 ## サンプル
 ```yml
+meta:
+  total-point-milestones:
+    - required-points: 500
+      display-name: "希少採集契約"
+      unlock-ids:
+        - "gathering.meta.contracts.rare"
+        - "gathering.meta.enchant.advanced"
+
 collections:
   cobblestone:
     profession: mining
@@ -25,6 +33,7 @@ collections:
 
 ## 押さえる点
 - profession、match、報酬の 3 点を先に揃える。
+- 合計採取ポイントの解放は `meta.total-point-milestones` でまとめて管理する。
 - Storage Box は blocked item を先に考える。
 - レシピ設計は DB / GUI 前提と割り切る。
 

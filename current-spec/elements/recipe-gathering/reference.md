@@ -37,6 +37,14 @@
 | --- | --- | --- |
 | `enabled` | 採集コレクション全体の ON/OFF。 | 切ると収集進行と解放報酬が止まる。 |
 | `notify.mode` | 進捗通知の出し方。 | 現在は `actionbar`。 |
+| `meta.total-point-milestones[]` | 合計採取ポイントの累計解放段階。 | point は消費せず、閾値到達時に 1 回だけ reward を配る。 |
+| `meta.total-point-milestones[].required-points` | 解放に必要な累計 point。 | `collections.*.levels.*.point` の累計値を見る。 |
+| `meta.total-point-milestones[].display-name` | milestone 表示名。 | GUI summary と通知に出る。 |
+| `meta.total-point-milestones[].description` | milestone 説明。 | 次の解放内容を短く伝える。 |
+| `meta.total-point-milestones[].unlock-ids[]` | 既存 unlock-id 系へ配る解放 ID。 | route / quest / forge / enchant の `required-unlock-ids` に接続する。 |
+| `meta.total-point-milestones[].recipe-unlocks[]` | 累計到達で開く recipe。 | collection 個別報酬とは別の広域解放に使える。 |
+| `meta.total-point-milestones[].campaign-rewards[]` | 累計到達で入る campaign 報酬。 | community progress にも接続できる。 |
+| `meta.total-point-milestones[].run-commands[]` | 閾値到達時に走るコマンド。 | 既存 unlock では足りない導線向け。 |
 | `categories.[category-id].name` | カテゴリ表示名。 | GUI の大分類名。 |
 | `categories.[category-id].lore[]` | カテゴリ説明。 | 何を集めるカテゴリかを示す。 |
 | `categories.[category-id].icon.material/mmid` | カテゴリアイコン。 | Mythic item にもできる。 |
@@ -54,6 +62,14 @@
 | `collections.[collection-id].levels.[level].campaign-rewards[]` | campaign 連動報酬。 | 長期進行へ接続したい時に使う。 |
 
 ```yml
+meta:
+  total-point-milestones:
+    - required-points: 250
+      display-name: "高地採集ライセンス"
+      description: "雪原と山岳の上位ルートに入場できるようになります。"
+      unlock-ids:
+        - "gathering.meta.route.highland"
+
 collections:
   diamond:
     profession: mining
@@ -77,6 +93,8 @@ collections:
       type: mmid
       mmid: Azuriter_Material_MoonwellPollen
 ```
+
+`meta.total-point-milestones[].unlock-ids` は、この要素単独では終わりません。実際の利用先は `generator/routes/*.yml` や `quests/frontier/*.yml`、`forge-content.yml`、`enchants/*.yml` 側の `required-unlock-ids` です。
 
 ## `surface-acquisition.yml` の地表資源配置
 

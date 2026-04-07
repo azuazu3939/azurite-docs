@@ -116,7 +116,7 @@
 | `alloys.[alloy-id].trait-summary` | 合金説明要約。 | UI 説明用。 |
 | `alloys.[alloy-id].trade-bonus-points` | trade 上の価値補正。 | 経済面の差別化。 |
 | `alloys.[alloy-id].equipment-types[]` | 対応装備種別。 | 使える武具カテゴリ制限。 |
-| `alloys.[alloy-id].unlock.*` | 解放条件群。 | profession / player level / campaign / contract / server project をまとめて持てる。 |
+| `alloys.[alloy-id].unlock.*` | 解放条件群。 | profession / player level / collection / unlock-id / campaign / contract / server project をまとめて持てる。 |
 | `alloys.[alloy-id].stats.*` | 合金の品質軸ステータス。 | `purity` `hardness` `toughness` `mana-conductivity` `elemental-affinity` `weight` など。 |
 
 ## `forge-actions.yml` と `forge-balance.yml`
@@ -141,7 +141,7 @@
 | `actions.[action-id].critical-quality-multiplier` | crit 時 quality 倍率。 | 品質特化技向け。 |
 | `actions.[action-id].progress-scaling` / `quality-scaling` / `stability-scaling` | プレイヤー能力値からの伸び。 | class bonus や装備との噛み合わせを見る。 |
 | `actions.[action-id].combo.*` | 直前行動に応じた bonus。 | ループ手順を作る中心。 |
-| `actions.[action-id].unlock.*` | 行動解放条件。 | class level、research alloy、campaign など。 |
+| `actions.[action-id].unlock.*` | 行動解放条件。 | class level、research alloy、required-unlock-ids など。 |
 | `actions.[action-id].gamble-on-fail-*` | gamble 失敗時の残量補正。 | 全損を避ける緩衝材。 |
 | `actions.[action-id].buff.*` | 付与バフ定義。 | 次ターン倍率や regen を持たせられる。 |
 | `gameplay.mana.max.*` | 装備化後の最大マナ換算。 | conductivity / purity の価値付け。 |

@@ -6,6 +6,9 @@
 ```yml
 quests:
   plains_crop_forage:
+    prerequisites:
+      required-unlock-ids:
+        - "gathering.meta.contracts.intermediate"
     execution:
       type: "frontier"
       route-id: "forest_surface"
