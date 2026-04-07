@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Azuriter Wiki</title>
+  <meta name="description" content="Azuriter の現行仕様を要素別に閲覧できる、公開対応の docs wiki。" />
+  <link rel="stylesheet" href="./assets/wiki.css" />
+</head>
+<body>
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <div class="ambient ambient-c"></div>
+
+  <div class="page-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-card">
+        <p class="eyebrow">Azuriter Docs</p>
+        <h1>Wiki Atlas</h1>
+        <p class="brand-copy">実装ベースの仕様を、読む・共有する・公開するための Web 入口です。</p>
+      </div>
+
+      <label class="search-box">
+        <span>Search</span>
+        <input id="searchInput" type="search" placeholder="要素名やページ種別で絞り込み" />
+      </label>
+
+      <div class="mode-switch" id="modeSwitch" aria-label="ページ表示モード">
+        <button type="button" class="mode-pill is-active" data-mode="wiki">Wiki</button>
+        <button type="button" class="mode-pill" data-mode="summary">概要</button>
+        <button type="button" class="mode-pill" data-mode="examples">編集例</button>
+        <button type="button" class="mode-pill" data-mode="all">すべて</button>
+      </div>
+
+      <nav id="navTree" class="nav-tree" aria-label="ドキュメント一覧"></nav>
+
+      <div class="sidebar-footer">
+        <a class="footer-link" href="./current-spec/overview.md" target="_blank" rel="noreferrer">要素別概要を Markdown で開く</a>
+        <a class="footer-link" href="./PUBLISHING.md" target="_blank" rel="noreferrer">公開手順を見る</a>
+      </div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="hero-panel">
+        <div class="hero-top">
+          <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+          <div class="hero-copy">
+            <p class="eyebrow">Current Spec Wiki</p>
+            <h2>ポップで軽やか、でも運用に強い docs UI。</h2>
+            <p>Wiki を中心に、概要と編集例もすぐ行き来できる構成です。ローカルでも GitHub Pages でも同じ見た目で扱えます。</p>
+          </div>
+          <div class="hero-actions">
+            <a class="action-link action-primary" href="#current-spec/overview.md">Overview</a>
+            <a id="rawLink" class="action-link action-secondary" href="./current-spec/overview.md" target="_blank" rel="noreferrer">Raw Markdown</a>
+          </div>
+        </div>
+
+        <div id="heroStats" class="hero-stats" aria-label="ドキュメント統計"></div>
+      </header>
+
+      <section class="doc-banner">
+        <div class="doc-banner-main">
+          <p id="docCategory" class="doc-category">Loading</p>
+          <h3 id="docTitle">読込中</h3>
+        </div>
+        <div id="docMeta" class="doc-meta"></div>
+      </section>
+
+      <article id="preview" class="preview" aria-live="polite"></article>
+    </main>
+  </div>
+
+  <template id="navSectionTemplate">
+    <section class="nav-section">
+      <h3 class="nav-section-title"></h3>
+      <div class="nav-items"></div>
+    </section>
+  </template>
+
+  <template id="navItemTemplate">
+    <details class="nav-card" open>
+      <summary>
+        <span class="nav-card-title"></span>
+        <span class="nav-card-desc"></span>
+      </summary>
+      <div class="nav-page-links"></div>
+    </details>
+  </template>
+
+  <template id="statCardTemplate">
+    <div class="stat-card">
+      <p class="stat-label"></p>
+      <strong class="stat-value"></strong>
+    </div>
+  </template>
+
+  <script src="./assets/wiki-app.js" type="module"></script>
+</body>
+</html>
