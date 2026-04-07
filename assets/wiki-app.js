@@ -361,7 +361,10 @@ function renderInline(text, docPath) {
 
   output = output.replace(/`([^`]+)`/g, (_, code) => {
     const token = `%%CODE${codeTokens.length}%%`;
-    codeTokens.push(`<code>${escapeHtml(code)}</code>`);
+    codeTokens.push({
+      token,
+      html: `<code>${escapeHtml(code)}</code>`,
+    });
     return token;
   });
 
@@ -374,8 +377,8 @@ function renderInline(text, docPath) {
 
   output = output.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
 
-  codeTokens.forEach((token, index) => {
-    output = output.replace(token, codeTokens[index]);
+  codeTokens.forEach(({ token, html }) => {
+    output = output.replace(token, html);
   });
   return output;
 }
