@@ -7,12 +7,20 @@
 collections:
   cobblestone:
     profession: mining
+    profession-exp-per-item: 1
     match:
       type: material
       material: COBBLESTONE
     levels:
       1:
         recipe-unlocks: [ "forge/process/stonebinder_flux" ]
+
+  moonwell_pollen:
+    profession: harvesting
+    profession-exp-per-item: 3
+    match:
+      type: mmid
+      mmid: Azuriter_Material_MoonwellPollen
 ```
 
 ## 押さえる点
