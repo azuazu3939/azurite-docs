@@ -66,6 +66,7 @@ city runtime が常設の基盤を作り、campaign と community project が長
 - `/questboard <category> [player]` で配るカテゴリを確認する
 - 設置済み看板は `frontier-quest-boards.yml` の `category` を見て、どの職種専用かを判断する
 - 同カテゴリに active contract がない週は空看板になるので、campaign 側の有効契約も合わせて見る
+- 近距離の packet 表示は `依頼種別 -> 契約名 -> 受注可否 -> 補助文言` の順で見る前提にして、再出現 10 分の案内は前面に出しすぎない
 
 ## 連動する要素
 
