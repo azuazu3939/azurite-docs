@@ -22,6 +22,7 @@
       "shortDescription": "グローバルレベル、クラス、マナ、スキルツリー、専門職の解放と補正を扱う。",
       "pages": [
         { "label": "概要", "path": "current-spec/elements/progression-professions/summary.md" },
+        { "label": "設定項目", "path": "current-spec/elements/progression-professions/reference.md" },
         { "label": "編集例", "path": "current-spec/elements/progression-professions/examples.md" },
         { "label": "Wiki", "path": "current-spec/elements/progression-professions/wiki.md" }
       ]
@@ -34,6 +35,7 @@
       "shortDescription": "Item Level 表示、Gear Score、売値表示、独自エンチャントを扱う。",
       "pages": [
         { "label": "概要", "path": "current-spec/elements/gear-enchant/summary.md" },
+        { "label": "設定項目", "path": "current-spec/elements/gear-enchant/reference.md" },
         { "label": "編集例", "path": "current-spec/elements/gear-enchant/examples.md" },
         { "label": "Wiki", "path": "current-spec/elements/gear-enchant/wiki.md" }
       ]
@@ -46,6 +48,7 @@
       "shortDescription": "鍛造セッション、研究、物流、Trade、鍛造装備の品質と耐久を扱う。",
       "pages": [
         { "label": "概要", "path": "current-spec/elements/forge/summary.md" },
+        { "label": "設定項目", "path": "current-spec/elements/forge/reference.md" },
         { "label": "編集例", "path": "current-spec/elements/forge/examples.md" },
         { "label": "Wiki", "path": "current-spec/elements/forge/wiki.md" }
       ]
@@ -58,6 +61,7 @@
       "shortDescription": "カスタムレシピ、Storage Box、採集累積、報酬解放を扱う。",
       "pages": [
         { "label": "概要", "path": "current-spec/elements/recipe-gathering/summary.md" },
+        { "label": "設定項目", "path": "current-spec/elements/recipe-gathering/reference.md" },
         { "label": "編集例", "path": "current-spec/elements/recipe-gathering/examples.md" },
         { "label": "Wiki", "path": "current-spec/elements/recipe-gathering/wiki.md" }
       ]
@@ -70,6 +74,7 @@
       "shortDescription": "Vault、共有倉庫、ドロップ倉庫、直売、マーケット、Trade Shop を扱う。",
       "pages": [
         { "label": "概要", "path": "current-spec/elements/economy-commerce/summary.md" },
+        { "label": "設定項目", "path": "current-spec/elements/economy-commerce/reference.md" },
         { "label": "編集例", "path": "current-spec/elements/economy-commerce/examples.md" },
         { "label": "Wiki", "path": "current-spec/elements/economy-commerce/wiki.md" }
       ]
@@ -82,6 +87,7 @@
       "shortDescription": "Frontier world、遠征契約、ルート、釣り池、魚スポーンを扱う。",
       "pages": [
         { "label": "概要", "path": "current-spec/elements/frontier-fishing/summary.md" },
+        { "label": "設定項目", "path": "current-spec/elements/frontier-fishing/reference.md" },
         { "label": "編集例", "path": "current-spec/elements/frontier-fishing/examples.md" },
         { "label": "Wiki", "path": "current-spec/elements/frontier-fishing/wiki.md" }
       ]
@@ -94,6 +100,7 @@
       "shortDescription": "mob-spawns、territory、world boss、AI policy 同期を扱う。",
       "pages": [
         { "label": "概要", "path": "current-spec/elements/spawn-ai-worldboss/summary.md" },
+        { "label": "設定項目", "path": "current-spec/elements/spawn-ai-worldboss/reference.md" },
         { "label": "編集例", "path": "current-spec/elements/spawn-ai-worldboss/examples.md" },
         { "label": "Wiki", "path": "current-spec/elements/spawn-ai-worldboss/wiki.md" }
       ]
@@ -106,6 +113,7 @@
       "shortDescription": "都市運用、週替わり campaign、community project、party、questboard を扱う。",
       "pages": [
         { "label": "概要", "path": "current-spec/elements/city-campaign-party/summary.md" },
+        { "label": "設定項目", "path": "current-spec/elements/city-campaign-party/reference.md" },
         { "label": "編集例", "path": "current-spec/elements/city-campaign-party/examples.md" },
         { "label": "Wiki", "path": "current-spec/elements/city-campaign-party/wiki.md" }
       ]

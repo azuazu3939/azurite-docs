@@ -1,0 +1,141 @@
+# フロンティア・遠征・釣り戦闘 の設定項目
+
+Frontier は「契約内容」「釣り池の中身」「ワールド生成」の 3 層で構成されています。1 つだけ変えても体験が揃わないので、対応する YAML をセットで読みます。
+
+> [!TIP]
+> 新しい遠征を足す時は `frontier.yml` だけで終えず、必要なら route/profile、報酬に絡む `fishing-content.yml` や campaign 側も合わせて確認すると自然です。
+
+## `quests/frontier/frontier.yml` の契約定義
+
+| キー | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `config-version` | 契約定義の版番号。 | migrate 判定用。 |
+| `quests.<id>.id` | 契約 ID。 | ファイル key と揃える。 |
+| `quests.<id>.label` | 契約表示名。 | 看板や一覧に出る。 |
+| `quests.<id>.category` | 契約カテゴリ。 | `frontier_contract` などの分類。 |
+| `quests.<id>.region` | 主な地域タグ。 | route や看板の絞り込みに使う。 |
+| `quests.<id>.recommended-tier` | 推奨 tier。 | 難度帯の目安。 |
+| `quests.<id>.recommended-party-size` | 推奨人数。 | 看板文言向けの目安。 |
+| `quests.<id>.estimated-minutes` | 想定所要時間。 | 周回テンポを示す。 |
+| `quests.<id>.playstyle-tags[]` | 体験タグ。 | `survey` `gather` のように役割を表す。 |
+| `quests.<id>.concept` | 契約の狙い。 | デザイン意図の一文。 |
+| `quests.<id>.player-promise` | プレイヤーが得る約束。 | 触る価値を短く示す。 |
+| `quests.<id>.what-becomes-possible[]` | 解放後に広がること。 | 次の導線説明用。 |
+| `quests.<id>.prerequisites.route-tags[]` | 必要 route tag。 | 開放条件。 |
+| `quests.<id>.unlock-refs[]` | campaign / project 等への参照。 | 長期進行との接続キー。 |
+| `quests.<id>.objectives.<n>.*` | 実目標。 | `type` `target` `count` `description` を持つ。 |
+| `quests.<id>.phases.<n>.*` | 契約フェーズ。 | `id` と `summary` を持つ。 |
+| `quests.<id>.mid-progress-signals[]` | 進行中ヒント。 | 詰まり防止。 |
+| `quests.<id>.fail-or-boring-risks[]` | 失敗・退屈リスク。 | 設計メモとして useful。 |
+| `quests.<id>.rewards.immediate.*` | 即時報酬。 | `currency` や `exp`。 |
+| `quests.<id>.rewards.unlock/permanent/symbolic[]` | 解放・恒久・象徴報酬。 | 文章側の報酬説明。 |
+| `quests.<id>.world-changes[]` | 世界への反映。 | narrative 用。 |
+| `quests.<id>.next-content[]` | 次に勧めたい契約 ID。 | 連続導線。 |
+| `quests.<id>.analytics-tags[]` | 分析タグ。 | 行動ログ集計用。 |
+
+## `frontier.yml` の `execution` セクション
+
+| キー | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `execution.type` | 実行系の種別。 | 現状は `frontier`。 |
+| `execution.route-id` | 紐づく route ID。 | `generator/routes/*.yml` と一致させる。 |
+| `execution.theme-id` | 契約テーマ ID。 | 演出や報酬側の参照に使う。 |
+| `execution.objective-kind` | 実行時の目標種別。 | `survey` `gather` など。 |
+| `execution.gather-profile-id` | 採集対象プロファイル。 | gather 契約で使う。 |
+| `execution.target-tags[]` | 対象地形 / ノード tag。 | 実ワールド上の検索条件。 |
+| `execution.target-count` | 必要数。 | Objective の count と揃える。 |
+| `execution.preview-material` | UI プレビュー用素材。 | 看板や一覧のアイコン。 |
+| `execution.reward-boss-item-mmid` | ボス報酬アイテム参照。 | 招待状や特別報酬に使う。 |
+| `execution.reward-vault-money` | Vault 通貨報酬。 | 即時報酬の実値。 |
+| `execution.reward-delivery-credits` | 納品系クレジット。 | 長期導線に接続する。 |
+| `execution.reward-items.<n>.*` | アイテム報酬。 | `material` または `mmid` と `amount`。 |
+| `execution.community-points` | community への貢献点。 | campaign / project に効く。 |
+| `execution.sign-weight` | 看板再出現や選出重み。 | 高いほど出やすい前提。 |
+| `execution.rare` / `execution.hard` | 希少 / 高難度フラグ。 | UI バッジや抽選条件向け。 |
+
+## `fishing-content.yml` の共通設定とロッド
+
+| キー | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `settings.enabled` | 釣り戦闘全体の ON/OFF。 | 切ると池は残っても魚戦闘は止まる。 |
+| `settings.packet-views-enabled` | packet 表示を使うか。 | 見た目負荷と演出の両立点。 |
+| `settings.fixed-step-millis` | シミュレーション刻み。 | 小さいほど滑らかだが重い。 |
+| `settings.max-catchup-steps` | 遅延時の追いつき回数上限。 | ラグ時の暴走防止。 |
+| `settings.pond-search-distance` | 近傍池検索距離。 | 誤爆を防ぎつつ拾える距離にする。 |
+| `settings.pond-idle-cleanup-millis` | 放置池の掃除間隔。 | 池残骸を減らす。 |
+| `settings.view-distance` | 釣り演出の表示距離。 | 遠距離表示の重さに注意。 |
+| `settings.glow-before-despawn-millis` | 消滅前発光の開始タイミング。 | 取り逃し警告の猶予。 |
+| `settings.packet-fish-*-multiplier` | 発光や threat 半径の倍率。 | 釣り UI の視認性調整。 |
+| `settings.bossbar-expire-millis` | BossBar 消滅までの時間。 | 情報量の残し方。 |
+| `settings.default-rod-id` | 既定ロッド ID。 | `rods.<id>` と一致させる。 |
+| `pond-archetypes.<id>.display-name` | 池 archetype 名。 | world 側の basin と同名参照する。 |
+| `pond-archetypes.<id>.active-cap` | 同時出現数上限。 | 混雑度の基本。 |
+| `pond-archetypes.<id>.respawn-delay-millis` | 再湧き待ち。 | 周回速度の天井。 |
+| `rods.<id>.match-mmid` | 特定ロッド MMID との紐付け。 | default 以外の専用竿に必要。 |
+| `rods.<id>.base-damage` | 1 発の基礎ダメージ。 | 撃破時間の基本値。 |
+| `rods.<id>.sequence-duration/interval/burst-count` | 連射の長さと間隔。 | 手触りそのもの。 |
+| `rods.<id>.retrigger-lock-millis` | 再入力ロック。 | 連打対策。 |
+| `rods.<id>.shot-radius/speed/lifetime-millis` | 弾の当たり判定・速度・寿命。 | 命中感に直結。 |
+| `rods.<id>.overdrive-*` | オーバードライブ性能。 | 瞬間火力の山を作る。 |
+| `rods.<id>.affinity-tags[]` | 相性タグ。 | 魚の `weakness-tags` / `resistance-tags` と噛む。 |
+
+## `fishing-content.yml` の魚・レア遭遇定義
+
+| キー | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `species.<id>.display-name` | 魚名。 | UI と報酬アイテム名を揃える。 |
+| `species.<id>.rarity` | レアリティ。 | 出現率や印象に関わる。 |
+| `species.<id>.spawn-weight` | 出現重み。 | archetype 内での比率。 |
+| `species.<id>.pond-archetypes[]` | 出現可能な池。 | basin 側と対応づける。 |
+| `species.<id>.time-buckets[]` | 出現時間帯。 | `day` `dusk` `night` など。 |
+| `species.<id>.required-fishing-level` | 必要釣りレベル。 | progression と接続する。 |
+| `species.<id>.reward-mmid` | 実報酬アイテム。 | 釣果本体。 |
+| `species.<id>.display-mmid` | 表示モデル用アイテム。 | 演出用に分けられる。 |
+| `species.<id>.icon-material` | UI アイコン。 | 一覧や図鑑向け。 |
+| `species.<id>.health/swim-speed/hit-radius` | 戦闘性能。 | 撃破難度に直結する。 |
+| `species.<id>.alert-radius` | プレイヤーや弾への反応距離。 | 魚の逃げやすさ。 |
+| `species.<id>.water-player-penalty-radius` | 水中プレイヤーへのペナルティ範囲。 | 水に飛び込む戦法の抑制。 |
+| `species.<id>.despawn-lifetime-seconds` | 自然消滅まで。 | 長いほど追えるが混雑しやすい。 |
+| `species.<id>.weakness-tags[]` | 効果的な rod affinity。 | 相性表の攻め側。 |
+| `species.<id>.resistance-tags[]` | 苦手でない rod affinity。 | 相性表の守り側。 |
+| `species.<id>.reward-exp` | 撃破時 exp。 | 釣り育成速度。 |
+| `species.<id>.cooldown-refund-millis` | 成功時 cooldown 返却。 | テンポ調整用。 |
+| `species.<id>.salvage[]` | 副産物。 | `mmid` `chance` `min-amount` `max-amount` を持つ。 |
+| `species.<id>.rare-table.*` | レア派生遭遇の重み。 | `treasure` `hazard` `mob` の発生率。 |
+| `treasures.<id>` | 宝箱・財宝定義。 | `display-name` `mmid` `weight` `required-fishing-level` `pond-archetypes` `time-buckets`。 |
+| `mob-catches.<id>` | 釣り上げ Mob 定義。 | `mythic-mob-id` を持つ。 |
+| `hazards.<id>` | 危険物定義。 | `damage` や `radius` も持つ。 |
+
+## `nms/src/main/resources/generator/*.yml` のワールド生成
+
+| キー | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `generator.yml > frontier-world.worlds[]` | Frontier world プール。 | active / standby の切替対象。 |
+| `frontier-world.pool-mode` | ワールドプール方式。 | 現状は `active-standby`。 |
+| `frontier-world.chunk-high/low-water` | swap の水位ライン。 | 負荷で交代する基準。 |
+| `frontier-world.metric-poll-seconds` | 指標監視間隔。 | 短いほど敏感。 |
+| `frontier-world.guard-min-tps-1m` | TPS 下限ガード。 | 低下時の rotation 制御に使う。 |
+| `frontier-world.guard-max-memory-pressure` | メモリ圧上限。 | world swap の安全弁。 |
+| `frontier-world.rotation-*` | 再生成ローテーション基準。 | anchor date / seed / world をまとめて持つ。 |
+| `frontier-world.regen-window-*` | 再生成時間窓。 | 公開運用で重要。 |
+| `frontier-world.border.*` | world border。 | 探索範囲の上限。 |
+| `frontier-world.policy.*` | ワールドルール。 | PvP や inventory 保持など。 |
+| `frontier-world.policy.runtime.*` | 実行時 gamerule。 | 時間固定や autosave。 |
+| `frontier-world.default-profile-id` | 既定 profile。 | route 未指定時の地形基準。 |
+| `frontier-world.default-route-id` | 既定 route。 | 初期導線。 |
+| `samplers.*` | 地形サンプリング補助。 | foundation depth など。 |
+| `validation.fail-on-legacy-keys` | 旧 key を拒否するか。 | 古い設定混入を防ぐ。 |
+| `biome-distribution.*` | surface biome 分布ノイズ。 | rare biome の出やすさもここ。 |
+| `caves.*` | 洞窟生成。 | 空洞の太さや ant nest 接続を決める。 |
+| `underground-layers.*` | 地下層の材料帯。 | 鉱脈体験に効く。 |
+| `chests.respawn-seconds` | チェスト再出現。 | 探索報酬の周期。 |
+| `ores.respawn-seconds` | 鉱石再出現。 | 採掘周回の復活周期。 |
+| `mining-entry.*` | 採掘入口探索の設定。 | route への入場導線を決める。 |
+| `routes/*.yml` | route 定義。 | `id` `label` `profile-id` `family` `domain` `spawn-profile` `entry-offsets` `progression-band` `access-tags` を持つ。 |
+| `profiles/*.yml` | 地形 profile 定義。 | `family` `allowed-domains` `vertical-range` `climate-bias` `flora-modifiers` `route-tags` を持つ。 |
+
+## 関連
+
+- [要素概要](./summary.md)
+- [編集例](./examples.md)
+- [Wiki](./wiki.md)

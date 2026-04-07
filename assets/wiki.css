@@ -314,6 +314,16 @@ body {
   border-color: rgba(207, 146, 33, 0.22);
 }
 
+.nav-page-link[data-kind="reference"] {
+  color: #2456a8;
+  background: rgba(67, 129, 240, 0.12);
+}
+
+.nav-page-link[data-kind="reference"]:hover,
+.nav-page-link[data-kind="reference"].is-active {
+  border-color: rgba(67, 129, 240, 0.22);
+}
+
 .nav-page-link[data-kind="overview"],
 .nav-page-link[data-kind="guide"] {
   color: #5b4fb1;
@@ -435,6 +445,10 @@ body {
 
 .meta-chip[data-kind="examples"] {
   color: #96610d;
+}
+
+.meta-chip[data-kind="reference"] {
+  color: #2456a8;
 }
 
 .meta-chip[data-kind="guide"] {

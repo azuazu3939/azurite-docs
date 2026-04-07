@@ -636,14 +636,19 @@ function makeHeadingId(text, counts) {
 function pageKind(page) {
   const label = page.label.toLowerCase();
   if (label.includes("wiki")) return "wiki";
+  if (label.includes("設定")) return "reference";
   if (label.includes("編集")) return "examples";
   return "summary";
 }
 
 function kindLabel(kind) {
-  if (kind === "overview") return "Overview";
-  if (kind === "guide") return "Guide";
-  return "Reference";
+  if (kind === "overview") return "要素概要";
+  if (kind === "guide") return "執筆ガイド";
+  if (kind === "wiki") return "Wiki";
+  if (kind === "reference") return "設定項目";
+  if (kind === "examples") return "編集例";
+  if (kind === "summary") return "概要";
+  return "資料";
 }
 
 function groupBy(items, keySelector) {
