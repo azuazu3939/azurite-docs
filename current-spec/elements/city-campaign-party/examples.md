@@ -8,41 +8,33 @@ server-node:
 - accepting-new-worlds: true
 - heartbeat-seconds: 15
 
-portable-city defaults:
-- visitor-access: true
-- member-flight: true
-- visitor-flight: false
-
 portable-city runtime:
 - spawn-safe-radius: 5
 - void-rescue-y-threshold: -64
 
-city command:
-- /city visit market
-- /city setting market visit on
-- /city setting market memberfly on
-- /city setting market visitorfly off
-
 campaign:
 - community-project-id: canopy_supply_network
 
-questboard:
-- boards.lobby_main_board.origin: 100,65,-20
-- boards.lobby_main_board.facing: south
+packet questboard:
+- boards.lobby_main_board.position: 100,65,-20
+- boards.lobby_main_board.width: 5
+- boards.lobby_main_board.height: 3
 - boards.lobby_main_board.visible-slots: 5
-- boards.lobby_main_board.seed-cycle: DAILY
+- progression-profiles.default_lobby.assisted-min-stage: 1
+- progression-profiles.default_lobby.tactical-min-stage: 3
+- progression-profiles.default_lobby.tactical-unlock-completions: 10
 - /questboard packet reload
-- 45 秒以内に /yes で受注
-- 候補は player ごとに packet 差し替え
-- seed と progression stage で安定抽選
+- GUIDED: おすすめ中心
+- ASSISTED: 近場 / 戦闘 / 採集 / 短時間 / 報酬
+- TACTICAL: 未完了 / 周回 / 高報酬 / 評判 / 高難度
 ```
 
 ## 押さえる点
 - city は node / transfer を先に見る。
 - city を公開観光地として使うなら、visit / memberfly / visitorfly をセットで考える。
-- spawn 近くは絶対安全地帯なので、記念碑や案内板を置く場所として使いやすい。
 - campaign は contract と project の接続を見る。
-- party / board は時間制限と seed / stage の更新条件を先に共有する。
+- packet board は 3x5 固定面なので、`position` と `facing` を先に合わせる。
+- mode 解放は stage と完了数が両方効くので、候補の見え方を変えたい時は `rules` だけでなく `progression-profiles` も見る。
 
 ## 関連
 - [要素概要](./summary.md)
