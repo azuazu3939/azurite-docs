@@ -31,7 +31,7 @@
       "kind": "element",
       "category": "進行と装備",
       "slug": "gear-enchant",
-      "title": "仮想ロア・売値表示・カスタムエンチャント",
+      "title": "仮想ロア・カスタムエンチャント",
       "shortDescription": "装備やアイテムの価値を見やすく伝える表示と強化の要素。",
       "pages": [
         { "label": "概要", "path": "current-spec/elements/gear-enchant/summary.md" },

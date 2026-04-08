@@ -102,15 +102,16 @@ Trade Shop の窓口は保存済み shop 定義へバインドして使います
 | `/commerce goal prev` | 候補ルートを前へ切り替える。 | `next` の逆順。 |
 | `/commerce goal refresh` | 目標進捗を再計算する。 | 非同期で再評価される。 |
 | `/commerce goal set shop <shopId> <entryId> [quantity]` | Shop 商品を目標にする。 | 必要素材は複数 Shop をまたいで逆探索する。 |
-| `/commerce goal set help <topicId>` | `/help` 項目を目標にする。 | 項目確認で達成扱い。 |
+| `/commerce goal set help <topicId>` | `/help` のコマンド項目を目標にする。 | 手動設定時は項目確認型の Help 目標として扱う。 |
 | `/commerce goal set unlock <unlockId>` | 解放状態を目標にする。 | Profession unlock と同じ ID 正規化を使う。 |
 
 ## `/help` の目標化
 
 | 操作 | 役割 | 変更時の見方 |
 | --- | --- | --- |
-| 左クリック | 従来どおりコマンド案内を出す。 | 現在の Help 目標と一致していれば達成に進む。 |
-| 右クリック | その Help 項目を目標に設定する。 | 解放条件付き項目は unlock 後に達成可能。 |
+| `/help` トップ | `よく使うコマンド集` と `進行ヘルプ` に分かれる。 | 用途別に入口を分けて迷いを減らす。 |
+| コマンド集の右クリック | 未解放コマンドだけ目標設定できる。 | 解放済みコマンドは説明閲覧のみ。 |
+| 進行ヘルプの右クリック | ライセンスや許可証の解放を目標化する。 | 権限型の機能も導線付きで追える。 |
 
 ## MythicMobs Drop 逆引き
 

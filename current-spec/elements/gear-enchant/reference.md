@@ -1,4 +1,4 @@
-# 仮想ロア・売値表示・カスタムエンチャント の設定項目
+# 仮想ロア・カスタムエンチャント の設定項目
 
 仮想ロアと独自エンチャントを触るときの参照先をまとめます。現行実装では Item Level / Gear Score 用の独立 YAML はなく、表示の合成は `ItemLoreOverlayService` 側で行います。
 
@@ -20,10 +20,10 @@
 
 | 項目 | 役割 | 変更時の見方 |
 | --- | --- | --- |
-| `ItemLoreOverlayService` | 採集 / 鍛造 / 売値の 3 系統を 1 つの仮想ロアへ合成する。 | 表示順や結合条件を変える時の入口。 |
+| `ItemLoreOverlayService` | 採集 / 鍛造情報を 1 つの仮想ロアへ合成する。 | 表示順や結合条件を変える時の入口。 |
 | `LEGACY_ITEM_EVALUATION_PREFIXES` | 旧 Item Level / Gear Score 行を除去する。 | 既存アイテムの二重表示防止用。 |
 | `VirtualLoreSections.join / replaceTail` | 各 section を空行区切りで結合し、既存末尾を差し替える。 | section の順序を変える時は見た目全体を確認する。 |
-| `buildSellValueLines` | 売却価値やロック中表示を構築する。 | economy 側の条件と食い違わないかを見る。 |
+| `buildSellValueLines` | 現在は常に空で、売却価値 PacketLore を出さない。 | 再導入時は economy 側との整合を確認する。 |
 
 ## `enchants/*.yml` の共通スキーマ
 
