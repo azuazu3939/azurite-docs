@@ -8,7 +8,7 @@
 | 項目 | 内容 |
 | --- | --- |
 | 主役 | portable city、campaign rotation、community project、party、questboard |
-| 主設定 | `portable-city.yml`, `progression-campaigns.yml`, `community-projects.yml` |
+| 主設定 | `portable-city.yml`, `progression-campaigns.yml`, `community-projects.yml`, `packet-quest-boards.yml` |
 | 影響先 | 長期目標、週替わり報酬、boss / frontier 参加導線、受注テンポ |
 | 変更難度 | 中〜高 |
 
@@ -17,14 +17,17 @@
 この要素は「サーバー全体で何を目標にし、どう集まり、どう受けるか」を扱います。  
 city runtime が常設の基盤を作り、campaign と community project が長期目標を提示し、party と questboard が日常的なプレイ導線を回します。
 
+questboard は 3x4 の固定掲示板です。実体は固定 sign 面のままにして、表示テキストだけを player ごとに packet 差し替えします。  
+同じ board を見ていても、各 player は自分の進捗 stage、解放状況、受注中状態、受注 CT に応じた候補を受け取ります。
+
 ## プレイヤー体験
 
 1. city の状態が日常運用の基盤になる
 2. 公開 city なら `/city visit` で非メンバーも見学に入れる
 3. spawn 周辺は絶対安全地帯として案内や集合地点に使える
 4. 週替わり campaign や project tier が長期目標を提示する
-5. party 招待で複数人行動に入り、questboard から受注へつながる
-6. boss や frontier への参加導線へ合流する
+5. party 招待で複数人行動に入り、questboard から自分向け候補へつながる
+6. board 右クリックか受付 NPC クリックで詳細確認し、/yes /no で受注を決める
 
 ## 構成の見取り図
 
@@ -34,13 +37,46 @@ city runtime が常設の基盤を作り、campaign と community project が長
 | campaign rotation | `core/src/main/resources/progression-campaigns.yml` | 週替わり倍率や報酬導線 |
 | community project | `core/src/main/resources/community-projects.yml` | 恒久 tier と長期目標 |
 | party | `PartyService` | 最大 8 人、招待 120 秒 |
-| questboard | `QuestBoardService` | 45 秒確認待ち、10 分再出現、職種カテゴリ専用看板 |
+| packet questboard | `PacketQuestBoardRuntime` | 3x4 固定 board、個別 packet 表示、seed 安定抽選 |
+| legacy questboard | `frontier-quest-boards.yml` | カテゴリ専用設置看板。移行用に残る |
+
+## questboard の要点
+
+### 何が変わったか
+
+- 従来のカテゴリ切替前提ではなく、seed と進捗 stage で一定期間安定した候補を出す
+- board 本体は固定で、表示だけを player ごとに差し替える
+- 一覧板ではなく「今の自分向け候補窓口」として扱う
+
+### seed の見方
+
+- seed は `player UUID + boardId + cycleId + progressionStage + serverSalt` で安定化する
+- `seed-cycle` が `DAILY` なら日替わり、`WEEKLY` なら週替わりの候補感になる
+- stage が変わると同じ日でも候補が差し替わる
+
+### stage の見方
+
+- profession level
+- gathering total point
+- unlock 数
+- いま入れる route band
+
+これらを `progression-profiles` の threshold で丸め、0〜5 の stage として扱います。  
+細かい数値そのものではなく、導線として近い帯かどうかを見る前提です。
+
+### NPC の立ち位置
+
+- NPC はカテゴリ切替機ではない
+- board の意味説明と、おすすめ候補の受注補助役
+- Mythic spawner 名か固定 entity UUID で board に紐づける
 
 ## 編集フロー
 
 1. city、campaign、party / board のどの層を変えるか切り分ける
-2. campaign ID と project ID のズレを確認する
-3. 人数や待ち時間の変更は boss / frontier 側の導線も見る
+2. board の実 world 配置と `packet-quest-boards.yml` の `origin` / `facing` が一致しているか確認する
+3. `seed-cycle`、`visible-slots`、`progression-profile` を先に決める
+4. 個別 quest の出し分けが必要なら `rules.[quest-id]` を足す
+5. campaign ID と project ID のズレを確認する
 
 ## よく触る変更パターン
 
@@ -56,17 +92,36 @@ city runtime が常設の基盤を作り、campaign と community project が長
 - `progression-campaigns.yml` と `community-projects.yml` を対で見る
 - ID や報酬倍率が食い違わないようにする
 
-### party / questboard のテンポを変えたい
+### packet board の候補傾向を変えたい
 
-- 招待時間、確認待ち、再出現時間を確認する
-- ただし体験は boss / frontier 参加導線まで含めて見る
+- `packet-quest-boards.yml` の `progression-profiles` と `rules` を見る
+- `visible-slots` は 3〜5 を超えないほうが読みやすい
+- `weight` は単体調整、`min-stage/max-stage` は導線調整として分けて扱う
+- `requires-unlocked-area` は board 固有の gate を足したい時だけ使う
 
-### questboard のカテゴリ導線を変えたい
+### board の表示がズレる / 反映されない
 
-- `/questboard <category> [player]` で配るカテゴリを確認する
-- 設置済み看板は `frontier-quest-boards.yml` の `category` を見て、どの職種専用かを判断する
-- 同カテゴリに active contract がない週は空看板になるので、campaign 側の有効契約も合わせて見る
-- 近距離の packet 表示は `依頼種別 -> 契約名 -> 受注可否 -> 補助文言` の順で見る前提にして、再出現 10 分の案内は前面に出しすぎない
+- world 名、`origin`、`facing`、実 sign 面の向きを確認する
+- `/questboard packet reload` で再読込する
+- 近距離の player にだけ再送するので、view radius の外からは変化しない
+
+## FAQ
+
+### packet board と legacy 看板は同時に使えるか
+
+使えます。legacy のカテゴリ専用看板は互換用に残り、ロビー導線は packet board を主役にできます。
+
+### 受注できない quest は出るか
+
+出ますが、基本は `LOCKED_SOON` までに寄せます。stage から遠すぎる quest は候補プールに入れにくくしています。
+
+### NPC は必須か
+
+必須ではありません。board 単体でも機能しますが、受付 NPC を置くとおすすめ候補への導線が自然になります。
+
+### 候補が毎回揺れるのを止めたい
+
+`seed-cycle` を見直し、`server-salt` をむやみに変えないようにします。進捗 stage が頻繁に跨いでいないかも確認します。
 
 ## 連動する要素
 
@@ -77,29 +132,7 @@ city runtime が常設の基盤を作り、campaign と community project が長
 - [経済・コマース](../economy-commerce/wiki.md)  
   campaign 報酬や project 報酬が流通へ戻ります。
 
-## FAQ
-
-### city と campaign は別ページに分けるべきか
-
-詳細化が進んだら分ける価値がありますが、現状は「長期進行の基盤」として同じ wiki で追うほうが導線を見失いにくいです。
-
-### 公開 city で訪問者に建築させたい
-
-現行仕様ではさせません。公開 city は見学専用で、設置・破壊・drop・pickup・容器操作・ボタン/レバー・エンティティ操作を止めます。
-
-### 奈落に落ちたときはどうなるか
-
-city 内では `Y < -64` に入った時点で死亡せず、その city の spawn に戻します。`/cityadmin setspawn` を使っていれば、その更新後の spawn が復帰先になります。
-
-### party の人数変更は軽い調整か
-
-軽くありません。boss、frontier、board 受注の適正人数感まで変わることがあります。
-
-### questboard の時間だけ調整してよいか
-
-可能ですが、受注密度や参加待ちが変わるので、party 導線や campaign 目標との整合も確認したほうが安全です。
-
-## 関連
+## リンク
 
 - [要素概要](./summary.md)
 - [編集例](./examples.md)

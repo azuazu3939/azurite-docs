@@ -27,11 +27,14 @@ campaign:
 - community-project-id: canopy_supply_network
 
 questboard:
-- /questboard fishing nnoka
-- /questboard logging nnoka
+- boards.lobby_main_board.origin: 100,65,-20
+- boards.lobby_main_board.facing: south
+- boards.lobby_main_board.visible-slots: 5
+- boards.lobby_main_board.seed-cycle: DAILY
+- /questboard packet reload
 - 45 秒以内に /yes で受注
-- 受注後は 10 分再出現待ち
-- 同カテゴリの active contract だけを抽選
+- 候補は player ごとに packet 差し替え
+- seed と progression stage で安定抽選
 ```
 
 ## 押さえる点
@@ -39,7 +42,7 @@ questboard:
 - city を公開観光地として使うなら、visit / memberfly / visitorfly をセットで考える。
 - spawn 近くは絶対安全地帯なので、記念碑や案内板を置く場所として使いやすい。
 - campaign は contract と project の接続を見る。
-- party / board は時間制限とカテゴリ分けを先に共有する。
+- party / board は時間制限と seed / stage の更新条件を先に共有する。
 
 ## 関連
 - [要素概要](./summary.md)

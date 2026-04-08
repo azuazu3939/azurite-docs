@@ -8,20 +8,23 @@ city node 運用、campaign rotation、community project、party 招待、questb
 - city spawn 半径 5 ブロックは絶対安全地帯で、設置・破壊・干渉を止めます。
 - city 内で `Y < -64` まで落ちたプレイヤーは死亡せず、その city の spawn へ戻します。
 - `progression-campaigns.yml` と `community-projects.yml` が週替わり campaign と恒久 project tier を管理します。
-- `PartyService` は最大 8 人、招待 120 秒、`QuestBoardService` は 45 秒確認待ちと 10 分再出現を持ちます。
-- frontier の questboard は `釣り` `収穫` `採掘` `伐採` の職種カテゴリ単位で専用看板を持ち、1枚の看板は1カテゴリだけを扱います。
-- 通常看板の配布は `/questboard <category> [player]` で行い、設置済み看板は `frontier-quest-boards.yml` に `category` を保存します。
+- `PartyService` は最大 8 人、招待 120 秒、`QuestBoardService` は 45 秒確認待ちを持ちます。
+- questboard は 3x4 の固定掲示板を `packet-quest-boards.yml` で定義し、表示内容だけをプレイヤーごとに packet 差し替えします。
+- 候補はカテゴリ切替ではなく、`player UUID + boardId + cycleId + progressionStage + serverSalt` 由来の seed で安定抽選します。
+- 進捗段階、解放状況、受注中状態、受注 CT を見て 3〜5 件の候補を出し、看板右クリックか受付 NPC クリックで詳細確認へ入ります。
+- `frontier-quest-boards.yml` のカテゴリ専用設置看板は互換用として残しつつ、ロビー導線は packet ボード前提へ寄せます。
 
 ## 主なファイル
 - `core/src/main/resources/portable-city.yml`
 - `core/src/main/resources/progression-campaigns.yml`
 - `core/src/main/resources/community-projects.yml`
+- `core/src/main/resources/packet-quest-boards.yml`
 
 ## 更新メモ
-- city は運用設定、campaign は報酬倍率、party/board は導線時間設計として分けて考える。
-- 公開 city は「見学可・干渉不可」が基本で、建築や drop はメンバーだけが行う。
-- campaign ID と project ID のずれは長期進行を壊しやすい。
-- party 人数や board 時間変更は boss / frontier 導線にも効く。
+- city は運用設定、campaign は報酬倍率、party / board は導線設計として分けて考える。
+- packet board は固定オブジェクトなので、world 配置と `packet-quest-boards.yml` の原点座標・向きが揃っているかを最初に見る。
+- seed 周期、進捗段階、受注 CT が表示候補へ直結するので、単純なカテゴリ追加より先に抽選ルールを確認する。
+- legacy のカテゴリ看板を残す場合でも、ロビー向け説明は packet board と NPC 導線に合わせて更新する。
 
 ## 関連
 - [編集例](./examples.md)
