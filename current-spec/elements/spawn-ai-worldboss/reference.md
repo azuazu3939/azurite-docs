@@ -73,6 +73,12 @@
 | `bosses.[boss-id].respawn-max-minutes` | 最長再出現。 | ばらつき幅。 |
 | `bosses.[boss-id].quest-id` | 討伐契約 ID。 | questboard や achievement と繋ぐ。 |
 
+## 2026-04 の world boss 現地転送メモ
+
+- 討伐クエスト受注後の現地 TP は、ボス中心から半径 `100 / 108 / 116 / 124 / 128` ブロックのリング候補だけを使う。
+- 実際の着地点も平面距離 `100..128` を満たす地点だけ採用し、中心への fallback は使わない。
+- 安全地点がリング内に無い場合は TP を諦め、座標サマリを案内して手動移動へ落とす。
+
 ## `mythic-ai.yml`・`mythic-ai-candidates.yml`・`mythic-ai-drive.yml`
 
 | キー | 役割 | 変更時の見方 |

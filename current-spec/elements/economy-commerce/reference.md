@@ -121,20 +121,22 @@ Trade Shop の窓口は保存済み shop 定義へバインドして使います
 | `skills/**/*.yml` の `mlg/mlgo` | skill 由来 Drop として逆引きする。 | `skill{s=...}` 連鎖を cycle guard 付きで解決する。 |
 | `.git` が読めない pack | mtime / size fallback で変更検出する。 | その pack だけ部分再解析する。 |
 
-## `config.yml` の倉庫制限と共有インフラ
+## `config.yml` / `database.yml` の倉庫制限と共有インフラ
 
 | キー | 役割 | 変更時の見方 |
 | --- | --- | --- |
 | `storage-box.blocked-items[]` | Storage Box に預けられない item key。 | 特殊アイテムの持ち逃げや混入を防ぐ。 |
-| `redis-cache.enabled` | Redis キャッシュの ON/OFF。 | 複数サーバー運用で共有キャッシュを入れる時の入口。 |
-| `redis-cache.host` | Redis ホスト名。 | 外部 Redis を使う時に必須。 |
-| `redis-cache.port` | Redis ポート。 | 既定は `6379`。 |
-| `redis-cache.username` / `password` | Redis 認証。 | ACL 利用時のみ設定。 |
-| `redis-cache.database` | DB 番号。 | 共有 Redis で衝突を避ける。 |
-| `redis-cache.timeout-millis` | 接続タイムアウト。 | 遅い回線で短すぎると接続失敗しやすい。 |
-| `redis-cache.use-ssl` | TLS 接続を使うか。 | マネージド Redis 向け。 |
-| `redis-cache.ttl-seconds` | キャッシュ寿命。 | 短いと整合性寄り、長いと速度寄り。 |
-| `redis-cache.key-prefix` | キー接頭辞。 | 他システムとの衝突防止。 |
+| `database.yml > redis-cache.enabled` | Redis キャッシュの ON/OFF。 | 複数サーバー運用で共有キャッシュを入れる時の入口。 |
+| `database.yml > redis-cache.host` | Redis ホスト名。 | 外部 Redis を使う時に必須。 |
+| `database.yml > redis-cache.port` | Redis ポート。 | 既定は `6379`。 |
+| `database.yml > redis-cache.username` / `password` | Redis 認証。 | ACL 利用時のみ設定。 |
+| `database.yml > redis-cache.database` | DB 番号。 | 共有 Redis で衝突を避ける。 |
+| `database.yml > redis-cache.timeout-millis` | 接続タイムアウト。 | 遅い回線で短すぎると接続失敗しやすい。 |
+| `database.yml > redis-cache.use-ssl` | TLS 接続を使うか。 | マネージド Redis 向け。 |
+| `database.yml > redis-cache.ttl-seconds` | キャッシュ寿命。 | 短いと整合性寄り、長いと速度寄り。 |
+| `database.yml > redis-cache.key-prefix` | キー接頭辞。 | 他システムとの衝突防止。 |
+| `database.yml > redis-cache.presence-ttl-seconds` | オンライン同期の寿命。 | 長すぎると幽霊在席が残りやすい。 |
+| `database.yml > redis-cache.presence-heartbeat-seconds` | オンライン同期の心拍間隔。 | 短いほど追従性寄り、長いほど負荷寄り。 |
 
 ## 関連
 
