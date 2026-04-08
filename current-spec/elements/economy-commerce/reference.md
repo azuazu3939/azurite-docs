@@ -76,7 +76,7 @@ Trade Shop の窓口は保存済み shop 定義へバインドして使います
 | `目標設定モード` | 商品クリックを購入ではなく目標設定に切り替える。 | ロック中でも表示されていれば目標化できる。 |
 | BossBar | 現在の目標と進捗を常時表示する。 | Quest 中 / WorldBoss 受注中は隠す。 |
 | Sidebar | 目標候補の短い手順を表示する。 | 進捗値だけ色付き、候補名と手順は白ベースの短縮表記。既存 Sidebar を使っている他要素があれば出さない。 |
-| 黄色ガラス | 目標の移動先導線。 | BlockBinding、通常 NPC、Mythic NPC の順で waypoint を解決する。近距離目標では固定 32 ブロック先へ飛ばさず、目標位置までで止める。 |
+| 黄色ガラス | 目標の移動先導線。 | BlockBinding、通常 NPC、Mythic NPC、Frontier ルート入口、Quest Board、Boss Board の順で waypoint を解決する。近距離目標では固定 32 ブロック先へ飛ばさず、目標位置までで止める。 |
 
 ## Market Board GUI の導線補助
 
@@ -89,8 +89,8 @@ Trade Shop の窓口は保存済み shop 定義へバインドして使います
 
 | UI | 役割 | 変更時の見方 |
 | --- | --- | --- |
-| `目標設定モード` | 保管アイテムのクリックを受取ではなく目標設定へ切り替える。 | `npc_shop` 由来で元 shop が引ける物だけ目標化できる。 |
-| 保管アイテムクリック | 元の shop 商品を目標に戻す。 | 必要数量は保管量と reward 数から逆算する。 |
+| `目標設定モード` | 保管アイテムのクリックを受取ではなく目標設定へ切り替える。 | 保管アイテムなら種類を問わず item 目標にできる。 |
+| 保管アイテムクリック | その item を item 目標にする。 | 必要数量は保管量を初期値にして保存する。shop 由来なら shop 候補も混ざる。 |
 
 ## `/commerce goal` の導線
 
@@ -102,6 +102,8 @@ Trade Shop の窓口は保存済み shop 定義へバインドして使います
 | `/commerce goal prev` | 候補ルートを前へ切り替える。 | `next` の逆順。 |
 | `/commerce goal refresh` | 目標進捗を再計算する。 | 非同期で再評価される。 |
 | `/commerce goal set shop <shopId> <entryId> [quantity]` | Shop 商品を目標にする。 | 必要素材は複数 Shop をまたいで逆探索する。 |
+| `/commerce goal set item <canonicalItemKey> [quantity]` | item 目標を直接設定する。 | `Shop / Frontier直取得 / Frontier Quest報酬 / Boss Quest報酬 / MythicMob Drop` の候補を横断して出す。 |
+| `/commerce goal set hand [quantity]` | 手に持っている item を目標にする。 | GUI を開かずに、その場の item から導線を張れる。 |
 | `/commerce goal set help <topicId>` | `/help` のコマンド項目を目標にする。 | 手動設定時は項目確認型の Help 目標として扱う。 |
 | `/commerce goal set unlock <unlockId>` | 解放状態を目標にする。 | Profession unlock と同じ ID 正規化を使う。 |
 
