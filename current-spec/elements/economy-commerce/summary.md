@@ -1,28 +1,24 @@
 # 経済・コマース
 
-Vault、共有倉庫、ドロップ倉庫、直売、マーケット、Trade Shop を扱う要素です。
+アイテムの価値を「保管する・売る・探す」に変える要素です。  
+Vault、共有倉庫、ドロップ倉庫、直売、マーケット、Trade Shop がまとまり、探索や制作の成果を次の挑戦資源へ戻します。
 
-## 現行仕様
-- `EconomyRepository` の初期化に失敗すると runtime 自体を立てません。
-- 共有倉庫とドロップ倉庫は別コンテナですが、受取処理と ledger は共通です。
-- Trade Shop、Market Board、Direct Sell、Storage GUI は同一 runtime 内で連携します。
-- Trade Shop の Mythic NPC バインドは `mmid` ではなく MythicMobs の `Spawner` 単位で判定します。
-- プレイヤーごとに Quest 外で使う `目標` を 1 件だけ保持でき、進捗は `BossBar + Sidebar`、導線は `黄色ガラス` で表示します。
-- Shop 目標は非同期で逆探索し、複数 Shop、共有倉庫、Help、Unlock、MythicMob Drop をまたぐ候補ルートを生成します。
-- Market Board の販売中商品も目標にでき、販売終了後は Shop / Drop の代替候補へ切り替えて追えます。
-- Storage GUI の shop 由来アイテムも目標設定モードから同じ shop 目標へ戻せます。
-- 目標進捗は `手持ち + SHARED_STORAGE` で判定しますが、Shop 購入で倉庫を使うのは `手持ち+倉庫` を明示した時だけです。
-- MythicMob Drop の逆引きは `plugins/MythicMobs/packes` / `packs` 配下の各 pack `.git` 差分を優先し、必要な pack / file だけ再解析します。
+## この要素が担うこと
+- 通貨と倉庫で資源を安全に循環させる
+- 直売やマーケットで余剰品を価値へ変える
+- 欲しいアイテムまでの導線を `目標` として見つけやすくする
 
-## 主なファイル
-- `core/src/main/kotlin/com/github/azuazu3939/azuriter/core/economy/EconomyRuntime.kt`
-- `core/src/main/resources/plugin.yml` の commerce 系コマンド定義
+## プレイヤーから見る流れ
+- 素材や装備を持ち帰って倉庫に預ける
+- 売る、買う、目標を追うのいずれかで次の行動を決める
+- 貯めた通貨や在庫を遠征、制作、装備更新へ戻す
 
-## 更新メモ
-- 価格変更は直売だけでなくマーケット体感にも効く。
-- 倉庫系変更は配送や受取導線に波及する。
-- コード主導要素なので概念整理を先にする。
+## つながる要素
+- 鍛造品、採集素材、MythicMob Drop の価値づけ先になる
+- 売値表示や装備情報の見え方は仮想ロア系と噛み合う
+- 個別のコマンド、倉庫、ショップ挙動は [設定項目](./reference.md) を参照
 
 ## 関連
+- [設定項目](./reference.md)
 - [編集例](./examples.md)
 - [Wiki](./wiki.md)

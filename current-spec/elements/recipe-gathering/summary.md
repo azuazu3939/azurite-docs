@@ -1,22 +1,24 @@
 # レシピ・ストレージ・採集コレクション
 
-レシピ登録、Storage Box、採集累積、報酬 unlock をまとめる要素です。
+集めた素材を「使える形」に整理する要素です。  
+レシピ解放、Storage Box、採集累積報酬がつながり、拾ったものが無駄にならず次の制作や成長へ変わる流れを支えます。
 
-## 現行仕様
-- レシピは DB と built-in の混在管理で、`RecipeService` が Bukkit 登録まで担当します。
-- Storage Box はクラフト素材供給の補助で、`config.yml` の blocked 設定で危険アイテムを止めます。
-- 採集コレクションは `gathering.yml` で category、match、count-sources、levels、報酬を持ちます。
+## この要素が担うこと
+- カスタムレシピで制作の選択肢を増やす
+- Storage Box で素材の持ち運びや供給を補助する
+- 採集コレクションで長期的な収集目標と報酬を作る
 
-## 主なファイル
-- `core/src/main/resources/gathering.yml`
-- `core/src/main/resources/config.yml`
-- `docs/gathering-collection-architecture.md`
+## プレイヤーから見る流れ
+- 採集や探索で素材を集める
+- 累積や納品で報酬や解放を進める
+- 必要な素材を Storage Box やレシピ制作へ流して次の装備や消耗品に変える
 
-## 更新メモ
-- レシピは file だけでなく DB 運用前提で考える。
-- count-sources を増やすと水増し確認が必要。
-- Gathering の reward ID と recipe ID のズレに注意する。
+## つながる要素
+- 集めた素材は鍛造や経済・コマースへ流れやすい
+- profession や Frontier の解放状況が収集効率と触れられる内容を左右する
+- レシピ定義や報酬条件の詳細は [設定項目](./reference.md) を参照
 
 ## 関連
+- [設定項目](./reference.md)
 - [編集例](./examples.md)
 - [Wiki](./wiki.md)

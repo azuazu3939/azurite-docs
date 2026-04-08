@@ -1,22 +1,24 @@
 # スポーン制御・ワールドボス・Mythic AI
 
-spawn bundle、territory 計算、world boss state、AI telemetry/export/import をまとめる要素です。
+ワールド上の危険度と出現管理を担う要素です。  
+通常 mob の出現、territory の状態、world boss、Mythic AI がまとまり、「どこで何が起きるか」をサーバー側で制御します。
 
-## 現行仕様
-- `mob-spawns` 配下の 3 ファイルを bundle 化し、Territory、WorldBoss、Mythic AI へ再配布します。
-- `FrontierTerritoryService` が chunk ごとの所有者や報酬倍率を計算します。
-- `MythicAiRuntime` は safe mode policy、telemetry export/import、spawn policy を持ちます。
+## この要素が担うこと
+- エリアごとの出現条件と密度を整える
+- territory に応じた支配状況や報酬倍率を作る
+- world boss や Mythic AI で大きな戦闘イベントを成立させる
 
-## 主なファイル
-- `core/src/main/resources/mob-spawns/00-spawn-director.yml`
-- `core/src/main/resources/mythic-ai.yml`
-- `core/src/main/resources/mythic-ai-drive.yml`
+## プレイヤーから見る流れ
+- エリアごとに違う敵や危険度に出会う
+- 支配状況やイベントに応じて狩場の意味が変わる
+- world boss や特殊 AI の敵を倒して大きな報酬へ挑む
 
-## 更新メモ
-- spawn 条件、territory、boss state は連動する。
-- AI policy だけ変えても出現条件が厳しいと何も起きない。
-- Drive 同期を有効にするなら serverId と資格情報を先に決める。
+## つながる要素
+- Frontier の探索体験と一体で危険度を支える
+- 経済や制作へ流れるドロップ量と希少性に影響する
+- 細かな spawn 条件や AI policy は [設定項目](./reference.md) を参照
 
 ## 関連
+- [設定項目](./reference.md)
 - [編集例](./examples.md)
 - [Wiki](./wiki.md)

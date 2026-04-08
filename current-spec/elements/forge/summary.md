@@ -1,22 +1,24 @@
 # 鍛造
 
-鍛造セッション、研究、物流、Trade、鍛造装備の品質と耐久を扱う要素です。
+素材を装備や価値へ変換する制作の中核要素です。  
+鍛造セッション、研究、物流、Trade がつながり、単なるクラフトではなく「準備して育てる制作ループ」を作ります。
 
-## 現行仕様
-- `forge.yml` が入口、`forge-content.yml` が素材と物流、`forge-actions.yml` が手番、`forge-balance.yml` が最終計算です。
-- `ForgeService` が progress、quality、durability、focus を持つセッションを管理します。
-- 研究、物流、Trade は別サービスに分かれ、profession や campaign にも接続します。
+## この要素が担うこと
+- 素材を消費して品質や耐久を持つ鍛造装備を作る
+- 研究で新しい選択肢や効率を広げる
+- 物流や Trade を通じて制作を個人作業で終わらせない
 
-## 主なファイル
-- `core/src/main/resources/forge.yml`
-- `core/src/main/resources/forge/forge-content.yml`
-- `core/src/main/resources/forge/forge-actions.yml`
+## プレイヤーから見る流れ
+- 素材を集めて鍛造に持ち込む
+- 手番を進めながら品質や耐久を整える
+- 完成品を自分で使うか、流通や納品へ回す
 
-## 更新メモ
-- 入口・アクション・素材・最終計算のどこを変えるか先に決める。
-- 品質帯変更は売値、耐久バランス、報酬価値に波及する。
-- 研究や物流報酬は Campaign と経済へ効く。
+## つながる要素
+- profession の解放や補正が鍛造の入口と効率に影響する
+- 完成した装備は仮想ロアや売値表示で価値づけされる
+- 報酬や流通は campaign、経済・コマースとも連動する
 
 ## 関連
+- [設定項目](./reference.md)
 - [編集例](./examples.md)
 - [Wiki](./wiki.md)

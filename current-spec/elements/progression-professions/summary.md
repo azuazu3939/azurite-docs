@@ -1,22 +1,24 @@
 # 成長・クラス・専門職
 
-レベル、クラス、マナ、スキルツリー、専門職 milestone をまとめる要素です。
+Azuriter の基礎進行を担う要素です。  
+レベル、クラス、マナ、スキルツリー、専門職がまとまって、プレイヤーが「何をできるか」と「どこまで進めるか」を決めます。
 
-## 現行仕様
-- `config.yml` の `level` と `mana` が共通基礎式で、`classes/<classKey>/class.yml` と `tree.yml` がクラス別定義です。
-- 保存は MariaDB 前提で、プロフィール、マナ、クラスレベル、報酬台帳を個別に持ちます。
-- `professions.yml` の milestone で access-tag、yield bonus、speed bonus、permission 付与を制御します。
+## この要素が担うこと
+- 戦闘と制作の基礎性能を成長に応じて伸ばす
+- クラス選択で役割と使えるスキルの方向性を分ける
+- 専門職 milestone で access-tag や各種補正を解放する
 
-## 主なファイル
-- `core/src/main/resources/config.yml`
-- `core/src/main/resources/classes/class_knight/class.yml`
-- `core/src/main/resources/professions.yml`
+## プレイヤーから見る流れ
+- まずクラスを選び、行動しながらレベルを上げる
+- マナとスキルツリーで戦い方や支援手段を広げる
+- 専門職を進めて Frontier、鍛造、採集の導線を開いていく
 
-## 更新メモ
-- クラス報酬変更時は `tree-version` の扱いを決める。
-- profession の access-tag は Frontier / Forge へ波及する。
-- マナ調整は戦闘や制作体感も変える。
+## つながる要素
+- profession の解放条件は Frontier、鍛造、採集コレクションの入口に直結する
+- 成長速度や補正値は戦闘体感だけでなく、制作効率や報酬設計にも影響する
+- 実際の設定項目や調整単位は [設定項目](./reference.md) を参照
 
 ## 関連
+- [設定項目](./reference.md)
 - [編集例](./examples.md)
 - [Wiki](./wiki.md)

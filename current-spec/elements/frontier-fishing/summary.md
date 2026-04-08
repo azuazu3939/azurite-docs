@@ -1,22 +1,24 @@
 # フロンティア・遠征・釣り戦闘
 
-Iolite worldgen、遠征契約、Quest Catalog、釣り池 archetype、魚種と竿戦闘をまとめる要素です。
+外へ出て危険と報酬を持ち帰る冒険側の要素です。  
+Frontier world、遠征契約、Quest Catalog、釣り池、魚種や竿戦闘がまとまり、日常導線の外側にある稼ぎ場と挑戦先を作ります。
 
-## 現行仕様
-- Frontier が有効な role でだけ NMS runtime を立て、world generator / biome provider を供給します。
-- `quests/frontier/*.yml` を読んで遠征契約へ変換し、`ExpeditionService` がフェーズ進行と報酬を担当します。
-- 釣り戦闘は `fishing-content.yml` に settings、pond-archetypes、rods、species を持ちます。
+## この要素が担うこと
+- Frontier world で通常エリアとは違う探索体験を作る
+- 遠征契約で周回の目的と報酬を分かりやすくする
+- 釣り戦闘で収集と戦闘の中間にある遊び方を用意する
 
-## 主なファイル
-- `core/src/main/resources/quests/frontier/frontier.yml`
-- `core/src/main/resources/fishing-content.yml`
-- `nms/src/main/resources/generator/*.yml`
+## プレイヤーから見る流れ
+- まず解放条件を満たして Frontier や遠征に向かう
+- 探索、戦闘、釣りを通じて素材や報酬を持ち帰る
+- 持ち帰った成果を制作、売買、次の契約準備へつなげる
 
-## 更新メモ
-- route、profession access、quest 条件を別々に変えない。
-- 報酬変更は economy と campaign にも効く。
-- 池 archetype 名を変えると既存 world 側と切れやすい。
+## つながる要素
+- profession の access 条件が入口を制御する
+- 報酬は鍛造、採集コレクション、経済・コマースへ流れる
+- world boss や spawn 制御とは同じ危険度設計の上で噛み合う
 
 ## 関連
+- [設定項目](./reference.md)
 - [編集例](./examples.md)
 - [Wiki](./wiki.md)
