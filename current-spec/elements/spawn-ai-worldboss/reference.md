@@ -79,7 +79,7 @@
 - 実際の着地点も平面距離 `100..128` を満たす地点だけ採用し、中心への fallback は使わない。
 - 安全地点がリング内に無い場合は TP を諦め、座標サマリを案内して手動移動へ落とす。
 
-## `mythic-ai.yml`・`mythic-ai-candidates.yml`・`mythic-ai-drive.yml`
+## `mythic-ai.yml`・`mythic-ai-candidates.yml`・`mythic-ai-feedback.yml`・`mythic-ai-drive.yml`
 
 | キー | 役割 | 変更時の見方 |
 | --- | --- | --- |
@@ -100,6 +100,13 @@
 | `mythic-ai-candidates.yml > groups.[group-id]` | 候補スキル群。 | 各候補は `id` `mythic-skill-name` `category` `weight` `heavy` を持つ。 |
 | `estimated-projectile-cost` | 弾幕コスト見積り。 | director cap と噛む。 |
 | `estimated-summon-cost` | summon コスト見積り。 | 召喚過多を防ぐ。 |
+| `mythic-ai-feedback.yml > enabled` | feedback export の ON/OFF。 | server 側で JSON を feedback Git へ出す主スイッチ。 |
+| `exportIntervalMinutes` | feedback export 周期。 | 短いほど追従しやすいが commit が増える。 |
+| `quietHeartbeatMinutes` | 変化が薄い時でも latest を更新する間隔。 | stale 判定を避けたい時に調整する。 |
+| `inboxRetentionDays` | `telemetry/agent-inbox` の保持日数。 | 古い JSON を自動整理する基準。 |
+| `maxProfilesPerSnapshot` | latest に載せる profile 上限。 | 巨大化防止。 |
+| `maxRecentEventsPerSnapshot` | latest に載せる recent event 上限。 | 直近観測の濃さを決める。 |
+| `debugExportEnabled` | debug event を feedback JSON に含めるか。 | 調査時のみ有効化が無難。 |
 | `mythic-ai-drive.yml > enabled` | Drive 同期の ON/OFF。 | 公開同期を使う時だけ有効化。 |
 | `serverId` | 同期元サーバー ID。 | 複数ノードで一意にする。 |
 | `rootFolderId` | Drive ルート ID。 | 同期先の親フォルダ。 |
@@ -109,8 +116,9 @@
 | `applyMode` | 取込適用モード。 | `SEMI_AUTO` のような運用方針。 |
 | `archiveRetentionDays` | 古い export 保持日数。 | ロールバック期間。 |
 | `debugExportEnabled` | debug export を出すか。 | 調査時のみ有効化が無難。 |
-| MariaDB `ai_player_activity_profile` | player ごとの最近傾向。 | `MYTHIC_KILL` / `GATHER_BREAK` / `CHAT` の集計と最新対象を持つ。 |
-| MariaDB `ai_player_activity_event` | player 行動の直近イベント。 | `serverId`, `worldId`, `subject_id`, `detail_json` を見て行動文脈を追う。 |
+| `feedback-mythicmobs/telemetry/agent-state/[server-id]/latest.json` | server ごとの最新観測。 | `playerActivity` と `runtimeTelemetry` をこの PC が読む主入口。 |
+| `feedback-mythicmobs/telemetry/agent-inbox/[server-id]/yyyy/MM/dd/*.json` | server ごとの履歴観測。 | 反映済みの古い JSON は retention で整理される前提。 |
+| MariaDB / Redis | runtime 補助依存。 | Cardinal 系の長期判断では primary store にしない。 |
 
 ## 関連
 
