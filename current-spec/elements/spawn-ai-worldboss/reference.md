@@ -109,6 +109,8 @@
 | `applyMode` | 取込適用モード。 | `SEMI_AUTO` のような運用方針。 |
 | `archiveRetentionDays` | 古い export 保持日数。 | ロールバック期間。 |
 | `debugExportEnabled` | debug export を出すか。 | 調査時のみ有効化が無難。 |
+| MariaDB `ai_player_activity_profile` | player ごとの最近傾向。 | `MYTHIC_KILL` / `GATHER_BREAK` / `CHAT` の集計と最新対象を持つ。 |
+| MariaDB `ai_player_activity_event` | player 行動の直近イベント。 | `serverId`, `worldId`, `subject_id`, `detail_json` を見て行動文脈を追う。 |
 
 ## 関連
 
