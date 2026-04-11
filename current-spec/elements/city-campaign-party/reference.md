@@ -63,11 +63,17 @@ questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 boa
 | `QuestBoardService` | legacy 看板と packet board の窓口。 | `/yes` `/no` と右クリック導線を統合する。 |
 | `PacketQuestBoardRuntime` | 個別 packet 表示と seed 抽選本体。 | 3x5 テンプレート、閲覧モード、閲覧軸、NPC 連動を持つ。 |
 | `GUIDED` | 初心者向け。 | おすすめ中心で迷わせない。 |
-| `ASSISTED` | 中級者向け。 | 軽い視点切替を与える。 |
+| `ASSISTED` | 中級者向け。 | 軽い視点切替を与えつつ、`LOCKED` は極力見せない。 |
 | `TACTICAL` | 上級者向け。 | 未完了、高報酬、周回などへ短く寄せる。 |
 | `/questboard packet list` | 定義済み packet board を一覧。 | board ID 確認用。 |
 | `/questboard packet reload` | `packet-quest-boards.yml` を再読込。 | world 配置や rule 変更後に使う。 |
 | `frontier-quest-boards.yml` | 旧カテゴリ看板の保存先。 | legacy 互換用。 |
+
+## 運用メモ
+
+- 平原序盤 combat のみ、`plains_combat_surface` を使って高地ライセンス前でも受注できる
+- `snow_surface` は平原 gather / fishing と中盤以降の combat 本線として維持する
+- `GUIDED` は受注可能候補が 2 件以上ある時に locked 系を出さない前提で weight を調整する
 
 ## 関連
 
