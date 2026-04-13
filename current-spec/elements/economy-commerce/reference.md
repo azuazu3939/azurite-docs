@@ -68,6 +68,19 @@ Trade Shop の窓口は保存済み shop 定義へバインドして使います
 | 右クリック | 10 回まとめ買い。 | 少量素材や通貨交換向け。 |
 | `Shift+クリック` | 64 回までまとめ買い。 | 買える資源量まで自動調整して処理される。 |
 
+## Trade Shop エントリの価格構成
+
+| 項目 | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `priceComponents[]` | entry が要求する価格コンポーネント一覧。 | 各要素は加算で扱う。複数要素があれば全部必要。 |
+| `priceComponents[].currencyType` | `VAULT` / `DELIVERY_CREDIT` / `FORGE_POINT`。 | 通貨を使わない素材コストだけの要素でも保持する。 |
+| `priceComponents[].amount` | 通貨要求量。 | `0` なら通貨なしの素材要素として扱える。 |
+| `priceComponents[].item` | 任意の素材アイテム 1 種。 | 複数素材が必要なら別コンポーネントへ分ける。 |
+| `priceComponents[].quantity` | 素材アイテム要求数。 | まとめ買い時は purchase 数に応じてスケールする。 |
+
+Shop editor の価格スロットは 9 個です。  
+複数素材コストを作る時は、1 スロットに 1 素材ずつ積み、必要なら通貨成分も別スロットへ分けて加算します。
+
 ## Trade Shop GUI の導線補助
 
 | UI | 役割 | 変更時の見方 |

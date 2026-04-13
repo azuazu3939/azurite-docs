@@ -7,9 +7,17 @@
 shop-id: "starter_supply"
 entry:
   display-name: "スタート補給箱"
-  price:
-    currency-type: "VAULT"
-    amount: 3000.0
+  price-components:
+    - currency-type: "VAULT"
+      amount: 3000.0
+    - currency-type: "VAULT"
+      amount: 0.0
+      item: "minecraft:iron_ingot"
+      quantity: 12
+    - currency-type: "VAULT"
+      amount: 0.0
+      item: "minecraft:string"
+      quantity: 8
 ```
 
 ```text
@@ -21,6 +29,7 @@ entry:
 ## 押さえる点
 - 実装は Kotlin 登録でも設計上はこの粒度で読むと分かりやすい。
 - 価格と reward の釣り合いを先に見る。
+- 複数素材を要求したい時は `price-components` を素材ごとに分ける。
 - Vault 不在時の挙動も考える。
 - Mythic 側で shop 窓口を増やしたい時は `mmid` を増やさず `Spawner` を分ける。
 
