@@ -79,7 +79,7 @@
 - 実際の着地点も平面距離 `100..128` を満たす地点だけ採用し、中心への fallback は使わない。
 - 安全地点がリング内に無い場合は TP を諦め、座標サマリを案内して手動移動へ落とす。
 
-## `mythic-ai.yml`・`mythic-ai-candidates.yml`・`mythic-ai-feedback.yml`・`mythic-ai-drive.yml`
+## `mythic-ai.yml`・`mythic-ai-candidates.yml`・`mythic-ai-feedback.yml`
 
 | キー | 役割 | 変更時の見方 |
 | --- | --- | --- |
@@ -107,15 +107,6 @@
 | `maxProfilesPerSnapshot` | latest に載せる profile 上限。 | 巨大化防止。 |
 | `maxRecentEventsPerSnapshot` | latest に載せる recent event 上限。 | 直近観測の濃さを決める。 |
 | `debugExportEnabled` | debug event を feedback JSON に含めるか。 | 調査時のみ有効化が無難。 |
-| `mythic-ai-drive.yml > enabled` | Drive 同期の ON/OFF。 | 公開同期を使う時だけ有効化。 |
-| `serverId` | 同期元サーバー ID。 | 複数ノードで一意にする。 |
-| `rootFolderId` | Drive ルート ID。 | 同期先の親フォルダ。 |
-| `serviceAccountJsonPath` | 認証 JSON パス。 | 秘匿情報なので管理注意。 |
-| `exportIntervalHours` | export 周期。 | 長いほど手動運用寄り。 |
-| `importPollSeconds` | import 監視周期。 | 早すぎると API コストが増える。 |
-| `applyMode` | 取込適用モード。 | `SEMI_AUTO` のような運用方針。 |
-| `archiveRetentionDays` | 古い export 保持日数。 | ロールバック期間。 |
-| `debugExportEnabled` | debug export を出すか。 | 調査時のみ有効化が無難。 |
 | `feedback-mythicmobs/telemetry/agent-state/[server-id]/latest.json` | server ごとの最新観測。 | `playerActivity` と `runtimeTelemetry` をこの PC が読む主入口。 |
 | `feedback-mythicmobs/telemetry/agent-inbox/[server-id]/yyyy/MM/dd/*.json` | server ごとの履歴観測。 | 反映済みの古い JSON は retention で整理される前提。 |
 | MariaDB / Redis | runtime 補助依存。 | Cardinal 系の長期判断では primary store にしない。 |
