@@ -79,7 +79,7 @@
 - 実際の着地点も平面距離 `100..128` を満たす地点だけ採用し、中心への fallback は使わない。
 - 安全地点がリング内に無い場合は TP を諦め、座標サマリを案内して手動移動へ落とす。
 
-## `mythic-ai.yml`・`mythic-ai-candidates.yml`・`mythic-ai-feedback.yml`
+## `mythic-ai.yml`・`mythic-ai-candidates.yml`
 
 | キー | 役割 | 変更時の見方 |
 | --- | --- | --- |
@@ -100,16 +100,9 @@
 | `mythic-ai-candidates.yml > groups.[group-id]` | 候補スキル群。 | 各候補は `id` `mythic-skill-name` `category` `weight` `heavy` を持つ。 |
 | `estimated-projectile-cost` | 弾幕コスト見積り。 | director cap と噛む。 |
 | `estimated-summon-cost` | summon コスト見積り。 | 召喚過多を防ぐ。 |
-| `mythic-ai-feedback.yml > enabled` | feedback export の ON/OFF。 | server 側で JSON を feedback Git へ出す主スイッチ。 |
-| `exportIntervalMinutes` | feedback export 周期。 | 短いほど追従しやすいが commit が増える。 |
-| `quietHeartbeatMinutes` | 変化が薄い時でも latest を更新する間隔。 | stale 判定を避けたい時に調整する。 |
-| `inboxRetentionDays` | `telemetry/agent-inbox` の保持日数。 | 古い JSON を自動整理する基準。 |
-| `maxProfilesPerSnapshot` | latest に載せる profile 上限。 | 巨大化防止。 |
-| `maxRecentEventsPerSnapshot` | latest に載せる recent event 上限。 | 直近観測の濃さを決める。 |
-| `debugExportEnabled` | debug event を feedback JSON に含めるか。 | 調査時のみ有効化が無難。 |
-| `feedback-mythicmobs/telemetry/agent-state/[server-id]/latest.json` | server ごとの最新観測。 | `playerActivity` と `runtimeTelemetry` をこの PC が読む主入口。 |
-| `feedback-mythicmobs/telemetry/agent-inbox/[server-id]/yyyy/MM/dd/*.json` | server ごとの履歴観測。 | 反映済みの古い JSON は retention で整理される前提。 |
-| MariaDB / Redis | runtime 補助依存。 | Cardinal 系の長期判断では primary store にしない。 |
+| `plugins/AzuriteCore/ai-player-telemetry-state.json` | player telemetry の永続状態。 | `JOIN` `CHAT` `GATHER_BREAK` `MYTHIC_KILL` `PROGRESSION_STUCK` を保持する主ファイル。 |
+| `plugins/AzuriteCore/telemetry/encounter-surveys/[server-id]/[target-type]/[target-id]/[encounter-id].json` | encounter survey 保存先。 | 回答完了時にローカルへ UTF-8 JSON を出力する。 |
+| MariaDB / Redis | runtime 補助依存。 | telemetry の主系統は plugin 内 JSON。 |
 
 ## 関連
 
