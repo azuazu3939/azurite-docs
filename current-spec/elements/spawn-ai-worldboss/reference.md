@@ -1,6 +1,9 @@
 # スポーン制御・ワールドボス・Mythic AI の設定項目
 
-この要素は、spawn director が全体交通整理をし、package が個別 mob 群を定義し、world boss と Mythic AI がその上に乗る構成です。
+この要素は、spawn director / world boss / Mythic AI が出現制御レイヤーを分担する構成です。
+
+> [!NOTE]
+> 2026-04-18 時点で `mob-spawns/` bundle は運用停止です。フォルダが無い場合は空 bundle として扱い、エラーにはしません。
 
 > [!TIP]
 > 「湧かない」の原因は 1 つとは限りません。`00-spawn-director.yml` の条件、`10-spawn-packages.yml` の territory、`20-world-bosses.yml` の world 制約、`mythic-ai.yml` の負荷制限を順に見ます。
@@ -8,6 +11,8 @@
 このページでは、可変のキー名を `[budget-id]` や `[package-id]` のように表記します。
 
 ## `mob-spawns/00-spawn-director.yml` の全体制御
+
+現在は legacy 扱いです。必要なサーバーだけ `mob-spawns/` を置いて使います。
 
 | キー | 役割 | 変更時の見方 |
 | --- | --- | --- |
