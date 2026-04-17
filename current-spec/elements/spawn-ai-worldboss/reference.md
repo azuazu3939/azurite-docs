@@ -42,8 +42,8 @@
 
 ## `mob-spawns/10-spawn-packages.yml` の個別 package 定義
 
-2026-04-17 時点で、通常 mob への territory 由来のステータス補正と報酬補正は廃止しています。  
-package 側の territory は出現位置の選定にのみ使います。
+2026-04-17 時点で、通常 mob と world boss への territory 由来のステータス補正と報酬補正は廃止しています。  
+package / boss 側の territory は出現位置の選定にのみ使います。
 
 | キー | 役割 | 変更時の見方 |
 | --- | --- | --- |
@@ -71,7 +71,7 @@ package 側の territory は出現位置の選定にのみ使います。
 | `bosses.[boss-id].mythic-mob-id` | 実際に出す MythicMob ID。 | boss 本体の参照先。 |
 | `bosses.[boss-id].worlds[]` | 出現候補 world。 | frontier pool と一致させる。 |
 | `bosses.[boss-id].territory.*` | 出現地形の好み。 | package と似た形で family / climate / feature / route を持つ。 |
-| `bosses.[boss-id].class-exp-base` | 討伐時 class exp 基礎値。 | ボス報酬の核。 |
+| `bosses.[boss-id].class-exp-base` | 互換用の予約値。 | 現在の world boss では未使用。 |
 | `bosses.[boss-id].respawn-min-minutes` | 最短再出現。 | 周回可能性の下限。 |
 | `bosses.[boss-id].respawn-max-minutes` | 最長再出現。 | ばらつき幅。 |
 | `bosses.[boss-id].quest-id` | 討伐契約 ID。 | questboard や achievement と繋ぐ。 |

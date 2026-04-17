@@ -5,7 +5,7 @@
 
 ## この要素が担うこと
 - エリアごとの出現条件と密度を整える
-- territory に応じた出現分布や world boss 側の報酬倍率を作る
+- territory に応じた出現分布や world boss の出現地点を作る
 - world boss や Mythic AI で大きな戦闘イベントを成立させる
 
 ## プレイヤーから見る流れ
