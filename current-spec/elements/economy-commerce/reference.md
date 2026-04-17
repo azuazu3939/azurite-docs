@@ -23,6 +23,11 @@
 | `commands.shop.permission` | Trade Shop 系コマンド権限。 | 店舗 UI の入口。 |
 | `commands.market.permission` | Market Board 権限。 | `ah` alias が付いている。 |
 | `commands.sell.permission` | 直売導線の権限。 | 即時換金の入口。 |
+| `commands.trade.permission` | プレイヤー間 Trade 権限。 | 同一サーバーへ寄せて交換する入口。 |
+| `commands.pay.permission` | プレイヤー間送金権限。 | Money / Delivery Credit / Forge Point の送付入口。 |
+| `commands.bind.permission` | 共通コマンドバインド権限。 | `menu` や `backpack bind` の基盤。 |
+| `commands.backpack.permission` | BackPack 権限。 | `bp` alias 付きの quick access 保管。 |
+| `commands.myset.permission` | MySet 権限。 | 装備 4 部位の即時切替 GUI。 |
 | `commands.yes.permission` / `commands.no.permission` | 確認ダイアログ応答権限。 | 取引確認を共通化している。 |
 | `commands.q.permission` | 短縮確認コマンド権限。 | チャット運用向けの簡易入口。 |
 
@@ -39,6 +44,11 @@
 | --- | --- | --- |
 | `permissions.azurite.command.commerce.default` | コマース系共通権限の既定値。 | 現状は `true`。一般プレイヤー利用前提。 |
 | `permissions.azurite.command.economy.default` | 経済管理権限の既定値。 | 現状は `op`。 |
+| `permissions.azurite.command.trade.default` | プレイヤー間取引権限の既定値。 | 現状は `true`。 |
+| `permissions.azurite.command.pay.default` | 送金権限の既定値。 | 現状は `true`。 |
+| `permissions.azurite.command.bind.default` | 共通バインド権限の既定値。 | 現状は `true`。 |
+| `permissions.azurite.command.backpack.default` | BackPack 権限の既定値。 | 現状は `true`。 |
+| `permissions.azurite.command.myset.default` | MySet 権限の既定値。 | 現状は `true`。 |
 | `permissions.azurite.commerce.shop.edit.default` | Shop 編集権限。 | 現状は `op`。店舗編集を限定する。 |
 | `permissions.azurite.command.*.children` | まとめ権限にぶら下がる個別権限。 | 一括配布したいときの親ノード。 |
 | `permissions.azurite.*.children` | 全体管理権限の子ノード。 | 管理権限ロールを組む時の最上位。 |
@@ -120,20 +130,49 @@ Shop editor の価格スロットは 9 個です。
 | `/commerce goal set help <topicId>` | `/help` のコマンド項目を目標にする。 | 手動設定時は項目確認型の Help 目標として扱う。 |
 | `/commerce goal set unlock <unlockId>` | 解放状態を目標にする。 | Profession unlock と同じ ID 正規化を使う。 |
 
+## プレイヤー間 Trade / Pay
+
+| コマンド | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `/trade <player>` | 相手へ取引申請を送る。 | 別サーバーの相手にも送れ、受諾時に同一サーバーへ寄せて開始する。 |
+| `/trade accept <player>` | 届いた取引申請を受ける。 | 受諾側が申請元サーバーへ移動してから GUI を開く。 |
+| `/trade deny <player>` | 取引申請を拒否する。 | 申請側へ拒否通知を返す。 |
+| `/trade cancel` | 今の取引を中止する。 | 提示済みアイテムは配送返却で戻す。 |
+| `/trade log [page]` | 最近の取引・送金ログを見る。 | `PLAYER_TRADE` / `PLAYER_PAYMENT` ledger を読む。 |
+| `/pay <player> <amount> [money\|credit\|fp]` | 通貨を直接送る。 | Money、Delivery Credit、Forge Point に対応する。 |
+
+## `menu` と `bind` のショートカット体系
+
+| UI / コマンド | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `/menu` | コマンドショートカット配布 GUI を開く。 | よく使う導線を 1 画面に集める。 |
+| メニュー扉 | `/menu` バインド済み固定アイテム。 | 固定スロットから右クリックで GUI を開く。 |
+| `/bind list` | 使える shortcut ID を見る。 | `menu`、`trade`、`pay`、`bp1..bp6` を含む。 |
+| `/bind <shortcutId>` | 手持ちアイテムへ既知ショートカットを付ける。 | 旧 `menu` / `backpack bind` もこの基盤に乗る。 |
+| `/bind /command ...` | 手持ちアイテムへ任意コマンドを付ける。 | 先頭 `/` 必須。 |
+| `/bind clear` | 手持ちアイテムのバインドを外す。 | 固定ショートカットは解除できない。 |
+| `/backpack (/bp) [1-6]` | BackPack #1〜#6 を開く。 | quick access 保管は 6 枠まで独立保存する。 |
+| `/backpack bind [1-6]` | 手持ちアイテムへ対象 BackPack を付ける。 | `bp2` のように番号ごとに別バインドできる。 |
+
+## コマンドバインド品の制限
+
+| 対象 | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| 直売 `/sell` | コマンドバインド品は売却不可。 | 誤換金や特殊導線アイテムの流出を防ぐ。 |
+| Market 出品 | コマンドバインド品は出品不可。 | バインド済みユーティリティを市場へ流さない。 |
+| プレイヤー間 Trade | コマンドバインド品も交換可。 | 売買制限だけ掛け、直接受け渡しは許可する。 |
+
 ## `/help` の目標化
 
 | 操作 | 役割 | 変更時の見方 |
 | --- | --- | --- |
 | `/help` トップ | `よく使うコマンド集` と `進行ヘルプ` に分かれる。 | 用途別に入口を分けて迷いを減らす。 |
-| コマンド集の一覧 | `menu`、`BackPack`、`MySet` を含む最新コマンドを案内する。 | `BackPack` は `/backpack (/bp) [bind]`、`MySet` は `/myset [list\|save\|load\|delete]` として出す。 |
+| コマンド集の一覧 | `menu`、`bind`、`BackPack`、`MySet`、`trade`、`pay` を含む最新コマンドを案内する。 | `BackPack` は `/backpack (/bp) [1-6\|bind [1-6]]`、`MySet` は `/myset [list\|save\|load\|delete]` として出す。 |
 
-## `menu` のショートカット配布
+## `/help` からの導線補助
 
 | UI | 役割 | 変更時の見方 |
 | --- | --- | --- |
-| `/menu` | コマンドショートカット配布 GUI を開く。 | クリックで各ショートカットアイテムを作る。 |
-| メニュー扉 | `/menu` バインド済み固定アイテム。 | 固定スロットから右クリックで同じ GUI を開く。 |
-| `/backpack bind` | 手持ちアイテムへ `/bp` をバインドする。 | 既存アイテムを quick access の入口に変える。 |
 | コマンド集の右クリック | 未解放コマンドだけ目標設定できる。 | 解放済みコマンドは説明閲覧のみ。 |
 | 進行ヘルプの右クリック | ライセンスや許可証の解放を目標化する。 | 権限型の機能も導線付きで追える。 |
 
