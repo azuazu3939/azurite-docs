@@ -99,7 +99,6 @@ mana:
 | `professions.[profession-id].icon` | 専門職アイコン。 | Material 名。 |
 | `professions.[profession-id].formula` | 専門職経験値式。 | 収穫職だけ軽くするなど差別化できる。 |
 | `professions.[profession-id].max-level` | その職の上限。 | milestone 最終段と整合させる。 |
-| `professions.[profession-id].migration-weight` | 旧データから寄せる重み。 | 移行時のみ重要。新規追加では 1.0 前後が無難。 |
 | `professions.[profession-id].telemetry-tags[]` | 分析・分類タグ。 | route や resource 系タグで集計を揃える。 |
 | `professions.[profession-id].milestones.[level].notes[]` | 画面や説明に見せる補足文。 | プレイヤー向け説明用。 |
 | `professions.[profession-id].milestones.[level].access-tags[]` | 到達で付く access tag。 | Frontier や Forge の解放条件に直結する。 |
