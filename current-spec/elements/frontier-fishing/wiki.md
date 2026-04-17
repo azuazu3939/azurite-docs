@@ -70,8 +70,8 @@
   access-tag と profession 解放が遠征参加条件へ効きます。
 - [経済・コマース](../economy-commerce/wiki.md)  
   持ち帰り報酬が市場へ流れます。
-- [スポーン制御・ワールドボス・Mythic AI](../spawn-ai-worldboss/wiki.md)  
-  spawn 条件や territory 制御が探索の密度を作ります。
+- Frontier spec / route / biome 設定  
+  探索の密度と報酬導線を作ります。
 
 ## FAQ
 

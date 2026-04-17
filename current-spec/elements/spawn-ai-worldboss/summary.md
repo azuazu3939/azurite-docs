@@ -1,24 +1,15 @@
 # スポーン制御・ワールドボス・Mythic AI
 
-ワールド上の危険度と出現管理を担う要素です。  
-通常 mob の出現、territory の状態、world boss、Mythic AI がまとまり、「どこで何が起きるか」をサーバー側で制御します。
+> [!WARNING]
+> この要素は 2026-04-18 に退役しました。`mob-spawns/`、`mythic-ai.yml`、`mythic-ai-candidates.yml`、`world-boss-state.yml` を前提にした runtime は現行仕様では使いません。
 
-## この要素が担うこと
-- エリアごとの出現条件と密度を整える
-- territory に応じた出現分布や world boss の出現地点を作る
-- world boss や Mythic AI で大きな戦闘イベントを成立させる
+## 現在の扱い
 
-## プレイヤーから見る流れ
-- エリアごとに違う敵や危険度に出会う
-- 支配状況やイベントに応じて狩場の意味が変わる
-- world boss や特殊 AI の敵を倒して大きな報酬へ挑む
-
-## つながる要素
-- Frontier の探索体験と一体で危険度を支える
-- 経済や制作へ流れるドロップ量と希少性に影響する
-- 細かな spawn 条件や AI policy は [設定項目](./reference.md) を参照
+- 旧 `worldboss` / `aipolicy` / `mobspawn` 導線は現行ビルドから外れています。
+- `quests/boss/*.yml` と boss quest board も現行仕様では使いません。
+- Frontier 側の危険度や導線は、現行では frontier spec・route・questboard・fishing / forge / economy 側の要素で整理します。
 
 ## 関連
-- [設定項目](./reference.md)
-- [編集例](./examples.md)
-- [Wiki](./wiki.md)
+
+- [要素別概要](../../overview.md)
+- [フロンティア・遠征・釣り戦闘](../frontier-fishing/summary.md)

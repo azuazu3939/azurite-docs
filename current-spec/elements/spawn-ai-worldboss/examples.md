@@ -1,27 +1,9 @@
 # スポーン制御・ワールドボス・Mythic AI の編集例
 
-spawn 条件と Drive 設定をまず見ると把握しやすいです。
+> [!WARNING]
+> この要素は退役済みです。現行仕様では編集例を持ちません。
 
-## サンプル
-```yml
-conditions:
-  profiles:
-    neutral_surface:
-      eligibility:
-        - type: player_distance
-          min: 18.0
-          max: 42.0
+## メモ
 
-enabled: false
-serverId: server-a
-applyMode: SEMI_AUTO
-```
-
-## 押さえる点
-- eligibility と placement を分けて考える。
-- AI 同期は local 運用を見てから有効化する。
-- boss / territory / spawn を一緒に見る。
-
-## 関連
-- [要素概要](./summary.md)
-- [Wiki](./wiki.md)
+- 旧設定を参照したい場合は履歴から確認してください。
+- 現行の探索導線は [フロンティア・遠征・釣り戦闘](../frontier-fishing/summary.md) 側を編集対象にします。

@@ -81,19 +81,6 @@
     },
     {
       "kind": "element",
-      "category": "流通とワールド",
-      "slug": "spawn-ai-worldboss",
-      "title": "スポーン制御・ワールドボス・Mythic AI",
-      "shortDescription": "敵の出現、支配状況、ボス戦を支えるワールド制御要素。",
-      "pages": [
-        { "label": "概要", "path": "current-spec/elements/spawn-ai-worldboss/summary.md" },
-        { "label": "設定項目", "path": "current-spec/elements/spawn-ai-worldboss/reference.md" },
-        { "label": "編集例", "path": "current-spec/elements/spawn-ai-worldboss/examples.md" },
-        { "label": "Wiki", "path": "current-spec/elements/spawn-ai-worldboss/wiki.md" }
-      ]
-    },
-    {
-      "kind": "element",
       "category": "運用と長期進行",
       "slug": "city-campaign-party",
       "title": "ポータブルシティ・キャンペーン・パーティー・クエスト看板",
