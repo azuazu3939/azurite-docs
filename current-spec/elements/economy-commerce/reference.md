@@ -150,6 +150,7 @@ Shop editor の価格スロットは 9 個です。
 | `/bind list` | 使える shortcut ID を見る。 | `menu`、`trade`、`pay`、`bp1..bp6` を含む。 |
 | `/bind <shortcutId>` | 手持ちアイテムへ既知ショートカットを付ける。 | 旧 `menu` / `backpack bind` もこの基盤に乗る。 |
 | `/bind /command ...` | 手持ちアイテムへ任意コマンドを付ける。 | 先頭 `/` 必須。 |
+| `/unbind` | 手持ちアイテムのバインドを解除する。 | 一般プレイヤー向けの解除入口。 |
 | `/bind clear` | 手持ちアイテムのバインドを外す。 | 固定ショートカットは解除できない。 |
 | `/backpack (/bp) [1-6]` | BackPack #1〜#6 を開く。 | quick access 保管は 6 枠まで独立保存する。 |
 | `/backpack bind [1-6]` | 手持ちアイテムへ対象 BackPack を付ける。 | `bp2` のように番号ごとに別バインドできる。 |
@@ -167,7 +168,7 @@ Shop editor の価格スロットは 9 個です。
 | 操作 | 役割 | 変更時の見方 |
 | --- | --- | --- |
 | `/help` トップ | `よく使うコマンド集` と `進行ヘルプ` に分かれる。 | 用途別に入口を分けて迷いを減らす。 |
-| コマンド集の一覧 | `menu`、`bind`、`BackPack`、`MySet`、`trade`、`pay` を含む最新コマンドを案内する。 | `BackPack` は `/backpack (/bp) [1-6\|bind [1-6]]`、`MySet` は `/myset [list\|save\|load\|delete]` として出す。 |
+| コマンド集の一覧 | `menu`、`bind`、`unbind`、`BackPack`、`MySet`、`trade`、`pay` を含む最新コマンドを案内する。 | `BackPack` は `/backpack (/bp) [1-6\|bind [1-6]]`、`MySet` は `/myset [list\|save\|load\|delete]` として出す。 |
 
 ## `/help` からの導線補助
 
