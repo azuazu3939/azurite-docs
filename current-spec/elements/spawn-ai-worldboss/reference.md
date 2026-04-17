@@ -42,12 +42,15 @@
 
 ## `mob-spawns/10-spawn-packages.yml` の個別 package 定義
 
+2026-04-17 時点で、通常 mob への territory 由来のステータス補正と報酬補正は廃止しています。  
+package 側の territory は出現位置の選定にのみ使います。
+
 | キー | 役割 | 変更時の見方 |
 | --- | --- | --- |
 | `packages.[package-id].category` | spawn カテゴリ。 | `ambient` `elite` `territory` `event` など。 |
 | `packages.[package-id].threat` | 脅威値。 | budget の `threat-cap` と噛む。 |
 | `packages.[package-id].heavy` | heavy 扱いか。 | 高負荷時に絞られやすい。 |
-| `packages.[package-id].class-exp-base` | 基礎 class exp。 | 戦闘報酬の土台。 |
+| `packages.[package-id].class-exp-base` | 互換用の予約値。 | 現在の通常 mob では未使用。 |
 | `packages.[package-id].territory.frontier-domains[]` | 主ドメイン。 | `surface` などの大分類。 |
 | `packages.[package-id].territory.preferred-families[]` | 好む family。 | `forest` `plains` など。 |
 | `packages.[package-id].territory.climate-tags-any[]` | 気候 tag 条件。 | 湿地・寒冷などを絞る。 |
