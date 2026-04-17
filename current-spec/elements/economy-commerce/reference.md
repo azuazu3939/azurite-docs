@@ -114,9 +114,9 @@ Shop editor の価格スロットは 9 個です。
 | `/commerce goal next` | 候補ルートを次へ切り替える。 | Shop 逆探索で複数候補がある時だけ意味を持つ。 |
 | `/commerce goal prev` | 候補ルートを前へ切り替える。 | `next` の逆順。 |
 | `/commerce goal refresh` | 目標進捗を再計算する。 | 非同期で再評価される。 |
-| `/commerce goal set shop <shopId> <entryId> [quantity]` | Shop 商品を目標にする。 | 必要素材は複数 Shop をまたいで逆探索する。 |
-| `/commerce goal set item <canonicalItemKey> [quantity]` | item 目標を直接設定する。 | `Shop / Frontier直取得 / Frontier Quest報酬 / Boss Quest報酬 / MythicMob Drop` の候補を横断して出す。 |
-| `/commerce goal set hand [quantity]` | 手に持っている item を目標にする。 | GUI を開かずに、その場の item から導線を張れる。 |
+| `/commerce goal set shop <shopId> <entryId> [quantity]` | Shop 商品を目標にする。 | 必要素材は複数 Shop をまたいで逆探索する。設定時点の所持分は進捗に含めない。 |
+| `/commerce goal set item <canonicalItemKey> [quantity]` | item 目標を直接設定する。 | `Shop / Frontier直取得 / Frontier Quest報酬 / Boss Quest報酬 / MythicMob Drop` の候補を横断して出す。設定後に新しく入手した分だけ進捗する。 |
+| `/commerce goal set hand [quantity]` | 手に持っている item を目標にする。 | GUI を開かずに、その場の item から導線を張れる。設定時点の手持ちや倉庫分は基準値として差し引く。 |
 | `/commerce goal set help <topicId>` | `/help` のコマンド項目を目標にする。 | 手動設定時は項目確認型の Help 目標として扱う。 |
 | `/commerce goal set unlock <unlockId>` | 解放状態を目標にする。 | Profession unlock と同じ ID 正規化を使う。 |
 
@@ -125,6 +125,7 @@ Shop editor の価格スロットは 9 個です。
 | 操作 | 役割 | 変更時の見方 |
 | --- | --- | --- |
 | `/help` トップ | `よく使うコマンド集` と `進行ヘルプ` に分かれる。 | 用途別に入口を分けて迷いを減らす。 |
+| コマンド集の一覧 | `BackPack` や `MySet` を含む最新コマンドを案内する。 | `BackPack` は `/backpack (/bp)`、`MySet` は `/myset <list\|save\|load\|delete>` として出す。 |
 | コマンド集の右クリック | 未解放コマンドだけ目標設定できる。 | 解放済みコマンドは説明閲覧のみ。 |
 | 進行ヘルプの右クリック | ライセンスや許可証の解放を目標化する。 | 権限型の機能も導線付きで追える。 |
 
