@@ -17,7 +17,6 @@ questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 boa
 | キー | 役割 | 変更時の見方 |
 | --- | --- | --- |
 | `profession-level-thresholds[]` | 職業レベルから stage を上げる閾値。 | 高いほど初心者帯が長く残る。 |
-| `gathering-point-thresholds[]` | 採集 total point から stage を上げる閾値。 | 解放済み milestone 量を stage へ反映する。 |
 | `unlock-count-thresholds[]` | unlock 数から stage を上げる閾値。 | 長期解放量を候補制御へ混ぜる。 |
 | `assisted-min-stage` | `ASSISTED` 解放に必要な stage。 | 中級導線への切替点。 |
 | `assisted-unlock-completions` | `ASSISTED` 解放に必要な契約完了数。 | stage が低くても利用理解済みなら昇格できる。 |

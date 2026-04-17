@@ -40,7 +40,7 @@
 | `manaril-weight` | Manaril 系素材との関係重み。 | 素材別抽選に効く前提の値。 |
 | `eterila-weight` | Eterila 系素材との関係重み。 | 上と同様。 |
 | `supported-materials[]` | 装備種別制限。 | `*_SWORD` のようなパターンも使われている。 |
-| `unlock.required-unlock-ids[]` | 既存 unlock-id ベースの解放条件。 | gathering の累計 milestone などと接続できる。 |
+| `unlock.required-unlock-ids[]` | 既存 unlock-id ベースの解放条件。 | 初期解放済みの機能 gate や個別 unlock と接続できる。 |
 | `tool-families[]` | ツール系分類タグ。 | 採掘系だけに寄せたい時に使う。 |
 | `active-slots[]` | 発動判定を行う装備スロット。 | `hand` など。 |
 | `conflicts-with[]` | 併用不可 ID。 | 役割が被る enchant を排他にする。 |

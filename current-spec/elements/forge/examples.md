@@ -21,7 +21,7 @@ alloys:
     unlock:
       required-profession: "smithing"
       required-profession-level: 5
-      required-unlock-ids: [ "gathering.meta.forge.utility" ]
+      required-unlock-ids: [ "feature.forge.utility" ]
 ```
 
 ## 押さえる点

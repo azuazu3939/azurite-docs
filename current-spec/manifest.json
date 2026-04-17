@@ -55,19 +55,6 @@
     },
     {
       "kind": "element",
-      "category": "制作と収集",
-      "slug": "recipe-gathering",
-      "title": "レシピ・ストレージ・採集コレクション",
-      "shortDescription": "集めた素材をレシピ、保管、累積報酬へつなぐ収集要素。",
-      "pages": [
-        { "label": "概要", "path": "current-spec/elements/recipe-gathering/summary.md" },
-        { "label": "設定項目", "path": "current-spec/elements/recipe-gathering/reference.md" },
-        { "label": "編集例", "path": "current-spec/elements/recipe-gathering/examples.md" },
-        { "label": "Wiki", "path": "current-spec/elements/recipe-gathering/wiki.md" }
-      ]
-    },
-    {
-      "kind": "element",
       "category": "流通とワールド",
       "slug": "economy-commerce",
       "title": "経済・コマース",

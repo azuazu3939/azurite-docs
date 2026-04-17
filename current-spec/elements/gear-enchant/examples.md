@@ -9,7 +9,7 @@ display-name: "<yellow>射手の一撃"
 max-level: 4
 unlock:
   required-unlock-ids:
-    - "gathering.meta.enchant.advanced"
+    - "feature.enchant.advanced"
 supported-materials:
   - BOW
 ```

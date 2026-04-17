@@ -62,8 +62,6 @@
   access-tag と profession 解放が冒険導線に効きます。
 - [鍛造](../forge/wiki.md)  
   speed bonus や yield bonus が制作体感に影響します。
-- [レシピ・ストレージ・採集コレクション](../recipe-gathering/wiki.md)  
-  採集 progress と reward unlock を profession が補強します。
 
 ## FAQ
 
