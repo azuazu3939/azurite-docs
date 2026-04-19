@@ -9,8 +9,16 @@ server-node:
 - heartbeat-seconds: 15
 
 portable-city runtime:
-- spawn-safe-radius: 5
-- void-rescue-y-threshold: -64
+- portable-city.yml.runtime.spawn-safe-radius: 5
+- portable-city.yml.runtime.void-rescue-y-threshold: -64
+- portable-city.yml.transfer.servers.azur-resource-1.proxy-server: azur-resource-1
+- portable-city.yml.build-tool.mythic-item-id: Azuriter_BuildTools
+- portable-city.yml.build-tool.size-steps: [1, 3, 5, 7, 9]
+- portable-city.yml.build-tool.preview-interval-ticks: 2
+
+route commands:
+- server.yml.routing.commands.hub.candidates: [hub-1, hub-2]
+- server.yml.routing.commands.pve.candidates: [resource-1, resource-2]
 
 campaign:
 - community-project-id: canopy_supply_network
@@ -30,11 +38,13 @@ packet questboard:
 ```
 
 ## 押さえる点
-- city は node / transfer を先に見る。
+- city は portable-city.yml の node / transfer と server.yml の routing.commands をセットで見る。
 - city を公開観光地として使うなら、visit / memberfly / visitorfly をセットで考える。
+- 建築ツールは city member 専用で、preview は本人にだけ見える packet 表示として扱う。
 - campaign は contract と project の接続を見る。
 - packet board は 3x5 固定面なので、`position` と `facing` を先に合わせる。
 - mode 解放は stage と完了数が両方効くので、候補の見え方を変えたい時は `rules` だけでなく `progression-profiles` も見る。
+- 建築ツールのサイズ段は odd 中心にしておくと `SQUARE` を扱いやすい。
 
 ## 関連
 - [要素概要](./summary.md)

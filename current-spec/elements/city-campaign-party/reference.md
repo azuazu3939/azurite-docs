@@ -1,6 +1,6 @@
 # ポータブルシティ・キャンペーン・パーティー・クエスト看板 の設定項目
 
-都市運用と長期進行は `portable-city.yml`、`server.yml`、`progression-campaigns.yml`、`community-projects.yml` の組み合わせです。
+都市運用と長期進行は `portable-city.yml`、`server.yml`、`progression-campaigns.yml`、`community-projects.yml` の組み合わせです。  
 questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 board の見え方と抽選ルールを持ちます。
 
 ## `server.yml > routing.commands.hub`
@@ -23,6 +23,32 @@ questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 boa
 | --- | --- | --- |
 | `proxy-server` | Bungee へ渡す実際の転送先名。 | `server.yml` の name と proxy 名がズレる時の吸収に使う。 |
 | `host` / `port` | serverId から接続先を引くための補助情報。 | `/city home` や cluster 転送で同じ serverId を再利用できる。 |
+
+## `portable-city.yml > build-tool`
+
+| キー | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `enabled` | city 建築ツール自体を有効化する。 | false にすると `Azuriter_BuildTools` は通常 item に戻る。 |
+| `mythic-item-id` | 建築ツールとして扱う Mythic item ID。 | 現行は `Azuriter_BuildTools` を前提にしている。 |
+| `preview-interval-ticks` | packet preview の再計算周期。 | 短いほど追従が滑らかだが ray trace 回数は増える。 |
+| `ray-trace-distance` | 狙った block を拾う最大距離。 | 遠すぎると意図しない面を拾いやすい。 |
+| `size-steps[]` | Shift+左クリックで循環するサイズ一覧。 | `LINE` / `DIAGONAL` は長さ、`SQUARE` は一辺サイズとして使う。 |
+
+### city 建築ツール操作
+
+| 操作 | 役割 | 運用メモ |
+| --- | --- | --- |
+| 右クリック | いま preview されている配置を実際に設置する。 | 見ている block の blockData を複製し、空気 / 液体だけを埋める。 |
+| 左クリック | 現在のモードとサイズを action bar に再表示する。 | 誤操作時の確認用。 |
+| Shift+右クリック | `LINE` → `SQUARE` → `DIAGONAL` の順に切り替える。 | `SQUARE` は見ている面の外側へ面張りする。 |
+| Shift+左クリック | サイズを `build-tool.size-steps[]` の順に循環する。 | 既定は `1,3,5,7,9`。 |
+
+### city 建築ツールの制約
+
+- city world のメンバーだけが使える
+- spawn safe radius 内の block は preview も設置も行わない
+- preview は packet block change なので本人にだけ見える
+- 複雑な multi-block も blockData ごと複製するため、door や bed などは通常設置より癖が出やすい
 
 ## Party コマンド運用
 
@@ -98,6 +124,7 @@ questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 boa
 | --- | --- | --- |
 | `QuestBoardService` | legacy 看板と packet board の窓口。 | `/yes` `/no` と右クリック導線を統合する。 |
 | `PacketQuestBoardRuntime` | 個別 packet 表示と seed 抽選本体。 | 3x5 テンプレート、閲覧モード、閲覧軸、NPC 連動を持つ。 |
+| `PortableCityBuildToolService` | city 内建築ツールの判定、preview、設置本体。 | `Azuriter_BuildTools` の Mythic ID と `portable-city.yml > build-tool` を参照する。 |
 | `GUIDED` | 初心者向け。 | おすすめ中心で迷わせない。 |
 | `ASSISTED` | 中級者向け。 | 軽い視点切替を与えつつ、`LOCKED` は極力見せない。 |
 | `TACTICAL` | 上級者向け。 | 未完了、高報酬、周回などへ短く寄せる。 |
@@ -110,6 +137,7 @@ questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 boa
 - 平原序盤 combat のみ、`plains_combat_surface` を使って高地ライセンス前でも受注できる
 - `snow_surface` は平原 gather / fishing と中盤以降の combat 本線として維持する
 - `GUIDED` は受注可能候補が 2 件以上ある時に locked 系を出さない前提で weight を調整する
+- 建築ツールのサイズ段は odd 中心にしておくと `SQUARE` が中央基準で扱いやすい
 
 ## 関連
 
