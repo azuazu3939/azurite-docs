@@ -135,11 +135,11 @@ Shop editor の価格スロットは 9 個です。
 | コマンド | 役割 | 変更時の見方 |
 | --- | --- | --- |
 | `/trade <player>` | 相手へ取引申請を送る。 | 別サーバーの相手にも送れ、同一サーバーでは `Shift+右クリック` でも同じ申請を送れる。 |
-| `/trade accept <player>` | 届いた取引申請を受ける。 | 受諾側が申請元サーバーへ移動してから GUI を開き、chat 上の `[受諾]` クリックからも実行できる。 |
+| `/trade accept <player>` | 届いた取引申請を受ける。 | 受諾側が申請元サーバーへ移動してから GUI を開き、chat 上の `[受諾]` クリックからも実行できる。GUI は各プレイヤー 16 枠の提示欄を持つ。 |
 | `/trade deny <player>` | 取引申請を拒否する。 | 申請側へ拒否通知を返し、chat 上の `[拒否]` クリックからも実行できる。 |
 | `/trade cancel` | 今の取引を中止する。 | 提示済みアイテムは配送返却で戻す。 |
 | `/trade log [page]` | 最近の取引・送金ログを見る。 | `PLAYER_TRADE` / `PLAYER_PAYMENT` ledger を読む。 |
-| `/pay <player> <amount> [money\|credit]` | 通貨を直接送る。 | Money と Delivery Credit に対応する。 |
+| `/pay <player> <amount> [money\|credit]` | 通貨を直接送る。 | Money と Delivery Credit に対応する。鍛冶ポイントは対象外。 |
 
 ## `menu` と `bind` のショートカット体系
 
