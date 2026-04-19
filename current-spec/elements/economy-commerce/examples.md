@@ -30,6 +30,12 @@ entry:
 /trade Alice
   Alice へ取引申請を送り、受諾時に同一サーバーへ寄せて取引 GUI を開く
 
+しゃがみながら相手を右クリック
+  同一サーバーで見えている相手へ /trade と同じ申請をすぐ送る
+
+/trade accept Alice
+  受信 chat の [受諾] を押した時と同じ動きで申請を受ける
+
 /pay Alice 5000 money
   Alice へお金 5000 を送る
 

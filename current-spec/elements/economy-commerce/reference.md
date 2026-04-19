@@ -25,7 +25,7 @@
 | `commands.sell.permission` | 直売導線の権限。 | 即時換金の入口。 |
 | `commands.trade.permission` | プレイヤー間 Trade 権限。 | 同一サーバーへ寄せて交換する入口。 |
 | `commands.pay.permission` | プレイヤー間送金権限。 | Money / Delivery Credit の送付入口。 |
-| `commands.bind.permission` | 共通コマンドバインド権限。 | `menu` や `backpack bind` の基盤。 |
+| `commands.bind.permission` | 共通コマンドバインド権限。 | `menu` や `bp1..bp6` ショートカットの基盤。 |
 | `commands.backpack.permission` | BackPack 権限。 | `bp` alias 付きの quick access 保管。 |
 | `commands.myset.permission` | MySet 権限。 | 装備 4 部位の即時切替 GUI。 |
 | `commands.yes.permission` / `commands.no.permission` | 確認ダイアログ応答権限。 | 取引確認を共通化している。 |
@@ -134,9 +134,9 @@ Shop editor の価格スロットは 9 個です。
 
 | コマンド | 役割 | 変更時の見方 |
 | --- | --- | --- |
-| `/trade <player>` | 相手へ取引申請を送る。 | 別サーバーの相手にも送れ、受諾時に同一サーバーへ寄せて開始する。 |
-| `/trade accept <player>` | 届いた取引申請を受ける。 | 受諾側が申請元サーバーへ移動してから GUI を開く。 |
-| `/trade deny <player>` | 取引申請を拒否する。 | 申請側へ拒否通知を返す。 |
+| `/trade <player>` | 相手へ取引申請を送る。 | 別サーバーの相手にも送れ、同一サーバーでは `Shift+右クリック` でも同じ申請を送れる。 |
+| `/trade accept <player>` | 届いた取引申請を受ける。 | 受諾側が申請元サーバーへ移動してから GUI を開き、chat 上の `[受諾]` クリックからも実行できる。 |
+| `/trade deny <player>` | 取引申請を拒否する。 | 申請側へ拒否通知を返し、chat 上の `[拒否]` クリックからも実行できる。 |
 | `/trade cancel` | 今の取引を中止する。 | 提示済みアイテムは配送返却で戻す。 |
 | `/trade log [page]` | 最近の取引・送金ログを見る。 | `PLAYER_TRADE` / `PLAYER_PAYMENT` ledger を読む。 |
 | `/pay <player> <amount> [money\|credit]` | 通貨を直接送る。 | Money と Delivery Credit に対応する。 |
@@ -150,14 +150,12 @@ Shop editor の価格スロットは 9 個です。
 | `/menu reset` | メニューを初期配置へ戻す。 | 個別編集をまとめて捨ててテンプレートへ戻したい時に使う。 |
 | メニュー扉 | `/menu` バインド済み固定アイテム。 | 固定スロットから右クリックで GUI を開く。 |
 | `/bind list` | 使える shortcut ID を見る。 | `menu`、`sethome`、`bp1..bp6` などを含む。 |
-| `/bind <shortcutId>` | 手持ちアイテムへ既知ショートカットを付ける。 | 旧 `menu` / `backpack bind` もこの基盤に乗る。 |
+| `/bind <shortcutId>` | 手持ちアイテムへ既知ショートカットを付ける。 | `menu` や `bp1..bp6` などをこの基盤で扱う。 |
 | `/bind /command ...` | 手持ちアイテムへ任意コマンドを付ける。 | 先頭 `/` 必須。 |
 | `しゃがみ右クリック` | 手持ちのコマンドバインドを解除する。 | 専用ショートカットは消去し、既存アイテムは bind タグだけ外す。 |
 | `/unbind` | 手持ちのコマンドバインドを解除する。 | クリックで解除しづらい状況向けの入口。 |
 | `/bind clear` | 手持ちのコマンドバインドを解除する。 | 旧導線との互換。固定ショートカットは解除できない。 |
 | `/backpack (/bp) [1-6]` | BackPack #1〜#6 を開く。 | quick access 保管は 6 枠まで独立保存する。 |
-| `/backpack bind [1-6]` | 手持ちアイテムへ対象 BackPack を付ける。 | `bp2` のように番号ごとに別バインドできる。 |
-
 ## コマンドバインド品の制限
 
 | 対象 | 役割 | 変更時の見方 |
@@ -171,7 +169,7 @@ Shop editor の価格スロットは 9 個です。
 | 操作 | 役割 | 変更時の見方 |
 | --- | --- | --- |
 | `/help` トップ | `よく使うコマンド集` と `進行ヘルプ` に分かれる。 | 用途別に入口を分けて迷いを減らす。 |
-| コマンド集の一覧 | 一般プレイヤーが普段使う前提のコマンドだけを案内する。 | `menu` は自分用 GUI、`/hub` は軽い ASP 側へ、`/pve` は軽い Paper 側へ寄せる移動コマンド、`BackPack` は `/backpack (/bp) [1-6\|bind [1-6]]`、`MySet` は `/myset [list\|save\|load\|delete]` として出す。解除は基本 しゃがみ右クリックで消去。 |
+| コマンド集の一覧 | 一般プレイヤーが普段使う前提のコマンドだけを案内する。 | `menu` は自分用 GUI、`/hub` は軽い ASP 側へ、`/pve` は軽い Paper 側へ寄せる移動コマンド、`BackPack` は `/backpack (/bp) [1-6]`、`MySet` は `/myset [list\|save\|load\|delete]` として出す。解除は基本 しゃがみ右クリックで消去。 |
 
 ## `/help` からの導線補助
 
