@@ -33,6 +33,9 @@ entry:
 /pay Alice 5000 money
   Alice へお金 5000 を送る
 
+/pay Alice 120 credit
+  Alice へ配送クレジット 120 を送る
+
 /bind bp3
   手持ちアイテムへ BackPack #3 をバインドする
 

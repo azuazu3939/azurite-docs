@@ -24,7 +24,7 @@
 | `commands.market.permission` | Market Board 権限。 | `ah` alias が付いている。 |
 | `commands.sell.permission` | 直売導線の権限。 | 即時換金の入口。 |
 | `commands.trade.permission` | プレイヤー間 Trade 権限。 | 同一サーバーへ寄せて交換する入口。 |
-| `commands.pay.permission` | プレイヤー間送金権限。 | Money / Delivery Credit / Forge Point の送付入口。 |
+| `commands.pay.permission` | プレイヤー間送金権限。 | Money / Delivery Credit の送付入口。 |
 | `commands.bind.permission` | 共通コマンドバインド権限。 | `menu` や `backpack bind` の基盤。 |
 | `commands.backpack.permission` | BackPack 権限。 | `bp` alias 付きの quick access 保管。 |
 | `commands.myset.permission` | MySet 権限。 | 装備 4 部位の即時切替 GUI。 |
@@ -139,7 +139,7 @@ Shop editor の価格スロットは 9 個です。
 | `/trade deny <player>` | 取引申請を拒否する。 | 申請側へ拒否通知を返す。 |
 | `/trade cancel` | 今の取引を中止する。 | 提示済みアイテムは配送返却で戻す。 |
 | `/trade log [page]` | 最近の取引・送金ログを見る。 | `PLAYER_TRADE` / `PLAYER_PAYMENT` ledger を読む。 |
-| `/pay <player> <amount> [money\|credit\|fp]` | 通貨を直接送る。 | Money、Delivery Credit、Forge Point に対応する。 |
+| `/pay <player> <amount> [money\|credit]` | 通貨を直接送る。 | Money と Delivery Credit に対応する。 |
 
 ## `menu` と `bind` のショートカット体系
 
