@@ -1,7 +1,44 @@
 # ポータブルシティ・キャンペーン・パーティー・クエスト看板 の設定項目
 
-都市運用と長期進行は `portable-city.yml`、`progression-campaigns.yml`、`community-projects.yml` の 3 本柱です。  
+都市運用と長期進行は `portable-city.yml`、`server.yml`、`progression-campaigns.yml`、`community-projects.yml` の組み合わせです。
 questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 board の見え方と抽選ルールを持ちます。
+
+## `server.yml > routing.commands.hub`
+
+| キー | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `candidates[]` | `/hub` で優先したい home / ASP サーバー一覧。 | 空なら heartbeat と在席数から自動判定する。 |
+| `fallback-target` | 候補が見つからない時の最終転送先。 | heartbeat が全部落ちていても最低限寄せたい先がある時に使う。 |
+
+## `server.yml > routing.commands.pve`
+
+| キー | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `candidates[]` | `/pve` で優先したい PvE / resource サーバー一覧。 | 空なら cluster 在席数から自動判定する。 |
+| `fallback-target` | 候補が見つからない時の最終転送先。 | Redis 在席情報がない時でも寄せたい先を固定できる。 |
+
+## `portable-city.yml > transfer.servers.[server-id]`
+
+| キー | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `proxy-server` | Bungee へ渡す実際の転送先名。 | `server.yml` の name と proxy 名がズレる時の吸収に使う。 |
+| `host` / `port` | serverId から接続先を引くための補助情報。 | `/city home` や cluster 転送で同じ serverId を再利用できる。 |
+
+## Party コマンド運用
+
+| コマンド | 役割 | 運用メモ |
+| --- | --- | --- |
+| `/party invite <player>` | パーティー招待。 | Redis 在席共有が有効なら他サーバーのオンライン player にも送れる。 |
+| `/party accept [leader]` / `/party deny [leader]` | 招待の承認 / 辞退。 | 招待一覧は `/party` からも確認できる。 |
+| `/party gather` | リーダーが他サーバー側メンバーへ集合要請を送る。 | 自分と別 serverId にいるメンバーだけが対象。 |
+| `/party gather accept [leader]` / `/party gather deny [leader]` | 集合要請の承認 / 辞退。 | `portable-city.yml > transfer.servers` で proxy 名を引けることが前提。 |
+| `/party` | 現在の PT 状態を表示。 | メンバーは `player@serverId` 形式で見えるので、どのサーバーに散っているかを確認しやすい。 |
+
+### cross-server party の前提
+
+- Redis 在席共有が無効だと party は従来どおり同一サーバー内だけで動く
+- サーバー間集合は `portable-city.yml > transfer.servers.[server-id].proxy-server` から Bungee 転送先を引く
+- leader が別サーバーへ移動した後の集合先は、その時点の leader 在席サーバーを優先する
 
 ## `packet-quest-boards.yml`
 
