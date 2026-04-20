@@ -1,6 +1,6 @@
 # 経済・コマース の設定項目
 
-経済・コマース要素は、現状だと数値バランスの多くがコード側にあります。YAML で直接触れるのは、主に公開コマンド、権限、Storage Box の制限です。
+経済・コマース要素は、現状だと数値バランスの多くがコード側にあります。YAML で直接触れるのは、主に公開コマンド、権限、Storage Box の制限、OpenBook の価格帯とジャンルです。
 
 > [!NOTE]
 > 価格式や手数料のような本体ロジックは `EconomyRuntime` 側にあり、今の `resources` では「入口と許可」を中心に管理しています。
@@ -22,6 +22,7 @@
 | `commands.drop.permission` | ドロップ倉庫系コマンド権限。 | 受け取り導線の制御。 |
 | `commands.shop.permission` | Trade Shop 系コマンド権限。 | 店舗 UI の入口。 |
 | `commands.market.permission` | Market Board 権限。 | `ah` alias が付いている。 |
+| `commands.openbook.permission` | OpenBook 権限。 | ユーザー本の公開・購買・閲覧入口。 |
 | `commands.sell.permission` | 直売導線の権限。 | 即時換金の入口。 |
 | `commands.trade.permission` | プレイヤー間 Trade 権限。 | 同一サーバーへ寄せて交換する入口。 |
 | `commands.pay.permission` | プレイヤー間送金権限。 | Money / Delivery Credit の送付入口。 |
@@ -46,6 +47,7 @@
 | `permissions.azurite.command.economy.default` | 経済管理権限の既定値。 | 現状は `op`。 |
 | `permissions.azurite.command.trade.default` | プレイヤー間取引権限の既定値。 | 現状は `true`。 |
 | `permissions.azurite.command.pay.default` | 送金権限の既定値。 | 現状は `true`。 |
+| `permissions.azurite.command.openbook.default` | OpenBook 権限の既定値。 | 現状は `true` 想定。一般プレイヤー利用前提。 |
 | `permissions.azurite.command.bind.default` | 共通バインド権限の既定値。 | 現状は `true`。 |
 | `permissions.azurite.command.backpack.default` | BackPack 権限の既定値。 | 現状は `true`。 |
 | `permissions.azurite.command.myset.default` | MySet 権限の既定値。 | 現状は `true`。 |
@@ -119,6 +121,42 @@ Shop editor の価格スロットは 9 個です。
 | `目標設定モード` | 販売中商品のクリックを購入ではなく目標設定に切り替える。 | 自分の出品や販売終了品は目標化できない。 |
 | BossBar / Sidebar | 現在目標の進捗と候補を表示する。 | 出品終了後は item の代替入手候補へ切り替わる。 |
 | 売上通知 | 出品が売れた時に売り手へ知らせる。 | 売り手がオンラインなら、購入者名・売れた item・入金額を chat で返す。 |
+
+## OpenBook
+
+`OpenBook` はユーザーが書いた `WRITTEN_BOOK` を公開・販売するための市場です。  
+一覧には本アイテムそのものを並べず、内部 UUID 管理の書籍データを map 表示します。
+
+### `openbook.yml`
+
+| キー | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `pricing.min` | OpenBook の最低価格。 | 現状は `20000`。 |
+| `pricing.max` | OpenBook の最高価格。 | 現状は `50000`。 |
+| `browse.suggest-limit` | `有力書籍` / `トレンド書籍` の表示上限。 | 現状は `18`。 |
+| `browse.trend-window-days` | トレンド集計期間。 | 現状は `7` 日。 |
+| `genres[].key` | 内部ジャンルキー。 | `guide` など固定キーを使う。 |
+| `genres[].label` | GUI 表示名。 | `攻略` `採集` `戦闘` `金策` `知識` `エンチャント` `職業/進行` `雑記`。 |
+
+### OpenBook の公開・購買ルール
+
+| 項目 | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| 公開元 | メインハンドの `WRITTEN_BOOK`。 | タイトル空欄は拒否する。 |
+| 価格帯 | `20000〜50000`。 | 範囲外は公開不可。 |
+| 発行番号 | 公開ごとに `1` から連番採番。 | 再投稿では増やさず据え置く。 |
+| バージョン | 作者の再投稿ごとに `+1`。 | 所持者は自動更新されない。 |
+| 購買制限 | 自己購入不可、重複購入不可。 | 判定は同じ書籍 master を所持しているか。 |
+| 閲覧版 | 所持者ごとに `selectedVersion` を保持。 | 最後に開いた版で保存する。 |
+
+### OpenBook のサジェストと推薦
+
+| 項目 | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `有力書籍` | 累計売上金額降順の Top18。 | 同額時は販売数、次に発行番号で並べる。 |
+| `トレンド書籍` | 直近 7 日の購入補正値合計 Top18。 | `5分以内 +5` `10分以内 +3` `30分以内 +1`。0 点だけなら空欄。 |
+| `/openbook recommend <bookNo> <player>` | 他プレイヤーへ本を勧める。 | 対象が初回購入した時だけ紹介者へ `10000` 入る。 |
+| おすすめ導線 | 詳細画面から chat の suggest command を出す。 | 「買われると上位に食い込みやすくなる」旨を明記する。 |
 
 ## Storage GUI の導線補助
 
