@@ -28,13 +28,13 @@ entry:
 
 ```text
 /openbook
-  OpenBook 一覧を開く
-  有力書籍 / トレンド書籍 / ジャンル整理 / #発行番号検索に対応
+  現在は運営・テスター用の確認導線
+  一般プレイヤー向けの /commerce と menu GUI からは開けない
 
 /openbook recommend 12 Alice
   発行番号 #12 の本を Alice へおすすめする
   Alice が初回購入すると紹介者へ 10000 入る
-  買われると上位に食い込みやすくなる
+  一般公開中ではないため通常導線には載せない
 
 /trade Alice
   Alice へ取引申請を送り、受諾時に同一サーバーへ寄せて取引 GUI を開く
@@ -77,7 +77,7 @@ entry:
 - Vault 不在時の挙動も考える。
 - Mythic 側で shop 窓口を増やしたい時は `mmid` を増やさず `Spawner` を分ける。
 - コマンドバインド品は `sell` と `market` に出せないが、プレイヤー間 Trade では交換できる。
-- OpenBook は `WRITTEN_BOOK` を map 表示のカタログとして扱い、購入時にユーザー蔵書へ追加する。
+- OpenBook は `WRITTEN_BOOK` を map 表示のカタログとして扱うが、現在は一般向け導線から外している。
 
 ## 関連
 - [要素概要](./summary.md)

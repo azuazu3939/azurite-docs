@@ -22,7 +22,7 @@
 | `commands.drop.permission` | ドロップ倉庫系コマンド権限。 | 受け取り導線の制御。 |
 | `commands.shop.permission` | Trade Shop 系コマンド権限。 | 店舗 UI の入口。 |
 | `commands.market.permission` | Market Board 権限。 | `ah` alias が付いている。 |
-| `commands.openbook.permission` | OpenBook 権限。 | ユーザー本の公開・購買・閲覧入口。 |
+| `commands.openbook.permission` | OpenBook 権限。 | 現在は運営・テスター向けの直接入口。一般向け `/commerce` と GUI からは外している。 |
 | `commands.sell.permission` | 直売導線の権限。 | 即時換金の入口。 |
 | `commands.trade.permission` | プレイヤー間 Trade 権限。 | 同一サーバーへ寄せて交換する入口。 |
 | `commands.pay.permission` | プレイヤー間送金権限。 | Money / Delivery Credit の送付入口。 |
@@ -47,7 +47,7 @@
 | `permissions.azurite.command.economy.default` | 経済管理権限の既定値。 | 現状は `op`。 |
 | `permissions.azurite.command.trade.default` | プレイヤー間取引権限の既定値。 | 現状は `true`。 |
 | `permissions.azurite.command.pay.default` | 送金権限の既定値。 | 現状は `true`。 |
-| `permissions.azurite.command.openbook.default` | OpenBook 権限の既定値。 | 現状は `true` 想定。一般プレイヤー利用前提。 |
+| `permissions.azurite.command.openbook.default` | OpenBook 権限の既定値。 | 現状は `op`。一般非公開。 |
 | `permissions.azurite.command.bind.default` | 共通バインド権限の既定値。 | 現状は `true`。 |
 | `permissions.azurite.command.backpack.default` | BackPack 権限の既定値。 | 現状は `true`。 |
 | `permissions.azurite.command.myset.default` | MySet 権限の既定値。 | 現状は `true`。 |
@@ -126,6 +126,7 @@ Shop editor の価格スロットは 9 個です。
 
 `OpenBook` はユーザーが書いた `WRITTEN_BOOK` を公開・販売するための市場です。  
 一覧には本アイテムそのものを並べず、内部 UUID 管理の書籍データを map 表示します。
+現在は一般公開前のため、利用導線は `/openbook` 権限保持者の直接実行だけに絞っています。
 
 ### `openbook.yml`
 
@@ -157,6 +158,8 @@ Shop editor の価格スロットは 9 個です。
 | `トレンド書籍` | 直近 7 日の購入補正値合計 Top18。 | `5分以内 +5` `10分以内 +3` `30分以内 +1`。0 点だけなら空欄。 |
 | `/openbook recommend <bookNo> <player>` | 他プレイヤーへ本を勧める。 | 対象が初回購入した時だけ紹介者へ `10000` 入る。 |
 | おすすめ導線 | 詳細画面から chat の suggest command を出す。 | 「買われると上位に食い込みやすくなる」旨を明記する。 |
+
+> `/commerce openbook`、経済ハブ GUI、`menu` 既定ショートカットは現在無効です。
 
 ## Storage GUI の導線補助
 
