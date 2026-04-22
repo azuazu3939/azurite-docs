@@ -412,7 +412,7 @@ biomes:
 
 | `type` | 主なキー | 内容 |
 | --- | --- | --- |
-| `break_nearby_blocks` | `radius`, `radius-expression`, `same-type-only`, `require-correct-tool`, `target-block-types[]`, `target-conditions[]` | 周囲 block を破壊 |
+| `break_nearby_blocks` | `radius`, `radius-expression`, `same-type-only`, `require-correct-tool`, `target-block-types[]`, `target-conditions[]` | 見ている面に沿った 1 面の周囲 block を破壊 |
 | `multiply_block_exp` | `multiplier-base`, `multiplier-per-level`, `multiplier-expression` | block exp 倍化 |
 | `multiply_block_drops` | `multiplier-base`, `multiplier-per-level`, `multiplier-expression` | drop 倍化 |
 | `add_block_drops` | `amount-per-level`, `amount-expression` | drop 加算 |

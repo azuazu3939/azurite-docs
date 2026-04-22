@@ -154,6 +154,7 @@ triggers:
 押さえる点:
 
 - `target-conditions` は発火元 block ではなく「これから触る対象 block」に対して評価されます。
+- `break_nearby_blocks` は見ている面に沿った 1 面だけを対象にします。
 - `same-type-only: true` にすると vein 掘りっぽい挙動に寄せやすいです。
 - `require-correct-tool: true` を付けると適正ツール判定も入ります。
 
