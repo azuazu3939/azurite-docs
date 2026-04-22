@@ -144,7 +144,7 @@ triggers:
     cooldown-scope: player
     actions:
       - type: break_nearby_blocks
-        radius-expression: "level >= 2 ? 2 : 1"
+        radius-expression: "enchant_level >= 2 ? 2 : 1"
         same-type-only: false
         require-correct-tool: false
         target-conditions:
@@ -190,7 +190,7 @@ triggers:
       - "block_age >= block_max_age"
     actions:
       - type: break_nearby_blocks
-        radius-expression: "level >= 2 ? 2 : 1"
+        radius-expression: "enchant_level >= 2 ? 2 : 1"
         same-type-only: false
         require-correct-tool: false
         target-block-types:
@@ -354,7 +354,7 @@ triggers:
     actions:
       - type: grow_nearby_blocks
         target: event_block
-        radius-expression: "level"
+        radius-expression: "enchant_level"
         include-origin: true
         same-type-only: false
         stages: 1

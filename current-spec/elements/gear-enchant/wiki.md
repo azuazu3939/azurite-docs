@@ -273,9 +273,9 @@ actions:
 
 ### `level` と `enchant_level` は何が違うのか
 
-runtime context には両方積まれますが、現行 `CelScriptEngine` で安全に参照できるのは `level` 側です。  
-しかも `level` には enchant 単体レベルではなく `totalLevel` が入るので、式を書く時はそこを前提にしてください。  
-`enchant_level` を本格的に使いたい場合は、docs だけでなく CEL 変数宣言側の拡張も要ります。
+どちらも現行 `CelScriptEngine` から参照できます。  
+`level` には enchant 単体レベルではなく `totalLevel` が入り、`enchant_level` には現在評価中 enchant のレベルが入ります。  
+周囲破壊や周囲成長のように「その enchant の段階だけで半径を伸ばしたい」場合は `enchant_level` を使ってください。
 
 ### `block_drop` と `break_block` はどちらを使うべきか
 

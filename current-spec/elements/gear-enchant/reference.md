@@ -288,6 +288,16 @@ chance-expression: "0.08 + (level * 0.04)"
 | `player_metadata` / `item_metadata` / `target_metadata` / `block_metadata` | `key=value|key=value` 形式 |
 | `player_metadata_count` など | metadata 数 |
 
+### runtime context の補助キー
+
+以下のキーは listener 側で context に積まれ、現行 `CelScriptEngine` からも参照できます。  
+`level` は独自エンチャ total level、`enchant_level` は現在評価中 enchant のレベルです。
+
+| キー | どこで積まれるか | 内容 |
+| --- | --- | --- |
+| `enchant_level` | 全 trigger 共通 | 現在評価中 enchant のレベル |
+| `custom_enchant_total_level` | 全 trigger 共通 | 独自エンチャ total level |
+
 ### runtime context には入るが、CEL 宣言外の補助キー
 
 以下のキーは listener 側で context に積まれますが、現行 `CelScriptEngine` の変数宣言とはズレています。  
@@ -295,8 +305,6 @@ docs 上は「実装が渡している値」として把握しつつ、実際に
 
 | キー | どこで積まれるか | 内容 |
 | --- | --- | --- |
-| `enchant_level` | 全 trigger 共通 | 現在評価中 enchant のレベル |
-| `custom_enchant_total_level` | 全 trigger 共通 | 独自エンチャ total level |
 | `block_drop_count` | break / drop | drop 総数 |
 | `block_drop_stacks` | break / drop | stack 数 |
 | `block_has_drops` | break / drop | drop の有無 |
