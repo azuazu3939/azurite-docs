@@ -50,6 +50,13 @@ questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 boa
 - preview は packet block change なので本人にだけ見える
 - 複雑な multi-block も blockData ごと複製するため、door や bed などは通常設置より癖が出やすい
 
+## city 作成コスト
+
+| コマンド | 費用 | 運用メモ |
+| --- | --- | --- |
+| `/city create <groupId> <cityId>` | `200,000` | 最初のグループと最初の city を作る初回費用。 |
+| `/city addcity <cityId>` | 前回の `5` 倍 | 追加コストは `200,000 -> 1,000,000 -> 5,000,000 -> 25,000,000 -> 125,000,000`。1 グループ上限は 5 city。 |
+
 ## Party コマンド運用
 
 | コマンド | 役割 | 運用メモ |
