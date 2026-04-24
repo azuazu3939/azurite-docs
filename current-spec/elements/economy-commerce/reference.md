@@ -195,9 +195,19 @@ Shop editor の価格スロットは 9 個です。
 | `/trade cancel` | 今の取引を中止する。 | 提示済みアイテムは配送返却で戻す。 |
 | `/trade log [page]` | 最近の取引・送金ログを見る。 | `PLAYER_TRADE` / `PLAYER_PAYMENT` ledger を読む。 |
 | `/pay <player> <amount> [money\|credit]` | 通貨を直接送る。 | Money と Delivery Credit に対応する。鍛冶ポイントは対象外。 |
-| `/income` | 直近60分または開始済みセッションの収入と時給を見る。 | `EconomicEventLedger` から Money 収入を集計し、収入源の種類別内訳も出す。 |
+| `/income` | 直近60分または開始済みセッションの収入と時給を見る。 | `EconomicEventLedger` から Money / Delivery Credit 収入を集計し、収入源の種類別内訳も出す。 |
 | `/income start` / `/income stop` | 時給計測セッションを開始・終了する。 | セッションはメモリ保持なので、再起動後は直近60分表示へ戻る。 |
-| `/income <15m\|30m\|60m\|2h> [money\|credit\|all]` | 任意の時間幅・通貨で時給を見る。 | Money は直接売却、自動売却、マーケット販売、送金、Trade を集計する。 |
+| `/income <15m\|30m\|60m\|2h> [money\|credit\|all]` | 任意の時間幅・通貨で時給を見る。 | Money は直接売却、自動売却、マーケット販売、送金、Trade、MythicMob 討伐、MythicMobs スキル入金を集計する。 |
+
+## MythicMobs 由来の Money 収入
+
+| 入口 | 記録方法 | `/income` の収入源 |
+| --- | --- | --- |
+| Mob の `Drops: - money ...` | `MythicMobLootDropEvent#getMoney()` を `VAULT_GAIN` / `mythic_mob_kill` として記録する。 | `MythicMob討伐` |
+| 既存の `currencygive{amount=...}` | Vault provider への外部入金として `VAULT_GAIN` / `mythic_skill` に記録する。`VaultDrop` 経由の MobKill money は二重計上しない。 | `MythicMobsスキル` |
+| 理由付き入金 `azmoneygive{amount=...;reason=...;label=...}` | Azuriter の Mythic mechanic が Vault 入金と台帳記録を同時に行う。 | `label` 指定値。未指定なら `reason` から `戦闘Gift` / `アーマーGift` / `試練報酬` などを推定する。 |
+
+`azmoneygive` の alias は `azcurrencygive` / `azvaultgive` / `giveazmoney`。Gift など収入源を明確に分けたい MM ファイルでは、既存の `currencygive` を `azmoneygive{amount=<...>;reason=combat_gift;label="戦闘Gift"}` のように置き換える。
 
 ## `menu` と `bind` のショートカット体系
 
