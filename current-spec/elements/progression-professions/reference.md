@@ -59,6 +59,12 @@ mana:
 | `formula` | そのクラス専用の必要経験値式。 | 未指定相当の設計にしたいときは共通式へ寄せる。 |
 | `max-level` | クラス上限。 | `tree.yml` の最高報酬段と揃える。 |
 | `attributes.[ATTRIBUTE]` | クラスに常時乗る加算補正。 | Bukkit の Attribute 名をそのまま使う。 |
+| `combat-modifiers.damage-dealt-percent` | クラス専用の与ダメージ割合補正。 | プレイヤー攻撃時に乗算される。攻撃ポーションは別枠で効果 Lv ごとに +5%。 |
+| `combat-modifiers.damage-taken-percent` | クラス専用の被ダメージ割合補正。 | 被弾者がプレイヤーの時に乗算される。 |
+| `support-modifiers.healing-dealt-percent` | クラス専用の与回復量補正。 | クレリック自動回復や MythicMobs heal 連携に影響する。 |
+| `support-modifiers.healing-received-percent` | クラス専用の被回復量補正。 | `EntityRegainHealthEvent` 経由の回復量に影響する。 |
+| `support-modifiers.potion-duration-percent` | クラス専用のポーション時間補正。 | 対象外の即時回復などを除き、ポーション効果時間を伸ばす。 |
+| `support-modifiers.potion-amplifier-bonus` | クラス専用のポーション効果 Lv 補正。 | 合計 +2 までを想定。攻撃ポーションの与ダメージ補正にも最終効果 Lv として反映される。 |
 | `effects.level-up.messages[]` | レベルアップ時メッセージ。 | `{player}` `{class}` `{level}` などが使える。 |
 | `effects.level-up.sounds[]` | レベルアップ時の効果音。 | `sound` `volume` `pitch` `delay` を持つ。 |
 | `effects.gui-click.*` | GUI でクラス選択した時の演出。 | 切替体験の軽さを調整する。 |
