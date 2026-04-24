@@ -34,6 +34,31 @@ questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 boa
 | `ray-trace-distance` | 狙った block を拾う最大距離。 | 遠すぎると意図しない面を拾いやすい。 |
 | `size-steps[]` | Shift+左クリックで循環するサイズ一覧。 | `LINE` / `DIAGONAL` は長さ、`SQUARE` は一辺サイズとして使う。 |
 
+## `portable-city.yml > runtime`
+
+| キー | 現行値 | 役割 | 変更時の見方 |
+| --- | --- | --- | --- |
+| `fixed-time` | `1000` | city world の時刻を固定する。 | 明るさや見た目の基準を変える時に見る。 |
+| `spawn-safe-radius` | `0` | spawn 中心からの建築保護半径。 | 現行は半径 0 なので spawn 保護で建築ツールを広く止めない。visitor 制約は別に残る。 |
+| `void-rescue-y-threshold` | `-64` | void 救出を始める Y 座標。 | 初期足場の下は空洞なので、落下時の復帰基準として扱う。 |
+
+## city 初期地形
+
+| 項目 | 現行仕様 | コード上の基準 |
+| --- | --- | --- |
+| 足場サイズ | spawn を基準にした 32x32。X/Z は `-16..15` の範囲。 | `PortableCityStarterTerrain.PLATFORM_HALF_SIZE_BLOCKS = 16` |
+| 表面 | Y=64 に grass block を敷く。spawn 中央 1 ブロックだけ bedrock marker。 | `SURFACE_Y = 64`, `topMaterial(...)` |
+| 足場の厚み | Y=62,63 の 2 層を dirt で埋める。 | `FILL_START_Y = SURFACE_Y - 2` |
+| 足場下 | 初期生成では air のまま。通常地形、洞窟、構造物、mob、装飾は生成しない。 | `PortableCityBootstrapGenerator` |
+| biome | 全域 plains。 | `PLAINS_BIOME_PROVIDER` |
+
+## city world border
+
+| 項目 | 現行仕様 | コード上の基準 |
+| --- | --- | --- |
+| 中心 | city spawn の X/Z。 | `PortableCityRules.worldBorderSpec(spawn)` |
+| サイズ | `512.0` blocks。 | `PortableCityRules.WORLD_BORDER_SIZE` |
+
 ### city 建築ツール操作
 
 | 操作 | 役割 | 運用メモ |
@@ -46,7 +71,8 @@ questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 boa
 ### city 建築ツールの制約
 
 - city world のメンバーだけが使える
-- spawn safe radius 内の block は preview も設置も行わない
+- `portable-city.yml > runtime.spawn-safe-radius` 内の block は preview も設置も行わない
+- 現行の `spawn-safe-radius` は `0` なので、実質的な広域 spawn 保護は置かず、visitor 制約で非メンバーの編集を止める
 - preview は packet block change なので本人にだけ見える
 - 複雑な multi-block も blockData ごと複製するため、door や bed などは通常設置より癖が出やすい
 

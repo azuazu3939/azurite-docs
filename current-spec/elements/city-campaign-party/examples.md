@@ -9,7 +9,7 @@ server-node:
 - heartbeat-seconds: 15
 
 portable-city runtime:
-- portable-city.yml.runtime.spawn-safe-radius: 5
+- portable-city.yml.runtime.spawn-safe-radius: 0
 - portable-city.yml.runtime.void-rescue-y-threshold: -64
 - portable-city.yml.transfer.servers.azur-resource-1.proxy-server: azur-resource-1
 - portable-city.yml.build-tool.mythic-item-id: Azuriter_BuildTools
@@ -40,6 +40,8 @@ packet questboard:
 ## 押さえる点
 - city は portable-city.yml の node / transfer と server.yml の routing.commands をセットで見る。
 - city を公開観光地として使うなら、visit / memberfly / visitorfly をセットで考える。
+- 初期地形は spawn 基準の 32x32 足場、足場下は空洞、world border は 512 blocks として案内する。
+- `spawn-safe-radius` は現行 0 なので、spawn 周辺を広く保護する前提の説明を置かない。
 - 建築ツールは city member 専用で、preview は本人にだけ見える packet 表示として扱う。
 - campaign は contract と project の接続を見る。
 - packet board は 3x5 固定面なので、`position` と `facing` を先に合わせる。
