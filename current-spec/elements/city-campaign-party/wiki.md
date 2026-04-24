@@ -24,8 +24,11 @@ city runtime が常設の基盤を作り、campaign と community project が長
 3. 作成直後は spawn 中心の 32x32 足場から始まり、足場下は空洞になる
 4. world border は spawn 中心の 512 blocks で、初期拠点の広がりを小さく保つ
 5. 公開 city なら `/city visit` で非メンバーも見学に入れる
-6. 週替わり campaign や project tier が長期目標を提示する
-7. party 招待で複数人行動に入り、campaign や各機能の入口へつながる
+6. visitor はドア、ボタン、レバー、感圧板など観光導線用の軽い装置だけ操作できる
+7. chest などの収納、設置、破壊、ドロップ、拾得は city の保護 profile と役職で制御する
+8. OWNER / ADMIN は `/city manage` から保護 profile、visit/fly、時刻、天候を調整できる
+9. 週替わり campaign や project tier が長期目標を提示する
+10. party 招待で複数人行動に入り、campaign や各機能の入口へつながる
 
 ## cross-server party
 
@@ -41,6 +44,23 @@ city runtime が常設の基盤を作り、campaign と community project が長
 - preview は packet block change で本人にだけ見える
 - Shift+右クリックでモード切替、Shift+左クリックでサイズ切替、左クリックで現在状態確認、右クリックで確定設置
 - 現行の `spawn-safe-radius` は `0` なので、visitor 状態では preview も実設置も止まる
+
+## city protection profile
+
+- city の保護は個人 lock ではなく、`standard` `public` `strict` `builders` `admin_only` の profile で扱う
+- profile は build、container、device、entity、item-flow ごとに最低役職を持つ
+- `standard` では visitor も door / trapdoor / fence gate / button / lever / pressure plate を操作できる
+- chest、barrel、shulker、furnace、hopper などの収納は visitor には開かない
+- `spawn-safe-radius` 内は profile に関係なく保護される
+- server admin は `azurite.city.protection.bypass` で保護を上書きできる
+
+## city environment
+
+- city ごとに時刻と天候を保存する
+- 時刻は `natural` `morning` `noon` `evening` `night`
+- 天候は `natural` `clear` `rain` `thunder`
+- 固定設定は city load 時と GUI 変更時に即反映される
+- 通常の管理は OWNER / ADMIN が `/city manage <cityId>` から行い、MODERATOR は補佐と閲覧寄りの役割に留める
 
 ## city 初期地形
 

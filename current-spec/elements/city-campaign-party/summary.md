@@ -5,6 +5,8 @@ city、campaign、community project、party がつながり、プレイヤー個
 
 ## この要素が担うこと
 - city を拠点として初期足場、訪問、移動の基準を作る
+- city の役職と protection profile で収納、建築、装置操作を守る
+- city ごとの時刻と天候を保存し、拠点の見た目や運用状態を整える
 - city メンバー向け建築ツールで日常の整地と面張りを軽くする
 - campaign や project で週次・長期の目標を供給する
 - party と campaign で「次に何をするか」を迷いにくくする
@@ -14,6 +16,8 @@ city、campaign、community project、party がつながり、プレイヤー個
 - city を起点に日々の行動を始める
 - 作成直後の city は 32x32 の草ブロック足場から始まり、足場下は空洞、world border は spawn 中心の 512 blocks になる
 - city メンバーは `Azuriter_BuildTools` で見ている block を直線 / 面 / 階段として増設できる
+- OWNER / ADMIN は `/city manage` で保護 profile、visit/fly、時刻、天候を管理できる
+- visitor は観光用の軽い装置操作だけ可能で、chest などの収納や item 持ち込み/持ち帰りは制限される
 - 建築ツールは packet preview で設置予定位置を追従表示するので、移動しながら形を確認できる
 - campaign で今週の目的を選ぶ
 - party や community project を通じて個人進行を協力プレイへ広げる

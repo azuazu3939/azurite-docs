@@ -34,13 +34,51 @@
 | `ray-trace-distance` | 狙った block を拾う最大距離。 | 遠すぎると意図しない面を拾いやすい。 |
 | `size-steps[]` | Shift+左クリックで循環するサイズ一覧。 | `LINE` / `DIAGONAL` は長さ、`SQUARE` は一辺サイズとして使う。 |
 
+## `portable-city.yml > protection`
+
+| キー | 役割 | 変更時の見方 |
+| --- | --- | --- |
+| `default-profile` | 新規 city に付与する保護 profile。 | 既定は `standard`。存在しない ID なら `standard` に戻る。 |
+| `profiles.[profile-id].display-name` | GUI 表示名。 | プレイヤーに見える短い名称にする。 |
+| `profiles.[profile-id].build` | 設置、破壊、bucket、city build tool の最低役職。 | `visitor` `member` `moderator` `admin` `owner`。 |
+| `profiles.[profile-id].container` | chest、barrel、shulker、furnace、hopper など収納の最低役職。 | visitor に収納を開けたい場合は `visitor` だが通常は非推奨。 |
+| `profiles.[profile-id].device` | door、trapdoor、fence gate、button、lever、pressure plate の最低役職。 | 観光導線を開けるなら `visitor`。 |
+| `profiles.[profile-id].entity` | armor stand、item frame、vehicle、entity 操作/破壊の最低役職。 | 装飾保護を強めたい時に上げる。 |
+| `profiles.[profile-id].item-flow` | item drop / pickup の最低役職。 | visitor の持ち込み・持ち帰りを止める入口。 |
+
+### 既定 protection profile
+
+| profile | build | container | device | entity | item-flow | 用途 |
+| --- | --- | --- | --- | --- | --- | --- |
+| `standard` | member | member | visitor | member | member | 通常 city。visitor は軽い赤石操作だけ可能。 |
+| `public` | admin | admin | visitor | admin | member | 観光地。公開しつつ中身は触らせない。 |
+| `strict` | moderator | admin | member | moderator | member | 重要拠点。visitor 操作は不可。 |
+| `builders` | member | moderator | visitor | member | member | 共同建築。収納は moderator 以上。 |
+| `admin_only` | admin | admin | admin | admin | admin | 保全・展示固定用。 |
+
 ## `portable-city.yml > runtime`
 
 | キー | 現行値 | 役割 | 変更時の見方 |
 | --- | --- | --- | --- |
-| `fixed-time` | `1000` | city world の時刻を固定する。 | 明るさや見た目の基準を変える時に見る。 |
+| `fixed-time` | `1000` | 新規 city の既定固定時刻。 | city ごとの設定は `/city manage` で保存される。 |
 | `spawn-safe-radius` | `0` | spawn 中心からの建築保護半径。 | 現行は半径 0 なので spawn 保護で建築ツールを広く止めない。visitor 制約は別に残る。 |
 | `void-rescue-y-threshold` | `-64` | void 救出を始める Y 座標。 | 初期足場の下は空洞なので、落下時の復帰基準として扱う。 |
+
+## city ごとの管理 GUI
+
+| コマンド | 役割 | 権限 |
+| --- | --- | --- |
+| `/city manage <cityId>` | 保護 profile、visit/fly、時刻、天候を GUI で確認/変更する。 | 変更は city OWNER / ADMIN。MODERATOR / MEMBER は閲覧。 |
+| `/cityadmin manage <cityId>` | 同じ GUI を server admin 上書きで開く。 | `azurite.command.cityadmin`。 |
+
+### city environment
+
+| 設定 | 値 | 挙動 |
+| --- | --- | --- |
+| time | `natural` | `ADVANCE_TIME` を有効にして自然進行。 |
+| time | `morning` / `noon` / `evening` / `night` | それぞれ `1000` / `6000` / `12000` / `18000` に固定。 |
+| weather | `natural` | `ADVANCE_WEATHER` を有効にして自然変化。 |
+| weather | `clear` / `rain` / `thunder` | 晴れ / 雨 / 雷雨に固定。 |
 
 ## city 初期地形
 

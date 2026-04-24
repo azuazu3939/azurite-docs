@@ -15,6 +15,8 @@ portable-city runtime:
 - portable-city.yml.build-tool.mythic-item-id: Azuriter_BuildTools
 - portable-city.yml.build-tool.size-steps: [1, 3, 5, 7, 9]
 - portable-city.yml.build-tool.preview-interval-ticks: 2
+- portable-city.yml.protection.default-profile: standard
+- /city manage <cityId>: 保護 profile、visit/fly、時刻、天候を GUI 管理
 
 route commands:
 - server.yml.routing.commands.hub.candidates: [hub-1, hub-2]
@@ -31,7 +33,9 @@ old packet questboard:
 
 ## 押さえる点
 - city は portable-city.yml の node / transfer と server.yml の routing.commands をセットで見る。
-- city を公開観光地として使うなら、visit / memberfly / visitorfly をセットで考える。
+- city を公開観光地として使うなら、visit / visitorfly と protection profile をセットで考える。
+- visitor に許可する軽い操作は door、trapdoor、fence gate、button、lever、pressure plate まで。
+- chest などの収納や item drop / pickup は profile の role 閾値で守る。
 - 初期地形は spawn 基準の 32x32 足場、足場下は空洞、world border は 512 blocks として案内する。
 - `spawn-safe-radius` は現行 0 なので、spawn 周辺を広く保護する前提の説明を置かない。
 - 建築ツールは city member 専用で、preview は本人にだけ見える packet 表示として扱う。
