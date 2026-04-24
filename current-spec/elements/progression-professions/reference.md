@@ -115,6 +115,8 @@ mana:
 | `harvesting` | `resource_world` 系で成熟作物、サトウキビ、カボチャなどを収穫する。 | milestone の `yield-bonus` が通常ドロップの追加収量として働く。 |
 | `fishing` | `resource_world` 系の自然水辺に近づき、Packet 魚を釣る。 | 釣果ごとの `reward-exp` が職業EXPになる。釣り Lv は出現魚の解放条件にも使われる。 |
 
+採掘・伐採・収穫・釣りの基礎 EXP は mcMMO 最新 `experience.yml` の `Mining` / `Woodcutting` / `Herbalism` / `Fishing` を基準にし、Azuriter 側では 1/10 にスケールして付与します。0.1 や 0.3 のような端数 EXP は内部で繰り越され、累積して 1 以上になった時点で反映されます。
+
 プレイヤー向けには `/profession list` で概要、`/profession info <profession>` で詳細、`/profession` で自分の現在値と効果を確認できます。
 
 ## 関連

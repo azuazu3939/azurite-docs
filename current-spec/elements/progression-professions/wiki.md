@@ -65,6 +65,7 @@
 
 採掘・伐採・収穫は `resource_world` / `resource_nether` / `resource_the_end` など resourceworld 管理対象でのみ EXP を得ます。プレイヤーが置いたブロックは EXP 対象外です。
 釣りは Iolite 側の釣り池が無い場合でも、resourceworld の自然水辺を仮想池として扱い、Packet 魚が出るようにします。
+EXP 配分は mcMMO 最新 `experience.yml` の採掘・伐採・収穫・釣りテーブルを 1/10 にした値を使います。端数は内部で繰り越すため、低 EXP ブロックでも累積で進行します。
 
 ## 連動する要素
 
