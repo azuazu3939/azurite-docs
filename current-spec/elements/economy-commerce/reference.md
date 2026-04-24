@@ -26,6 +26,7 @@
 | `commands.sell.permission` | 直売導線の権限。 | 即時換金の入口。 |
 | `commands.trade.permission` | プレイヤー間 Trade 権限。 | 同一サーバーへ寄せて交換する入口。 |
 | `commands.pay.permission` | プレイヤー間送金権限。 | Money / Delivery Credit の送付入口。 |
+| `commands.income.permission` | 時給レポート権限。 | `/income` / `/jikyuu` / `/hourly` / `/wage` で個人の収入速度を見る。 |
 | `commands.bind.permission` | 共通コマンドバインド権限。 | `menu` や `bp1..bp6` ショートカットの基盤。 |
 | `commands.backpack.permission` | BackPack 権限。 | `bp` alias 付きの quick access 保管。 |
 | `commands.myset.permission` | MySet 権限。 | 装備 4 部位の即時切替 GUI。 |
@@ -47,6 +48,7 @@
 | `permissions.azurite.command.economy.default` | 経済管理権限の既定値。 | 現状は `op`。 |
 | `permissions.azurite.command.trade.default` | プレイヤー間取引権限の既定値。 | 現状は `true`。 |
 | `permissions.azurite.command.pay.default` | 送金権限の既定値。 | 現状は `true`。 |
+| `permissions.azurite.command.income.default` | 時給レポート権限の既定値。 | 現状は `true`。一般プレイヤーが自分の収入を確認する用途。 |
 | `permissions.azurite.command.openbook.default` | OpenBook 権限の既定値。 | 現状は `op`。一般非公開。 |
 | `permissions.azurite.command.bind.default` | 共通バインド権限の既定値。 | 現状は `true`。 |
 | `permissions.azurite.command.backpack.default` | BackPack 権限の既定値。 | 現状は `true`。 |
@@ -193,6 +195,9 @@ Shop editor の価格スロットは 9 個です。
 | `/trade cancel` | 今の取引を中止する。 | 提示済みアイテムは配送返却で戻す。 |
 | `/trade log [page]` | 最近の取引・送金ログを見る。 | `PLAYER_TRADE` / `PLAYER_PAYMENT` ledger を読む。 |
 | `/pay <player> <amount> [money\|credit]` | 通貨を直接送る。 | Money と Delivery Credit に対応する。鍛冶ポイントは対象外。 |
+| `/income` | 直近60分または開始済みセッションの収入と時給を見る。 | `EconomicEventLedger` から Money 収入を集計し、収入源の種類別内訳も出す。 |
+| `/income start` / `/income stop` | 時給計測セッションを開始・終了する。 | セッションはメモリ保持なので、再起動後は直近60分表示へ戻る。 |
+| `/income <15m\|30m\|60m\|2h> [money\|credit\|all]` | 任意の時間幅・通貨で時給を見る。 | Money は直接売却、自動売却、マーケット販売、送金、Trade を集計する。 |
 
 ## `menu` と `bind` のショートカット体系
 
@@ -224,7 +229,7 @@ Shop editor の価格スロットは 9 個です。
 | 操作 | 役割 | 変更時の見方 |
 | --- | --- | --- |
 | `/help` トップ | `よく使うコマンド集` と `進行ヘルプ` に分かれる。 | 用途別に入口を分けて迷いを減らす。 |
-| コマンド集の一覧 | 一般プレイヤーが普段使う前提のコマンドだけを案内する。 | `menu` は自分用 GUI、`/hub` は軽い ASP 側へ、`/pve` は軽い Paper 側へ寄せる移動コマンド、`BackPack` は `/backpack (/bp) [1-6]`、`MySet` は `/myset [list\|save\|load\|delete]` として出す。解除は基本 しゃがみ右クリックで消去。 |
+| コマンド集の一覧 | 一般プレイヤーが普段使う前提のコマンドだけを案内する。 | `menu` は自分用 GUI、`/hub` は軽い ASP 側へ、`/pve` は軽い Paper 側へ寄せる移動コマンド、`trade`、`pay`、`income`、`BackPack`、`MySet` などを出す。解除は基本 しゃがみ右クリックで消去。 |
 
 ## `/help` からの導線補助
 
