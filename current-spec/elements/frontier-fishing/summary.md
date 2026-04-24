@@ -1,24 +1,19 @@
-# フロンティア・遠征・釣り戦闘
+# 釣り戦闘・旧遠征残務
 
-外へ出て危険と報酬を持ち帰る冒険側の要素です。  
-既存 Frontier world、遠征契約、Quest Catalog、釣り池、魚種や竿戦闘がまとまり、日常導線の外側にある稼ぎ場と挑戦先を作ります。
-
-ワールド生成 runtime 自体は撤去されており、`generator/*.yml` は route / biome / territory の frontier spec として quest や boss の参照先に残しています。
+旧遠征の契約、進行管理、QuestBoard、受注 / 完了 / 解放条件は撤去済みです。
+現在この要素に残る主機能は、resource world とも接続できる packet 釣り戦闘と、周辺機能が参照する route / world 名の互換情報です。
 
 ## この要素が担うこと
-- 既存 Frontier world で通常エリアとは違う探索体験を作る
-- 遠征契約で周回の目的と報酬を分かりやすくする
-- 釣り戦闘で収集と戦闘の中間にある遊び方を用意する
+- `fishing-content.yml` で釣り池、魚種、ロッド戦闘、宝 / hazard / mob 釣りを管理する
+- 旧 `frontier_world` 名と route 定義を、職業 access や既存データ互換の参照として残す
+- 遠征契約や掲示板を経由せず、釣り戦闘を独立した収集・戦闘ループとして動かす
 
-## プレイヤーから見る流れ
-- まず解放条件を満たして Frontier や遠征に向かう
-- 探索、戦闘、釣りを通じて素材や報酬を持ち帰る
-- 持ち帰った成果を制作、売買、次の契約準備へつなげる
-
-## つながる要素
-- profession の access 条件が入口を制御する
-- 報酬は鍛造と経済・コマースへ流れる
-- world boss や spawn 制御とは同じ危険度設計の上で噛み合う
+## 撤去済み
+- `quests/frontier/frontier.yml` の遠征契約
+- `ExpeditionService` の進行、目的地、BossBar、報告、報酬配布
+- `/frontier` `/q` `/questboard` `/yes` `/no`
+- QuestBoard / PacketQuestBoard runtime
+- 旧遠征契約の objective-kind、完了条件、受注条件、掲示板抽選
 
 ## 関連
 - [設定項目](./reference.md)

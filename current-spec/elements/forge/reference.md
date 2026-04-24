@@ -15,7 +15,7 @@
 | `enabled` | 鍛造 runtime の ON/OFF。 | 切ると全導線が止まる。 |
 | `strict-click-protection` | GUI 誤操作保護を強めるか。 | 不正クリック対策寄り。 |
 | `logistics.enabled` | 物流システムを使うか。 | delivery 導線まで止めたい時だけ切る。 |
-| `logistics.allowed-worlds[]` | 物流を許すワールド。 | frontier 側だけで動かすかを決める。 |
+| `logistics.allowed-worlds[]` | 物流を許すワールド。 | resource world 側だけで動かすかを決める。 |
 | `files.content` | 内容定義ファイルへのパス。 | 分割先を差し替える時に使う。 |
 | `files.balance` | 最終計算ファイルへのパス。 | balance 別案を切る時向き。 |
 | `files.actions` | 行動定義ファイルへのパス。 | action セット差し替え用。 |
@@ -72,7 +72,7 @@
 | `trade.npcs.[npc-id].title` | NPC 側の表示名。 | Trade 画面見出しに使う。 |
 | `trade.npcs.[npc-id].mmids[]` | 紐づく NPC MMID 群。 | 同一 trade を複数 NPC へ配る時に使う。 |
 | `trade.npcs.[npc-id].extra-offers.*` | NPC 専用追加 offer。 | 共通 offer と分けたい終盤商品向け。 |
-| `delivery.entries.[delivery-id].label` | 納品名。 | questboard 風の見出し。 |
+| `delivery.entries.[delivery-id].label` | 納品名。 | 納品一覧の見出し。 |
 | `delivery.entries.[delivery-id].description` | 納品の趣旨。 | 世界観説明と用途を兼ねる。 |
 | `delivery.entries.[delivery-id].requirements[]` | 必要資材。 | `material` または `mmid` と `amount` を持つ。 |
 | `delivery.entries.[delivery-id].reward.forge-points` | 納品で得る forge point。 | 施設開放や trade に使う基礎通貨。 |

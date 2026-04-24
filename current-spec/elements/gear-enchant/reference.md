@@ -379,7 +379,7 @@ target-conditions:
 
 ```yml
 target-mythic-mob-ids:
-  - "Frontier_*"
+  - "Resource_*"
 item-mythic-types:
   - "MaterialPickaxe*"
 ```

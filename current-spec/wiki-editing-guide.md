@@ -48,12 +48,12 @@
 | --- | --- |
 | 主設定 | `config.yml` |
 | 主 runtime | `SomeRuntime` |
-| 影響先 | 経済、Frontier、鍛造 |
+| 影響先 | 経済、釣り、鍛造 |
 
 ### 2. 注意書き
 
 > [!WARNING]
-> access-tag を変えると、Frontier 側の解放条件にも波及します。
+> access-tag を変えると、resourceworld や forge、釣り戦闘側の利用条件にも波及します。
 
 ### 3. 手順
 

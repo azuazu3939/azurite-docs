@@ -14,7 +14,7 @@ Azuriter の基礎進行を担う要素です。
 - resource_world 系で採掘・伐採・収穫・Packet 釣りを行い、専門職を伸ばしていく
 
 ## つながる要素
-- profession の解放条件は Frontier 入口や resourceworld 採集効率に直結する
+- profession の解放条件は resourceworld 採集効率や鍛造導線に直結する
 - 成長速度や補正値は戦闘体感だけでなく、制作効率や報酬設計にも影響する
 - 実際の設定項目や調整単位は [設定項目](./reference.md) を参照
 

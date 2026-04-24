@@ -70,8 +70,8 @@
       "kind": "element",
       "category": "流通とワールド",
       "slug": "frontier-fishing",
-      "title": "フロンティア・遠征・釣り戦闘",
-      "shortDescription": "外へ出て危険と報酬を持ち帰る冒険側の要素。",
+      "title": "釣り戦闘・旧遠征残務",
+      "shortDescription": "撤去済み旧遠征の残務と、独立して残る packet 釣り戦闘。",
       "pages": [
         { "label": "概要", "path": "current-spec/elements/frontier-fishing/summary.md" },
         { "label": "設定項目", "path": "current-spec/elements/frontier-fishing/reference.md" },
@@ -83,7 +83,7 @@
       "kind": "element",
       "category": "運用と長期進行",
       "slug": "city-campaign-party",
-      "title": "ポータブルシティ・キャンペーン・パーティー・クエスト看板",
+      "title": "ポータブルシティ・キャンペーン・パーティー",
       "shortDescription": "拠点運用と週次目標で日常導線を作る運用側の要素。",
       "pages": [
         { "label": "概要", "path": "current-spec/elements/city-campaign-party/summary.md" },

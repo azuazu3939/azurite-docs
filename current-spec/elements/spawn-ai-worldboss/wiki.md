@@ -7,7 +7,7 @@
 
 - 旧 world boss / Mythic AI 関連の設定ファイルは現行バンドルに含めません。
 - 旧 boss quest 導線も現行ビルドでは無効です。
-- Frontier の導線確認は [フロンティア・遠征・釣り戦闘](../frontier-fishing/wiki.md) を見てください。
+- 旧遠征は撤去済みです。釣り戦闘側の残務は [釣り戦闘・旧遠征残務](../frontier-fishing/wiki.md) を見てください。
 
 ## 退役対象
 

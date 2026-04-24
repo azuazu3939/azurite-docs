@@ -1,94 +1,69 @@
-# フロンティア・遠征・釣り戦闘 Wiki
+# 釣り戦闘・旧遠征残務 Wiki
 
 > [!WARNING]
-> route、quest 条件、profession access、釣り池 archetype は別々に見えて同じ冒険導線の一部です。片方だけ変えると既存 Frontier world 側と契約側がずれやすくなります。
+> 旧遠征は撤去済みです。新しい契約、objective-kind、QuestBoard、受注条件、報告報酬は追加しないでください。
 
 ## クイックデータ
 
 | 項目 | 内容 |
 | --- | --- |
-| 主役 | Frontier spec、遠征契約、Quest Catalog、釣り池 archetype、魚種、竿戦闘 |
-| 主設定 | `quests/frontier/*.yml`, `fishing-content.yml`, `nms/generator/*.yml` |
-| 影響先 | profession 解放、報酬経済、campaign、探索導線 |
-| 変更難度 | 高 |
+| 主役 | 釣り池 archetype、魚種、ロッド戦闘、旧 route / world 互換参照 |
+| 主設定 | `fishing-content.yml`, `AzuriteCore/generator/*.yml` |
+| 撤去済み | `quests/frontier/frontier.yml`, `packet-quest-boards.yml`, Expedition / QuestBoard runtime |
+| 影響先 | 釣り経験値、MythicItem 報酬、経済表示、既存 world helper |
 
 ## 概要
 
-この要素は「どこへ行き、何を達成し、何を持ち帰るか」を決める冒険レイヤーです。  
-既存 Frontier world を前提に、frontier spec、遠征契約、報酬、釣り戦闘がひとつの外遊びループとしてつながっています。
+現行では、旧遠征は冒険契約の塊ではありません。
+残しているのは、釣り戦闘と、既存 world / route 名を参照するための薄い互換情報です。
 
 ## プレイヤー体験
 
-1. Frontier へ出る
-2. 遠征契約に応じて採集、掃討、調査などの目的を進める
-3. 水辺では釣り池 archetype と魚種に応じた釣り戦闘が始まる
-4. 持ち帰った報酬が経済や campaign 導線へ戻る
+1. 池 archetype に近づく
+2. 釣り竿で packet 表示の魚へ攻撃する
+3. 魚を倒すと釣果、salvage、経験値、まれに宝 / hazard / mob 釣りが発生する
+
+遠征受注、目的地誘導、帰還報告、旧遠征報酬はありません。
 
 ## 構成の見取り図
 
 | レイヤー | 主な場所 | メモ |
 | --- | --- | --- |
-| frontier spec | `nms/src/main/resources/generator/*.yml` | route / biome / territory の参照定義 |
-| 遠征契約 | `core/src/main/resources/quests/frontier/frontier.yml` | 契約定義の入口 |
-| 進行管理 | `ExpeditionService` | フェーズ進行と報酬担当 |
 | 釣り設定 | `core/src/main/resources/fishing-content.yml` | settings、pond-archetypes、rods、species |
-| runtime 起動条件 | Frontier role 有効時 | custom generator は立てず、spec だけ読む |
+| 釣り runtime | `FishingFeatureBootstrap` | 旧遠征 role に依存しない |
+| 旧 route 参照 | `FrontierCatalog.routes` / `AzuriteCore/generator/routes` | 互換用。契約は生成しない |
+| 旧 world 名 | `frontier_world`, `frontier_world2` | world helper や既存データのために残す |
 
 ## 編集フロー
 
-1. 変えたい対象を「frontier spec」「contract」「reward」「fishing」に切る
-2. profession access と route 条件を同時に確認する
-3. archetype 名を変えるなら既存 world との整合を見る
+1. 魚・池・ロッドは `fishing-content.yml` から編集する
+2. MythicItem 報酬 ID が存在するか確認する
+3. 釣り経験値とドロップ体感を profession / economy 側で確認する
 
-## よく触る変更パターン
+## 削除済みのものを戻さない
 
-### 遠征契約の内容を変えたい
-
-- `quests/frontier/*.yml` から入り、条件と報酬の意味を整理する
-- profession 解放や campaign 側の倍率とズレないかを見る
-
-### 釣りの池や魚種を増やしたい
-
-- `fishing-content.yml` の `pond-archetypes` と `species` を主入口にする
-- archetype 名変更は既存 Frontier world 側と切れやすいので注意する
-
-### 冒険報酬の体感を変えたい
-
-- quest reward だけでなく economy への戻り先まで考える
-- Frontier 単体で完結する変更にしない
-
-## dryland 拡張メモ
-
-- mixed surface では desert / mesa / badlands を乾燥地帯の主役にし、湿潤 pocket だけ oasis へ切り替わります。
-- oasis は decorative 水たまりではなく大型 basin と fishing archetype `oasis_lake` を持つため、釣り・採集・木の密度がそこへ集中します。
-- 乾燥地クエストの候補抽選は desert / mesa / badlands / oasis を拾い、表示名は oasis だけ個別に「オアシス」と出ます。
-- surface quest のルート探索は入口から 2000m を超えない前提で調整されています。
-
-## 連動する要素
-
-- [成長・クラス・専門職](../progression-professions/wiki.md)  
-  access-tag と profession 解放が遠征参加条件へ効きます。
-- [経済・コマース](../economy-commerce/wiki.md)  
-  持ち帰り報酬が市場へ流れます。
-- Frontier spec / route / biome 設定  
-  探索の密度と報酬導線を作ります。
+- `/frontier` `/q` `/questboard` `/yes` `/no`
+- `ExpeditionService` の実進行
+- `PacketQuestBoardRuntime`
+- `quests/frontier/*.yml`
+- 旧遠征報酬を economy goal の候補に出す導線
 
 ## FAQ
 
-### route と quest は別々に直してよいか
+### route を追加すると新しい遠征になるか
 
-非推奨です。進行条件と frontier spec 側導線がずれると、到達できない契約や意味の薄いルートが生まれます。
+なりません。route は互換参照として残るだけです。
 
-### 釣りは Frontier と切り離して考えてよいか
+### 釣りは旧遠征 role が必要か
 
-体験上は別ループに見えても、報酬や world 上の配置は Frontier の外遊び導線に含まれます。
+不要です。`fishing-content.yml` の `settings.enabled` が有効なら、釣り runtime は通常の core 起動の一部として初期化されます。
 
-### generator 側だけ見れば足りるか
+### 旧遠征報酬は残るか
 
-足りません。いまは world 生成 runtime を使っておらず、generator 側は route / biome / territory の spec です。契約定義と報酬の意味づけも一緒に見る必要があります。
+残りません。QuestCatalog は旧遠征契約を読まないため、契約報酬候補も作りません。
 
 ## 関連
 
 - [要素概要](./summary.md)
-- [編集例](./examples.md)
+- [設定項目](./reference.md)
 - [Wiki執筆ガイド](../../wiki-editing-guide.md)

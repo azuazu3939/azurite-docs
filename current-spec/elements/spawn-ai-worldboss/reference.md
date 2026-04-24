@@ -11,10 +11,10 @@
 
 ## 置き換え先
 
-- Frontier の危険度や探索密度は、frontier spec・route・questboard・fishing 側で見ます。
+- 旧遠征と questboard は撤去済みです。釣りや報酬導線だけを確認します。
 - telemetry の保存先は既存の JSON 系が残る場合がありますが、world boss / Mythic AI 前提では扱いません。
 
 ## 関連
 
 - [要素概要](./summary.md)
-- [フロンティア・遠征・釣り戦闘](../frontier-fishing/summary.md)
+- [釣り戦闘・旧遠征残務](../frontier-fishing/summary.md)

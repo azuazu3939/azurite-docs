@@ -1,7 +1,7 @@
-# ポータブルシティ・キャンペーン・パーティー・クエスト看板 の設定項目
+# ポータブルシティ・キャンペーン・パーティー の設定項目
 
 都市運用と長期進行は `portable-city.yml`、`server.yml`、`progression-campaigns.yml`、`community-projects.yml` の組み合わせです。  
-questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 board の見え方と抽選ルールを持ちます。
+旧 questboard と `packet-quest-boards.yml` は撤去済みです。このページでは履歴参照としてのみ残します。
 
 ## `server.yml > routing.commands.hub`
 
@@ -99,7 +99,9 @@ questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 boa
 - サーバー間集合は `portable-city.yml > transfer.servers.[server-id].proxy-server` から Bungee 転送先を引く
 - leader が別サーバーへ移動した後の集合先は、その時点の leader 在席サーバーを優先する
 
-## `packet-quest-boards.yml`
+## 旧 `packet-quest-boards.yml`
+
+packet questboard は旧遠征と一緒に撤去済みです。以下は履歴参照で、新規運用や再追加の入口ではありません。
 
 ### `settings`
 
@@ -115,9 +117,9 @@ questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 boa
 | `profession-level-thresholds[]` | 職業レベルから stage を上げる閾値。 | 高いほど初心者帯が長く残る。 |
 | `unlock-count-thresholds[]` | unlock 数から stage を上げる閾値。 | 長期解放量を候補制御へ混ぜる。 |
 | `assisted-min-stage` | `ASSISTED` 解放に必要な stage。 | 中級導線への切替点。 |
-| `assisted-unlock-completions` | `ASSISTED` 解放に必要な契約完了数。 | stage が低くても利用理解済みなら昇格できる。 |
+| `assisted-unlock-completions` | 旧 `ASSISTED` 解放に使っていた完了数。 | 現行 runtime では使わない。 |
 | `tactical-min-stage` | `TACTICAL` 解放に必要な stage。 | 上級者向け導線の入口。 |
-| `tactical-unlock-completions` | `TACTICAL` 解放に必要な契約完了数。 | 周回・管理前提の閲覧へ入る基準。 |
+| `tactical-unlock-completions` | 旧 `TACTICAL` 解放に使っていた完了数。 | 現行 runtime では使わない。 |
 | `guided-visible-slots` | `GUIDED` の表示件数。 | 初心者向けは少なめに抑える。 |
 | `assisted-visible-slots` | `ASSISTED` の表示件数。 | 3x5 の中段に合わせて 5 件まで。 |
 | `tactical-visible-slots` | `TACTICAL` の表示件数。 | 高密度でも一目で読める量に止める。 |
@@ -155,21 +157,21 @@ questboard はこれに加えて `packet-quest-boards.yml` で 3x5 進化型 boa
 
 | 項目 | 役割 | 変更時の見方 |
 | --- | --- | --- |
-| `QuestBoardService` | legacy 看板と packet board の窓口。 | `/yes` `/no` と右クリック導線を統合する。 |
-| `PacketQuestBoardRuntime` | 個別 packet 表示と seed 抽選本体。 | 3x5 テンプレート、閲覧モード、閲覧軸、NPC 連動を持つ。 |
+| `QuestBoardService` | 撤去済み。 | 再追加しない。 |
+| `PacketQuestBoardRuntime` | 撤去済み。 | 再追加しない。 |
 | `PortableCityBuildToolService` | city 内建築ツールの判定、preview、設置本体。 | `Azuriter_BuildTools` の Mythic ID と `portable-city.yml > build-tool` を参照する。 |
 | `GUIDED` | 初心者向け。 | おすすめ中心で迷わせない。 |
 | `ASSISTED` | 中級者向け。 | 軽い視点切替を与えつつ、`LOCKED` は極力見せない。 |
 | `TACTICAL` | 上級者向け。 | 未完了、高報酬、周回などへ短く寄せる。 |
-| `/questboard packet list` | 定義済み packet board を一覧。 | board ID 確認用。 |
-| `/questboard packet reload` | `packet-quest-boards.yml` を再読込。 | world 配置や rule 変更後に使う。 |
-| `frontier-quest-boards.yml` | 旧カテゴリ看板の保存先。 | legacy 互換用。 |
+| `/questboard packet list` | 撤去済み。 | 使わない。 |
+| `/questboard packet reload` | 撤去済み。 | 使わない。 |
+| `frontier-quest-boards.yml` | 旧カテゴリ看板の保存先。 | 新規運用しない。 |
 
 ## 運用メモ
 
-- 平原序盤 combat のみ、`plains_combat_surface` を使って高地ライセンス前でも受注できる
-- `snow_surface` は平原 gather / fishing と中盤以降の combat 本線として維持する
-- `GUIDED` は受注可能候補が 2 件以上ある時に locked 系を出さない前提で weight を調整する
+- 旧 packet questboard の GUIDED / ASSISTED / TACTICAL は新規運用しない
+- `plains_combat_surface` や `snow_surface` は route 互換参照としてだけ残す
+- 日常導線は campaign、community project、party、各機能の個別入口で扱う
 - 建築ツールのサイズ段は odd 中心にしておくと `SQUARE` が中央基準で扱いやすい
 
 ## 関連

@@ -9,7 +9,7 @@
 | --- | --- |
 | 主役 | グローバルレベル、クラスレベル、マナ、スキルツリー、profession |
 | 主設定 | `config.yml`, `classes/*/class.yml`, `classes/*/tree.yml`, `professions.yml` |
-| 影響先 | 戦闘バランス、Frontier 解放、resourceworld 採集、Packet 釣り |
+| 影響先 | 戦闘バランス、resourceworld 採集、Packet 釣り |
 | 変更難度 | 中〜高 |
 
 ## 概要
@@ -39,7 +39,7 @@
 1. 何を変えたいかを先に切る  
    レベル式調整なのか、クラス差分なのか、profession milestone なのかで触る場所が変わります。
 2. 連動先を洗う  
-   profession の access-tag は Frontier や Forge 側に波及しやすいです。
+   profession の access-tag は resourceworld や Forge 側に波及しやすいです。
 3. 既存キャラへの影響を考える  
    スキルツリーや報酬変更では `tree-version` をどう扱うかを先に決めます。
 
@@ -54,7 +54,7 @@
 ### profession 解放条件を変えたい
 
 - `professions.yml` の milestone を更新する
-- access-tag の変更なら Frontier / Forge 側の利用条件も見る
+- access-tag の変更なら resourceworld / Forge 側の利用条件も見る
 - reward 導線がズレないかを確認する
 
 ### resourceworld の職業導線を確認したい
@@ -69,8 +69,8 @@ EXP 配分は mcMMO 最新 `experience.yml` の採掘・伐採・収穫・釣り
 
 ## 連動する要素
 
-- [フロンティア・遠征・釣り戦闘](../frontier-fishing/wiki.md)  
-  access-tag と profession 解放が冒険導線に効きます。
+- [釣り戦闘・旧遠征残務](../frontier-fishing/wiki.md)
+  access-tag と profession 解放が釣りの出現条件や報酬体感に効きます。
 - [鍛造](../forge/wiki.md)  
   speed bonus や yield bonus が制作体感に影響します。
 
@@ -82,7 +82,7 @@ EXP 配分は mcMMO 最新 `experience.yml` の採掘・伐採・収穫・釣り
 
 ### profession bonus の変更はどこまで波及するか
 
-resourceworld の採集収量、Frontier の解放条件、釣りの出現魚と報酬体感まで影響することがあります。
+resourceworld の採集収量、鍛造の利用条件、釣りの出現魚と報酬体感まで影響することがあります。
 
 ### まず読むべきファイルはどれか
 
