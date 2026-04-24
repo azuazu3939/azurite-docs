@@ -69,7 +69,7 @@
 - `/profession info mining` のように ID 指定で詳細を確認する
 - `/profession top mining` のように ID 指定で職業別ランキングを確認する
 
-採掘・伐採・収穫は `resource_world` / `resource_nether` / `resource_the_end` など resourceworld 管理対象でのみ EXP を得ます。プレイヤーが置いたブロックは EXP 対象外です。
+採掘・伐採・収穫は `resource_world` / `resource_nether` / `resource_the_end` など resourceworld 管理対象でのみ EXP を得ます。通常の破壊、`break_nearby_blocks` による範囲破壊、`ManagedResourceBreakEvent` 経由の採集はいずれも同じ採集 EXP 集計へ入ります。プレイヤーが置いたブロックは EXP 対象外です。
 釣りは Iolite 側の釣り池が無い場合でも、resourceworld の自然水辺を仮想池として扱い、Packet 魚が出るようにします。
 EXP 配分は mcMMO 最新 `experience.yml` の採掘・伐採・収穫・釣りテーブルを 1/10 にした値を使います。端数は内部で繰り越すため、低 EXP ブロックでも累積で進行します。
 錬金は醸造台でポーションが完成した時に EXP を得ます。EXP 配分は mcMMO 最新 `experience.yml` の `Alchemy.Potion_Brewing` を 1/2 にした値を使い、直近でその醸造台を操作したプレイヤーへ完成本数分を付与します。
