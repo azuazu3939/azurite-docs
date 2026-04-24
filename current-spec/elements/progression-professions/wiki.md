@@ -9,7 +9,7 @@
 | --- | --- |
 | 主役 | グローバルレベル、クラスレベル、マナ、スキルツリー、profession |
 | 主設定 | `config.yml`, `classes/*/class.yml`, `classes/*/tree.yml`, `professions.yml` |
-| 影響先 | 戦闘バランス、resourceworld 採集、Packet 釣り |
+| 影響先 | 戦闘バランス、resourceworld 採集、Packet 釣り、ポーション醸造 |
 | 変更難度 | 中〜高 |
 
 ## 概要
@@ -21,7 +21,7 @@
 
 1. まずグローバルレベルが伸びて、ゲーム全体の基礎進行になる
 2. 次にクラスレベルとスキルツリーで戦闘スタイルが分かれる
-3. その上に profession が乗り、resourceworld の採掘・伐採・収穫・Packet 釣りで生活導線が伸びる
+3. その上に profession が乗り、resourceworld の採掘・伐採・収穫・Packet 釣り・錬金で生活導線が伸びる
 
 ## 戦闘と支援の挙動
 
@@ -36,7 +36,7 @@
 | クラス定義 | `core/src/main/resources/classes/*/class.yml` | クラスの性格と基本設定 |
 | スキルツリー | `core/src/main/resources/classes/*/tree.yml` | 解放順、報酬、進行段階 |
 | profession milestone | `core/src/main/resources/professions.yml` | access-tag、yield bonus、speed bonus、permission |
-| profession action | `core/src/main/kotlin/.../profession` / `.../fishing` | resourceworld 採集 EXP、Packet 魚出現、釣果 EXP |
+| profession action | `core/src/main/kotlin/.../profession` / `.../fishing` | resourceworld 採集 EXP、Packet 魚出現、釣果 EXP、醸造 EXP |
 | 保存状態 | MariaDB 側の各種テーブル | プロフィール、マナ、クラスレベル、報酬台帳を保持 |
 
 ## 編集フロー
@@ -65,12 +65,14 @@
 ### resourceworld の職業導線を確認したい
 
 - `/profession` で自分の Lv、EXP、現在の収量倍率、次の節目を見る
-- `/profession list` で採掘・伐採・収穫・釣りの獲得行動を確認する
+- `/profession list` で採掘・伐採・収穫・釣り・錬金の獲得行動を確認する
 - `/profession info mining` のように ID 指定で詳細を確認する
+- `/profession top mining` のように ID 指定で職業別ランキングを確認する
 
 採掘・伐採・収穫は `resource_world` / `resource_nether` / `resource_the_end` など resourceworld 管理対象でのみ EXP を得ます。プレイヤーが置いたブロックは EXP 対象外です。
 釣りは Iolite 側の釣り池が無い場合でも、resourceworld の自然水辺を仮想池として扱い、Packet 魚が出るようにします。
 EXP 配分は mcMMO 最新 `experience.yml` の採掘・伐採・収穫・釣りテーブルを 1/10 にした値を使います。端数は内部で繰り越すため、低 EXP ブロックでも累積で進行します。
+錬金は醸造台でポーションが完成した時に EXP を得ます。EXP 配分は mcMMO 最新 `experience.yml` の `Alchemy.Potion_Brewing` を 1/2 にした値を使い、直近でその醸造台を操作したプレイヤーへ完成本数分を付与します。
 
 ## 連動する要素
 
@@ -87,7 +89,7 @@ EXP 配分は mcMMO 最新 `experience.yml` の採掘・伐採・収穫・釣り
 
 ### profession bonus の変更はどこまで波及するか
 
-resourceworld の採集収量、鍛造の利用条件、釣りの出現魚と報酬体感まで影響することがあります。
+resourceworld の採集収量、鍛造の利用条件、釣りの出現魚、錬金の進行速度と報酬体感まで影響することがあります。
 
 ### まず読むべきファイルはどれか
 
