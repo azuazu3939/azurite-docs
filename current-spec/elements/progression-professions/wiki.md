@@ -9,7 +9,7 @@
 | --- | --- |
 | 主役 | グローバルレベル、クラスレベル、マナ、スキルツリー、profession |
 | 主設定 | `config.yml`, `classes/*/class.yml`, `classes/*/tree.yml`, `professions.yml` |
-| 影響先 | 戦闘バランス、Frontier 解放、Forge bonus、採集速度 |
+| 影響先 | 戦闘バランス、Frontier 解放、resourceworld 採集、Packet 釣り |
 | 変更難度 | 中〜高 |
 
 ## 概要
@@ -21,7 +21,7 @@
 
 1. まずグローバルレベルが伸びて、ゲーム全体の基礎進行になる
 2. 次にクラスレベルとスキルツリーで戦闘スタイルが分かれる
-3. その上に profession が乗り、access-tag や yield bonus で他要素の解放に接続する
+3. その上に profession が乗り、resourceworld の採掘・伐採・収穫・Packet 釣りで生活導線が伸びる
 
 ## 構成の見取り図
 
@@ -31,6 +31,7 @@
 | クラス定義 | `core/src/main/resources/classes/*/class.yml` | クラスの性格と基本設定 |
 | スキルツリー | `core/src/main/resources/classes/*/tree.yml` | 解放順、報酬、進行段階 |
 | profession milestone | `core/src/main/resources/professions.yml` | access-tag、yield bonus、speed bonus、permission |
+| profession action | `core/src/main/kotlin/.../profession` / `.../fishing` | resourceworld 採集 EXP、Packet 魚出現、釣果 EXP |
 | 保存状態 | MariaDB 側の各種テーブル | プロフィール、マナ、クラスレベル、報酬台帳を保持 |
 
 ## 編集フロー
@@ -56,6 +57,15 @@
 - access-tag の変更なら Frontier / Forge 側の利用条件も見る
 - reward 導線がズレないかを確認する
 
+### resourceworld の職業導線を確認したい
+
+- `/profession` で自分の Lv、EXP、現在の収量倍率、次の節目を見る
+- `/profession list` で採掘・伐採・収穫・釣りの獲得行動を確認する
+- `/profession info mining` のように ID 指定で詳細を確認する
+
+採掘・伐採・収穫は `resource_world` / `resource_nether` / `resource_the_end` など resourceworld 管理対象でのみ EXP を得ます。プレイヤーが置いたブロックは EXP 対象外です。
+釣りは Iolite 側の釣り池が無い場合でも、resourceworld の自然水辺を仮想池として扱い、Packet 魚が出るようにします。
+
 ## 連動する要素
 
 - [フロンティア・遠征・釣り戦闘](../frontier-fishing/wiki.md)  
@@ -71,7 +81,7 @@
 
 ### profession bonus の変更はどこまで波及するか
 
-採集速度だけでなく、Frontier の解放条件や Forge の素材取得体感まで影響することがあります。
+resourceworld の採集収量、Frontier の解放条件、釣りの出現魚と報酬体感まで影響することがあります。
 
 ### まず読むべきファイルはどれか
 

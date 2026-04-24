@@ -102,9 +102,20 @@ mana:
 | `professions.[profession-id].telemetry-tags[]` | 分析・分類タグ。 | route や resource 系タグで集計を揃える。 |
 | `professions.[profession-id].milestones.[level].notes[]` | 画面や説明に見せる補足文。 | プレイヤー向け説明用。 |
 | `professions.[profession-id].milestones.[level].access-tags[]` | 到達で付く access tag。 | Frontier や Forge の解放条件に直結する。 |
-| `professions.[profession-id].milestones.[level].yield-bonus` | 収量補正。 | 採集や制作の期待値を上げる。 |
+| `professions.[profession-id].milestones.[level].yield-bonus` | 収量補正。 | resourceworld の採掘・伐採・収穫ドロップ倍率に加算される。 |
 | `professions.[profession-id].milestones.[level].speed-bonus` | 速度補正。 | 周回テンポを変える。 |
 | `professions.[profession-id].milestones.[level].grant-permissions[]` | 到達で付ける権限。 | `forge.access` のような入口解放に使う。 |
+
+## 専門職の獲得導線
+
+| 職業 | 主な獲得行動 | 現在の効果 |
+| --- | --- | --- |
+| `mining` | `resource_world` 系で石・鉱石・地質ブロックを正しい道具で採掘する。 | milestone の `yield-bonus` が通常ドロップの追加収量として働く。 |
+| `logging` | `resource_world` 系で原木・木・幹・菌糸を正しい道具で伐採する。 | milestone の `yield-bonus` が通常ドロップの追加収量として働く。 |
+| `harvesting` | `resource_world` 系で成熟作物、サトウキビ、カボチャなどを収穫する。 | milestone の `yield-bonus` が通常ドロップの追加収量として働く。 |
+| `fishing` | `resource_world` 系の自然水辺に近づき、Packet 魚を釣る。 | 釣果ごとの `reward-exp` が職業EXPになる。釣り Lv は出現魚の解放条件にも使われる。 |
+
+プレイヤー向けには `/profession list` で概要、`/profession info <profession>` で詳細、`/profession` で自分の現在値と効果を確認できます。
 
 ## 関連
 
