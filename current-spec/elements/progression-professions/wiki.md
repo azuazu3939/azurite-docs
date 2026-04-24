@@ -68,6 +68,7 @@
 - `/profession list` で採掘・伐採・収穫・釣り・錬金の獲得行動を確認する
 - `/profession info mining` のように ID 指定で詳細を確認する
 - `/profession top mining` のように ID 指定で職業別ランキングを確認する
+- コマンドを忘れた場合は `/help` の `よく使うコマンド集` から `専門職` を確認する
 
 採掘・伐採・収穫は `resource_world` / `resource_nether` / `resource_the_end` など resourceworld 管理対象でのみ EXP を得ます。通常の破壊、`break_nearby_blocks` による範囲破壊、`ManagedResourceBreakEvent` 経由の採集はいずれも同じ採集 EXP 集計へ入ります。プレイヤーが置いたブロックは EXP 対象外です。
 釣りは Iolite 側の釣り池が無い場合でも、resourceworld の自然水辺を仮想池として扱い、Packet 魚が出るようにします。
