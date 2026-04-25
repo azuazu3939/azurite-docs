@@ -180,7 +180,7 @@ Shop editor の価格スロットは 9 個です。
 | `/commerce goal next` | 候補ルートを次へ切り替える。 | Shop 逆探索で複数候補がある時だけ意味を持つ。 |
 | `/commerce goal prev` | 候補ルートを前へ切り替える。 | `next` の逆順。 |
 | `/commerce goal refresh` | 目標進捗を再計算する。 | 非同期で再評価される。 |
-| `/commerce goal set shop <shopId> <entryId> [quantity]` | Shop 商品を目標にする。 | 必要素材は複数 Shop をまたいで深く逆探索し、素材側の候補を優先する。設定時点の所持分は進捗に含めない。 |
+| `/commerce goal set shop <shopId> <entryId> [quantity]` | Shop 商品を目標にする。 | 必要素材は複数 Shop をまたいで深く逆探索し、途中素材を一部所持していても不足分の素材分岐を優先して合算表示する。設定時点の所持分は進捗に含めない。 |
 | `/commerce goal set item <canonicalItemKey> [quantity]` | item 目標を直接設定する。 | `Shop / MythicMob Drop` の候補を横断して出す。設定後に新しく入手した分だけ進捗する。 |
 | `/commerce goal set hand [quantity]` | 手に持っている item を目標にする。 | GUI を開かずに、その場の item から導線を張れる。設定時点の手持ちや倉庫分は基準値として差し引く。 |
 | `/commerce goal set help <topicId>` | `/help` のコマンド項目を目標にする。 | 手動設定時は項目確認型の Help 目標として扱う。 |
